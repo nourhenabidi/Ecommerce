@@ -1,0 +1,37 @@
+.navv {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background:#f8f9fb;
+  height: 89px;
+}
+
+.whyusb{
+position: relative;
+top: -23px;
+margin-left: 120px;
+
+
+  }
+
+.bg-white {
+  background-color: transparent;
+  color: white;
+}
+
+
+.loout{
+position: relative;
+left: 19px;
+color: black;
+font-weight: bold;
+}
+
+.looutt{
+  position: relative;
+  left: 10px;
+  color: black;
+  font-weight: bold;
+  }

@@ -2,6 +2,7 @@ const productRouter=require('express').Router()
 const productController=require('../controllers/ProductControllers')
 
 productRouter.get('/allProducts',productController.getProducts)
+productRouter.get('/oneProduct/:name',productController.getProdByName)
 productRouter.get('/getOneProd/:ProductID',productController.getOneProd)
 productRouter.post('/addProduct',productController.addProd)
 productRouter.delete('/deleteProd/:ProductID',productController.deleteProd)
