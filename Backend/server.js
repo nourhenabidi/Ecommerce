@@ -2,8 +2,8 @@ const express = require("express")
 const cors = require('cors')
 const itemRouter = require("./routes/ProductRouter")
 const userRouter = require ("./routes/UserRouter")
-const auth = require ('./Authentification/user')
-
+const loginRouterUser=require('./routes/LoginRout.js')
+const signupRouterUser=require('./routes/SignupRout.js')
 const app = express()
 const PORT = 5000
 
@@ -20,7 +20,7 @@ app.listen(PORT, () => {
 
 //user routes
 app.use("/api/users",userRouter)
-app.use("/api/auth", auth)
 app.use("/api/products",itemRouter)
-
+app.use('/api',loginRouterUser)
+app.use('/api',signupRouterUser)
 

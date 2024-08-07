@@ -23,10 +23,6 @@ const Product = sequelize.define('product', {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    Rating: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
     Availability: {
       type: DataTypes.STRING(45),
       allowNull: true,
