@@ -2,17 +2,14 @@
 import React, { useEffect, useState } from 'react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Stack from '@mui/material/Stack';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import Link from 'next/link';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Badge from '@mui/material/Badge';
 import axios from "axios";
-import SearchIcon from '@mui/icons-material/Search';
-
+import "./nav.css"
 
 interface Product {
   name: string;
@@ -77,60 +74,68 @@ const Navbar: React.FC =()=>{
   return (
     <div>
 
-      <header className='pl-20 h-24 pt-10'>
-      <div className=' flex items-center'>
-            
-            <ul className="flex w-52">
-        <li
-          className={`text-1xl cursor-pointer ${
-            activeIndex === 0 ? 'underline' : ''
-          }`}
-          onClick={() => (0)}
-        >
-          <Link href="/">Home</Link>
-        </li>
-        <li
-          className={`text-1xl cursor-pointer ${
-            activeIndex === 1 ? 'underline' : ''
-          }`}
-          onClick={() => handleItemClick(1)}
-        >
-          <Link href="/contact">Contact</Link>
-        </li>
-        <li
-          className={`mr-16 text-1xl cursor-pointer ${
-            activeIndex === 2 ? 'underline' : ''
-          }`}
-          onClick={() => handleItemClick(2)}
-        >
-          <Link href="/test">Why Us</Link>
-        </li>
-  
-      </ul>
-      <div>
-      <h1 className='text-2xl font-bold ml-40 mb-10' > MOA Collection </h1>
-      </div>
-      <div className='w-52 flex items-center '>
-   
-   {showSearch && (
-     <input
-       type="text"
-       placeholder="Search ...."
-       value={searched}
-       onChange={handleSearchChange}
-       className="p-2 border border-gray-300 rounded-md"
-     />
-   )}
-   <button onClick={toggleSearch} className="ml-2 p-2 text-black rounded-md">
-     <SearchIcon className='text-black ml-[180px]' />
-   </button>
-   
 
+    <div className='fixed top-0 w-full  z-10'>
+       <div className='w-full h-[40px] flex justify-center items-center bg-black'>
+       </div>
+       <div>
+        <div className='flex justify-between items-center p-6 text-[16px] md:text-[20px]'>
+<div className='hidden md:flex flex-1 space-x-7'>
+    <a href="/home" onClick={() => handleItemClick(1)}>Home</a>
+    <a href="/contact" onClick={() => handleItemClick(1)}>Contact</a>
+<a href="/about" onClick={() => handleItemClick(1)}>Why Us</a>
+</div>
+<div className='flex flex-1 justify-center align-center'>
+  <h1>MOA Collection</h1>
+</div>
+<div className='flex flex-1 flex row items-center gap-8 justify-end'>
+
+<div className="flex gap-2 bg-white rounded">
+{showSearch && (
+  <input type="text" 
+  placeholder="Search here .." 
+  className="rounded-[8px]  outline-none placeholder:text-sm"
+   style={{ width: '150px' }}
+   value={searched}
+   onChange={handleSearchChange} />
+  )}
+  <div className="mt-1 gap-[3px] flex justify-center align-center">
+
+ <button onClick={toggleSearch}>
+  <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" className="cursor-pointer mt-0.5" height="20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M443.5 420.2L336.7 312.4c20.9-26.2 33.5-59.4 33.5-95.5 
+0-84.5-68.5-153-153.1-153S64 132.5 64 217s68.5 153 153.1 153c36.6 0 70.1-12.8 96.5-34.2l106.1 107.1c3.2 3.4 7.6 5.1 11.9 5.1 4.1 0 8.2-1.5 11.3-4.5 6.6-6.3 6.8-16.7.6-23.3zm-226.4-83.1c-32.1 0-62.3-12.5-85-35.2-22.7-22.7-35.2-52.9-35.2-84.9 0-32.1 12.5-62.3 35.2-84.9 22.7-22.7 52.9-35.2 85-35.2s62.3 12.5 85 35.2c22.7 22.7 35.2 52.9 35.2 84.9 0 32.1-12.5 62.3-35.2 84.9-22.7 22.7-52.9 35.2-85 35.2z"></path>
+</svg></button>
+</div>
+</div>
+<a href="">
+<FavoriteBorderIcon />
+</a>
+<a href="">
+<ShoppingBagIcon />
+</a>
+<a href="/profile">
+<AccountCircleIcon />
+</a>
+</div>
+        </div>
+       </div>
+    </div>
+    </div>
+
+
+  )
+}
+
+export default Navbar
+
+
+
+      {/* 
    <Badge color="secondary">
             <FavoriteBorderIcon className='ml-10'/>
             </Badge>
             <Badge color="secondary">
-            <AddShoppingCartIcon className='ml-9'/>
+            <ShoppingBagIcon className='ml-9'/>
             </Badge>
             <Stack  className='ml-8' direction="row" spacing={2}>
                 <button onClick={handleMenu} >
@@ -158,14 +163,4 @@ const Navbar: React.FC =()=>{
               </Menu>
             </Stack>
    </div>
-</div>
-
-
-        
-      </header>
-      <hr />
-    </div>
-  )
-}
-
-export default Navbar
+</div> */}
