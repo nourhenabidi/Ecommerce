@@ -1,3 +1,205 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+
+.body {
+    font-family: "Titillium Web", serif;
+    line-height: 1.7;
+    background-color: var(--color-quaternary);
+  }
+  
+
+/* Nav */
+.header__main-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 6;
+  }
+  .header__main-nav input[type="checkbox"] {
+    position: absolute;
+    top: 3rem;
+    left: 3rem;
+    height: 5rem;
+    width: 5rem;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 3;
+  }
+   
+  /* Hamburger */
+  .header__main-nav--hamburger {
+    position: absolute;
+    top: 3rem;
+    left: 3rem;
+    height: 5rem;
+    width: 5rem;
+    padding: 1rem;
+    background-color: var(--color-secondary);
+    z-index: 2;
+    display: grid;
+    place-items: center;
+  
+    animation: main-nav 2s;
+  }
+
+  @keyframes main-nav {
+    0% {
+      transform: translateX(150rem) rotate(1800deg);
+      opacity: 0;
+    }
+  
+    100% {
+      transform: translateX(0) rotate(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Hamburger Lines */
+  .header__main-nav--hamburger > div {
+    position: relative;
+    height: 0.3rem;
+    width: 100%;
+    background-color: var(--color-quaternary);
+  
+    display: grid;
+    place-items: center;
+    transition: all var(--transition-duration) ease-in-out;
+  }
+  
+  /* hamburger Top and Bottom Lines */
+  .header__main-nav--hamburger > div::before,
+  .header__main-nav--hamburger > div::after {
+    content: "";
+    position: absolute;
+    top: -1rem;
+    width: 60%;
+    height: inherit;
+    background-color: inherit;
+    z-index: 2;
+  }
+  
+  .header__main-nav--hamburger > div::before {
+    left: 0;
+  }
+  
+  .header__main-nav--hamburger > div::after {
+    top: 1rem;
+    right: 0;
+  }
+  
+  /* Rotating the Menu */
+  .header__main-nav
+    input[type="checkbox"]:checked
+    + .header__main-nav--hamburger
+    > div {
+    transform: rotate(135deg);
+  }
+  
+  .header__main-nav
+    input[type="checkbox"]:checked
+    + .header__main-nav--hamburger
+    > div::before {
+    left: 0;
+    top: 0;
+    width: 100%;
+    transform: rotate(270deg);
+  }
+  
+  .header__main-nav
+    input[type="checkbox"]:checked
+    + .header__main-nav--hamburger
+    > div::after {
+    opacity: 0;
+  }
+  
+  .header__main-nav
+    input[type="checkbox"]:checked:hover
+    + .header__main-nav--hamburger
+    > div {
+    transform: rotate(405deg);
+  }
+  
+  /* Links Menu */
+  .header__main-nav--menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    visibility: hidden;
+    overflow: hidden;
+  
+    display: grid;
+    place-items: center;
+  }
+  
+  .header__main-nav--menu > div {
+    background-color: var(--color-secondary-m-dark);
+    height: 200%;
+    width: 200%;
+  
+    display: grid;
+    place-items: center;
+  
+    transform: scaleX(0);
+    transition: all 0.5s ease-in-out;
+  }
+  
+  .header__main-nav--menu > div > div {
+    text-align: center;
+    max-width: 90vw;
+    max-height: 100vh;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  /* Displaying the Menu when the checkbox is checked */
+  .header__main-nav input[type="checkbox"]:checked ~ .header__main-nav--menu {
+    visibility: visible;
+  }
+  
+  .header__main-nav
+    input[type="checkbox"]:checked
+    ~ .header__main-nav--menu
+    > div {
+    transform: scaleX(1);
+    /* transition-duration: 0.5s; */
+  }
+  
+  .header__main-nav
+    input[type="checkbox"]:checked
+    ~ .header__main-nav--menu
+    > div
+    > div {
+    opacity: 1;
+  }
+  
+  .header__main-nav--menu ul li a:link,
+  .header__main-nav--menu ul li a:visited {
+    z-index: 5;
+    font-size: calc(1.5rem + 0.5vw);
+    position: relative;
+  }
+  
+  .header__main-nav--menu ul li a:link::before,
+  .header__main-nav--menu ul li a:visited::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    transform: scaleY(0);
+    background-color: var(--color-primary-m-dark);
+    transition: transform var(--transition-duration) ease-in-out;
+  }
+  
+  .header__main-nav--menu ul li a:hover::before,
+  .header__main-nav--menu ul li a:active::before {
+    transform: scaleY(1);
+  }
