@@ -9,8 +9,9 @@
     font-family: "Titillium Web", serif;
     line-height: 1.7;
     background-color: var(--color-quaternary);
+ 
   }
-  
+ 
 
 /* Nav */
 .header__main-nav {
@@ -202,4 +203,10 @@
   .header__main-nav--menu ul li a:hover::before,
   .header__main-nav--menu ul li a:active::before {
     transform: scaleY(1);
+  }
+  .booking-content__title {
+    font-size: var(--font-size-title);
+    padding: 0 2rem 1rem;
+    font-weight: 300;
+    position: relative;
   }
