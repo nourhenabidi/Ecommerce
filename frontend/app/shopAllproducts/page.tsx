@@ -1,23 +1,27 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Link from 'next/link'; 
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
-import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import "./prod.css"
 
 
-const ShopAllproducts: React.FC = () => {
-    const [product, setProduct] = useState<any[]>([]);
+
+interface Products {
+  ProductID: number;
+  Name: string;
+  Description: string;
+  Price: number;
+  Quantity:number;
+  Availability:string;
+  Discount:number;
+  ProductImage:string[];
+} 
+const shopAllproducts: React.FC = () => {
+    const [products, setProduct] = useState<Products[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
           try {
             const response = await axios.get('http://localhost:5000/api/products/allProducts');
-            setProduct(response.data.filter((product: any) => product.shop === 'all'));
+            setProduct(response.data);
           } catch (error) {
             console.error('Error fetching product data', error);
           }
@@ -28,37 +32,55 @@ const ShopAllproducts: React.FC = () => {
 
     return(
         <div>
-             <div className="product-container">
-        {product.map((product) => (
-          <div key={product.idproducts} className="product-box">
-            <img
-              src={product.image[0]}
-              alt={`${product.brand} ${product.model}`}
-              className="product-image"
-            />
-            <div className="product-details">
-              <h3>
-                {product.brand} {product.model}
-              </h3>
-              <h3 style={{ display: "flex", alignItems: "center" }}>
-              <PersonOutlineIcon /> {product.passengers}
-                <span style={{ margin: "07px" }}></span>
-                <LocalGasStationIcon /> {product.fuelType}
-                <span style={{ margin: "07px" }}></span>
-                <DirectionsCarIcon /> {product.type}
-              </h3>
-              <h3 style={{ display: "flex", alignItems: "center", position:"relative",top:"50px" }} >{product.price} DT/Day</h3>
-              <Stack spacing={2} direction="row">
-              <Link target="_blank" href={`/client/VehicleDetails/${product.idproducts}` }>
-              <Button className = "but"size="small" variant="contained" style={{ backgroundColor: '#C0C0C0', color: 'black'  }}>Rent Now</Button>
-      </Link>
-      </Stack>
-            </div>
-          </div>
-        ))}
+          <h1>hiiiiiiiiiiiiiiii</h1>
+             <div>
+        {products.map((product) => (
+
+  //    <div key={product.ProductID} >
+  //           <img
+  //             src={product.ProductImage[0]}
+  //             alt={product.Name}
+  //             className="prod-image"
+  //           />
+  //           <ul>
+  //             <li>{product.ProductImage}</li>
+  //             <li>{product.Name}</li>
+  //             <li>{product.Description}</li>
+  //             <li>{product.Price}</li>
+  //             <li>{product.Quantity}</li>
+  //             <li>{product.Availability}</li>
+          
+
+  //           </ul>
+            
+  // </div>
+      
+        
+<div key={product.ProductID} className="w-full max-w-sm bg-white rounded-lg shadow ">
+    <a href="#">
+        <img className="p-8 rounded-t-lg" src={product.ProductImage} alt="product image" />
+    </a>
+    <div className="px-5 pb-5">
+        <a href="#">
+          <h4 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Name}</h4>
+            <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Description}</h5>
+        </a>
+        <div className="flex items-center mt-2.5 mb-5">
+   
+            <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-blue-800 ms-3">{product.Quantity}%</span>
+        </div>
+        <div className="flex items-center justify-between">
+            <span className="text-3xl font-bold text-gray-900 dark:text-black">{product.Price}DT</span>
+            <a href="#" className="text-black  hover:bg-blue-800 focus:ring-4 focus:outline-none  font-medium  text-sm px-5 py-2.5 text-center border dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add to cart</a>
+        </div>
+    </div>
+</div>
+))}
+
+
       </div>
     </div>
     
     )
 }
-export default ShopAllproducts
+export default shopAllproducts
