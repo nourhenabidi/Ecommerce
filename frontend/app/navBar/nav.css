@@ -2,9 +2,17 @@
 
 .navbar-container {
   position: relative;
+
 }
 
-
+.navi{
+ 
+  overflow: hidden;
+background-color: rgb(251, 251, 251);
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
 .navbar-header {
   margin-top: 56px; /* Adjust this value based on the height of .navbar-nav */
   padding: 20px;
