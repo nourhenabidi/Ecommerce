@@ -7,6 +7,10 @@ const Product = sequelize.define('product', {
       autoIncrement: true,
       primaryKey: true,
     },
+    ProductImage: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
     Name: {
       type: DataTypes.STRING(255),
       allowNull: true,
@@ -25,14 +29,6 @@ const Product = sequelize.define('product', {
     },
     Availability: {
       type: DataTypes.STRING(45),
-      allowNull: true,
-    },
-    Discount: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    ProductImage: {
-      type: DataTypes.JSON,
       allowNull: true,
     },
     

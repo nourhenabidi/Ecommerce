@@ -20,7 +20,7 @@ return(
       <h1 className="text-white text-4xl font-bold mb-9">the autumn equinox</h1>
       <h1 className="text-white text-2xl ">Fall has arrived .</h1>
       <h1 className="text-white text-2xl">Shop for our new releases starting today .</h1>
-      <Link href={'/shop'}><button className='text-white border rounded mt-5 mr-[30px]'>Shop Now</button></Link>
+      <Link href={'/shopAllproducts'}><button className='text-white border rounded mt-5 mr-[30px]'>Shop Now</button></Link>
     </div>
     <div className=" main">
 
@@ -111,9 +111,14 @@ return(
       </Box>
       </div>
       <div className="pause">
-<img src="" alt="" />
+<img src="https://i.pinimg.com/736x/52/f7/72/52f77267a0545de93072fc123ff90b58.jpg" alt="" />
+<div className="baba absolute left-32 transform -translate-y-1/2">
+      <h2 className="text-white text-4xl mb-9">During the golden hour.</h2>
+      {/* <p className="text-black text-2xl mb-9">i am nourhen i love jwellery and it's my desire to fulfill my dream.</p> */}
+      </div> 
       </div>
 
+   
     </div>
 )
 }
