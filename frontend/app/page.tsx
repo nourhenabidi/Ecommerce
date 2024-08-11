@@ -5,7 +5,6 @@ export default function Home() {
    <div className="body">
 
 <Head/>
-
 <Bodyhome/>
 
    </div>

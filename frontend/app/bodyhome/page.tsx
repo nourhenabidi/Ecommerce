@@ -7,11 +7,14 @@ import Card from '@mui/joy/Card';
 import CardCover from '@mui/joy/CardCover';
 import CardContent from '@mui/joy/CardContent';
 import Typography from '@mui/joy/Typography';
-
+import Navbar from "../navBar/page";
 
 const bodyhome: React.FC =()=>{
 return(
+  <div className="body">
+    <Navbar />
     <div className="fullbody">
+      
         <div>
       <img src="https://i.pinimg.com/564x/ab/d3/a1/abd3a1fffad64b1cdbb73859d135fd6d.jpg"alt="" />  
 
@@ -110,15 +113,28 @@ return(
       
       </Box>
       </div>
-      <div className="pause">
-<img src="https://i.pinimg.com/736x/52/f7/72/52f77267a0545de93072fc123ff90b58.jpg" alt="" />
-<div className="baba absolute left-32 transform -translate-y-1/2">
-      <h2 className="text-white text-4xl mb-9">During the golden hour.</h2>
-      {/* <p className="text-black text-2xl mb-9">i am nourhen i love jwellery and it's my desire to fulfill my dream.</p> */}
+      <div className="pause" style={{ marginBottom: '100px' }}>
+<img src="https://i.pinimg.com/564x/ab/d5/42/abd542b80d61c41fbe11a7afe3083de2.jpg" alt="" />
+<div className="baba absolute right-32 transform -translate-y-1/2">
+<h2 className="text-white text-4xl text-black font-medium  text-sm px-5 py-4" style={{ marginBottom: '50px' }}>For You girl</h2>
+
+      <h1 className="text-white text-6xl text-black font-bold  text-sm px-5 py-4">During the golden hour.</h1>
+      <p className="text-white text-2xl ">i am nourhen i love jwellery and it's my desire to fulfill my dream.</p>
       </div> 
       </div>
 
-   
+      <div className="us">
+<img src="https://i.pinimg.com/564x/c7/7d/fc/c77dfc486e437dc51c212013d53744d9.jpg" alt="" />
+<div className="baba absolute left-32 transform -translate-y-1/2">
+<h2 className="text-black text-4xl text-black font-medium  text-sm px-5 py-4" style={{ marginBottom: '50px' }}>For You girl</h2>
+
+      <h1 className="text-black text-6xl text-black font-bold  text-sm px-5 py-4">What were made for?</h1>
+      <p className="text-black text-2xl ">i am nourhen i love jwellery and it's my desire to fulfill my dream.</p>
+      <Link href={'/aboutUs'}><button className='text-balck border rounded mt-5 mr-[30px]'>Read more</button></Link>
+
+      </div> 
+      </div>
+    </div>
     </div>
 )
 }
