@@ -1,13 +1,10 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Stack from '@mui/material/Stack';
+
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import Link from 'next/link';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import Badge from '@mui/material/Badge';
+
 import axios from "axios";
 
 import "./nav.css"
@@ -81,9 +78,9 @@ const Navbar: React.FC =()=>{
        <div>
         <div className=' navi flex justify-between items-center p-6 text-[16px] md:text-[20px]'>
 <div className=' hidden md:flex flex-1 space-x-7'>
-    <a href="/home" onClick={() => handleItemClick(1)}>Home</a>
+    <a href="/bodyhome" onClick={() => handleItemClick(1)}>Home</a>
     <a href="/contact" onClick={() => handleItemClick(1)}>Contact</a>
-<a href="/about" onClick={() => handleItemClick(1)}>Why Us</a>
+<a href="/aboutUs" onClick={() => handleItemClick(1)}>Why Us</a>
 </div>
 <div className='flex flex-1 justify-center align-center'>
   <h1>MOA Collection</h1>

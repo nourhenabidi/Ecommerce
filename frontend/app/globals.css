@@ -210,3 +210,18 @@
     font-weight: 300;
     position: relative;
   }
+  @keyframes social {
+    0% {
+      opacity: 0;
+    }
+  
+    50% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+  
+    100% {
+      opacity: 0;
+    }
+  }
+  

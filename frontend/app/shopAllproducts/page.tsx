@@ -1,17 +1,18 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import Na from "../navBar/page"
+import "./prod.css"
 
 
 interface Products {
   ProductID: number;
   Name: string;
   Description: string;
-  Price: number;
-  Quantity:number;
+  Price: string;
+  Quantity:string;
   Availability:string;
-  Discount:number;
+  Discount:string;
   ProductImage:string[];
 } 
 const shopAllproducts: React.FC = () => {
@@ -31,34 +32,21 @@ const shopAllproducts: React.FC = () => {
       }, []);
 
     return(
-        <div>
-          <h1>hiiiiiiiiiiiiiiii</h1>
-             <div>
+        <div className='body'>
+          <Na />
+          <div className='list'>
+          <h1 className='title'>Our Collection</h1>
+             <div className="flex flex-wrap justify-center items-center gap-4 ">
         {products.map((product) => (
 
-  //    <div key={product.ProductID} >
-  //           <img
-  //             src={product.ProductImage[0]}
-  //             alt={product.Name}
-  //             className="prod-image"
-  //           />
-  //           <ul>
-  //             <li>{product.ProductImage}</li>
-  //             <li>{product.Name}</li>
-  //             <li>{product.Description}</li>
-  //             <li>{product.Price}</li>
-  //             <li>{product.Quantity}</li>
-  //             <li>{product.Availability}</li>
-          
 
-  //           </ul>
-            
-  // </div>
       
         
 <div key={product.ProductID} className="w-full max-w-sm bg-white rounded-lg shadow ">
-    <a href="#">
-        <img className="p-8 rounded-t-lg" src={product.ProductImage} alt="product image" />
+    <a href="#" >
+      <div className="image-container">
+        <img className="image" src={product.ProductImage} alt="product image" />
+        </div>
     </a>
     <div className="px-5 pb-5">
         <a href="#">
@@ -71,7 +59,7 @@ const shopAllproducts: React.FC = () => {
         </div>
         <div className="flex items-center justify-between">
             <span className="text-3xl font-bold text-gray-900 dark:text-black">{product.Price}DT</span>
-            <a href="#" className="text-black  hover:bg-blue-800 focus:ring-4 focus:outline-none  font-medium  text-sm px-5 py-2.5 text-center border dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add to cart</a>
+            <a href="#" className="text-black  hover:bg-beige focus:ring-4 focus:outline-none  font-medium  text-sm px-5 py-2.5 text-center border dark:hover:bg-beige ">Add to cart</a>
         </div>
     </div>
 </div>
@@ -79,6 +67,10 @@ const shopAllproducts: React.FC = () => {
 
 
       </div>
+      </div>
+
+ 
+
     </div>
     
     )
