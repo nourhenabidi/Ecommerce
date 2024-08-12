@@ -43,7 +43,7 @@
     object-fit: cover; 
     display: block; 
     margin: 0; 
-    background-color: black;
+    background-color:black;
   }
   .pause img {
     width: 30%; 
@@ -72,7 +72,7 @@
     object-fit: cover; 
     display: block; 
     margin: 0; 
-    background-color:rgb(243, 238, 231);
+    background-color:rgb(198, 184, 166);
   }
   .us img {
     width: 30%; 
@@ -93,7 +93,24 @@
         transition: 0.3s;
 
   }
-
+  .last{
+    width: 100%; 
+    height: 50vh; 
+    background-position: center;
+    background-size: cover;
+    object-fit: cover; 
+    display: block; 
+    margin: 0; 
+    background-color:black;
+  }
+  .last img {
+    width: 30%; 
+    height: 50vh; 
+    display: block;
+    object-fit: cover; 
+    background-position: center;
+    background-size: cover;
+  }
 
 
 

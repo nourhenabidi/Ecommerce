@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Na from "../navBar/page"
 import "./prod.css"
+import Fot from"../footer/page"
 
 
 interface Products {
@@ -34,7 +35,7 @@ const shopAllproducts: React.FC = () => {
     return(
         <div className='body'>
           <Na />
-          <div className='list'>
+          <div className='list'style={{ marginBottom: '50px' }}>
           <h1 className='title'>Our Collection</h1>
              <div className="flex flex-wrap justify-center items-center gap-4 ">
         {products.map((product) => (
@@ -69,7 +70,7 @@ const shopAllproducts: React.FC = () => {
       </div>
       </div>
 
- 
+      <Fot />
 
     </div>
     

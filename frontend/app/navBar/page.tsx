@@ -79,6 +79,8 @@ const Navbar: React.FC =()=>{
         <div className=' navi flex justify-between items-center p-6 text-[16px] md:text-[20px]'>
 <div className=' hidden md:flex flex-1 space-x-7'>
     <a href="/bodyhome" onClick={() => handleItemClick(1)}>Home</a>
+    <a href="/shopAllproducts" onClick={() => handleItemClick(1)}>Shop</a>
+
     <a href="/contact" onClick={() => handleItemClick(1)}>Contact</a>
 <a href="/aboutUs" onClick={() => handleItemClick(1)}>Why Us</a>
 </div>
