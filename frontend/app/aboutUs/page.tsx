@@ -1,13 +1,13 @@
 "use client"
 import "./about.css"
 import Navbar from "../navBar/page"
-
+import Fott from "../footer/page"
 const aboutUs :React.FC =()=>{
     return(
         <div>
               <div className="body">
     <Navbar />
-    <div className="fully">
+    <div className="fully" style={{ marginBottom: '50px' }}>
       
         <div>
       <img src="https://i.pinimg.com/564x/78/70/05/787005072c466cab7303683ce92f11ea.jpg"alt="" />  
@@ -20,6 +20,7 @@ const aboutUs :React.FC =()=>{
  
     </div>
     </div>
+    <Fott />
         </div>
         </div>
     )
