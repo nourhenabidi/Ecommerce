@@ -23,14 +23,24 @@ const Product = sequelize.define('product', {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: true,
     },
-    Quantity: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    Availability: {
-      type: DataTypes.STRING(45),
-      allowNull: true,
-    },
+    productCategory:{
+      type: DataTypes.ENUM('Earings', 'Rings', 'Necklaces','Bracelets','Pack'),
+      allowNull: false 
+  }, 
+
+    Availability:{
+      type:DataTypes.BOOLEAN,
+      defaultValue: false 
+  }, 
+
+    newProduct:{
+      type:DataTypes.BOOLEAN,
+      defaultValue: false 
+  },
+    productRemise:{
+      type:DataTypes.DECIMAL,
+      defaultValue:0.0
+  },
     
   },{tableName:'product',
 });
