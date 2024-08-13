@@ -65,24 +65,37 @@
     margin-top: -70%;
 }
 .us{
-    width: 100%; 
-    height: 70vh; 
-    background-position: center;
-    background-size: cover;
-    object-fit: cover; 
-    display: block; 
-    margin: 0; 
-    background-color:rgb(198, 184, 166);
+  width: 70%; 
+  height: 60vh; 
+  background-position: center;
+  background-size: cover;
+  object-fit: cover; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  /* background-color: rgb(198, 184, 166); */
+  margin: 0 auto; /* Center horizontally if the width is not full */
+  position: relative; /* Allow absolute positioning of inner elements */
   }
+  .us .content {
+    position: absolute;
+    left: 40px; /* Align content to the left */
+    top: 30%;
+    transform: translateY(-50%);
+    
+  }
+
   .us img {
-    width: 30%; 
-    height: 70vh; 
+    width: 60%; 
+    height: 60vh; 
     display: block;
     object-fit: cover; 
-    margin-left: auto;
-
+    margin-left: 500px;
+    justify-content: center;
+    align-items: center;
     background-position: center;
     background-size: cover;
+
   }
   .baba button {
   
@@ -111,6 +124,10 @@
     background-position: center;
     background-size: cover;
   }
+.content{
+  display: flex;
+}
 
-
-
+.content p {
+  font-size: 500%;
+}

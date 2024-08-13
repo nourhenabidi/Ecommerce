@@ -9,7 +9,7 @@ import CardContent from '@mui/joy/CardContent';
 import Typography from '@mui/joy/Typography';
 import Navbar from "../navBar/page";
 import Foot from "../footer/page"
-
+import NewAri from "../newArrival/page"
 
 const bodyhome: React.FC =()=>{
 return(
@@ -28,7 +28,26 @@ return(
       <Link href={'/shopAllproducts'}><button className='text-white border rounded mt-5 mr-[30px]'>Shop Now</button></Link>
     </div>
     <div className=" main">
+ <NewAri />
+ </div>
  
+ <div className="us" style={{ marginBottom: '50px'}}>
+<img src="https://i.pinimg.com/564x/49/09/2b/49092b08046323299774c38aab13eb31.jpg" alt="" />
+<div className="content" style={{top:"35%",left:"-20%"}}>
+
+      <p className="text-black font-bold text-sm px-5 py-4"  style={{width:"100%"}}>
+      <span className="block" style={{marginBottom:55}} >BECOME </span>
+  <span className="block" style={{marginBottom:55}}>THE HERO OF</span>
+  <span className="block"style={{marginBottom:55}} >YOUR OWN </span>
+  <span className="block" style={{marginBottom:55}}>STORY</span>
+
+        </p>
+
+      </div> 
+      {/* <button> <span className="block border border-black" style={{bottom:"10%"}}>Your Pack Here</span></button> */}
+
+      </div>
+      <div className=" main">
         <h1 className="flex justify-center text-3xl ">Shop by category</h1>
         <h2 className="flex justify-center text-2xl ">Indulge in what we offer</h2>
     <Box
@@ -114,27 +133,18 @@ return(
       </Card>
       </Box>
       </div>
-      {/* <div className="pause" style={{ marginBottom: '100px' }}>
+      <div className="pause" style={{ marginBottom: '100px' }}>
 <img src="https://i.pinimg.com/564x/ab/d5/42/abd542b80d61c41fbe11a7afe3083de2.jpg" alt="" />
 <div className="baba absolute right-32 transform -translate-y-1/2">
 <h2 className="text-white text-4xl text-black font-medium  text-sm px-5 py-4" style={{ marginBottom: '50px' }}>For You girl</h2>
 
       <h1 className="text-white text-6xl text-black font-bold  text-sm px-5 py-4">During the golden hour.</h1>
       <p className="text-white text-2xl ">i am nourhen i love jwellery and it's my desire to fulfill my dream.</p>
-      </div> 
-      </div> */}
-
-      <div className="us" style={{ marginBottom: '50px' }}>
-<img src="https://i.pinimg.com/564x/dd/96/b4/dd96b4595a57f6d4dccf9015612c81ee.jpg" alt="" />
-<div className="baba absolute left-32 transform -translate-y-1/2">
-<h2 className="text-black text-4xl text-black font-medium  text-sm px-5 py-4" style={{ marginBottom: '50px' }}>For You girl</h2>
-
-      <h1 className="text-black text-6xl text-black font-bold  text-sm px-5 py-4">What were made for?</h1>
-      <p className="text-black text-2xl ">i am nourhen i love jwellery and it's my desire to fulfill my dream.</p>
-      <Link href={'/aboutUs'}><button className='text-balck border rounded mt-5 mr-[30px]'>Read more</button></Link>
-
+      <Link href={'/aboutUs'}><button className='text-white border rounded mt-5 mr-[30px]'>Read more</button></Link> 
       </div> 
       </div>
+
+
       <Box
 component="ul"
 sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', p: 0, m: 0 ,    justifyContent: 'center',

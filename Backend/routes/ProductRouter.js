@@ -8,8 +8,8 @@ productRouter.post('/addProduct',productController.addProd)
 productRouter.delete('/deleteProd/:ProductID',productController.deleteProd)
 productRouter.put('/updateProd/:ProductID',productController.updateProd)
 productRouter.get('/prodsOfUser/:UserID',productController.getProdOfUser)
-
-
+productRouter.get('/category/:productCategory',productController.getByCategory)
+productRouter.get('/new', productController.getNewProducts);
 
 
 

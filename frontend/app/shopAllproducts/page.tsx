@@ -11,10 +11,9 @@ interface Products {
   Name: string;
   Description: string;
   Price: string;
-  Quantity:string;
   Availability:string;
-  Discount:string;
   ProductImage:string[];
+  ProductRemise:string;
 } 
 const shopAllproducts: React.FC = () => {
     const [products, setProduct] = useState<Products[]>([]);
@@ -24,6 +23,8 @@ const shopAllproducts: React.FC = () => {
           try {
             const response = await axios.get('http://localhost:5000/api/products/allProducts');
             setProduct(response.data);
+            console.log(response.data);
+            
           } catch (error) {
             console.error('Error fetching product data', error);
           }
@@ -38,7 +39,7 @@ const shopAllproducts: React.FC = () => {
           <div className='list'style={{ marginBottom: '50px' }}>
           <h1 className='title'>Our Collection</h1>
              <div className="flex flex-wrap justify-center items-center gap-4 ">
-        {products.map((product) => (
+             {Array.isArray(products) && products.map((product) => (
 
 
       
@@ -56,7 +57,7 @@ const shopAllproducts: React.FC = () => {
         </a>
         <div className="flex items-center mt-2.5 mb-5">
    
-            <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-blue-800 ms-3">{product.Quantity}%</span>
+            <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-blue-800 ms-3">{product.ProductRemise}%</span>
         </div>
         <div className="flex items-center justify-between">
             <span className="text-3xl font-bold text-gray-900 dark:text-black">{product.Price}DT</span>
