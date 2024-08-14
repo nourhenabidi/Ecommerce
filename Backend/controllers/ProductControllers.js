@@ -41,7 +41,7 @@ module.exports={
     }, 
     getByCategory : async (req, res) => {
       try {
-          const products = await db.Product.findAll({
+          const products = await Product.findAll({
               where: { productCategory: req.params.productCategory }
           });
   

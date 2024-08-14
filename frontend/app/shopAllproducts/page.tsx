@@ -38,6 +38,7 @@ const shopAllproducts: React.FC = () => {
           <Na />
           <div className='list'style={{ marginBottom: '50px' }}>
           <h1 className='title'>Our Collection</h1>
+          <h2 className='sous'>Categories</h2>
              <div className="flex flex-wrap justify-center items-center gap-4 ">
              {Array.isArray(products) && products.map((product) => (
 
