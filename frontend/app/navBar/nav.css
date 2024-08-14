@@ -6,8 +6,6 @@
 }
 
 .navi{
- 
-  overflow: hidden;
 background-color: rgb(251, 251, 251);
   position: fixed;
   top: 0;
@@ -70,7 +68,6 @@ background-color: rgb(251, 251, 251);
   cursor: pointer;
 }
 
-.menu-appbar {
-  margin-top: 10px;
+.btn_search{
+  transform: translate(-50%, -50%);
 }
-
