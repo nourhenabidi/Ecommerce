@@ -32,15 +32,15 @@ return(
  </div>
  
  <div className="us" style={{ marginBottom: '50px'}}>
+<a href="">
 <img src="https://i.pinimg.com/564x/49/09/2b/49092b08046323299774c38aab13eb31.jpg" alt="" />
+</a>
 <div className="content" style={{top:"35%",left:"-20%"}}>
 
       <p className="text-black font-bold text-sm px-5 py-4"  style={{width:"100%"}}>
-      <span className="block" style={{marginBottom:55}} >BECOME </span>
-  <span className="block" style={{marginBottom:55}}>THE HERO OF</span>
-  <span className="block"style={{marginBottom:55}} >YOUR OWN </span>
-  <span className="block" style={{marginBottom:55}}>STORY</span>
-
+      <span className="block" style={{marginBottom:55}} >TAKE </span>
+  <span className="block" style={{marginBottom:55}}>YOUR LOVELY</span>
+  <span className="block"style={{marginBottom:55}} >PACK </span>
         </p>
 
       </div> 
@@ -55,6 +55,7 @@ return(
       sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', p: 0, m: 0 , justifyContent: 'center',
         alignItems: 'center', padding: 6,mx: 'auto'}}
     >
+      <a href="">
       <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
         <CardCover>
           <img
@@ -74,6 +75,8 @@ return(
           </Typography>
         </CardContent>
       </Card>
+      </a>
+      <a href="">
       <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
         <CardCover>
           <img
@@ -93,6 +96,8 @@ return(
           </Typography>
         </CardContent>
       </Card>
+      </a>
+      <a href="">
       <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
         <CardCover>
           <img
@@ -112,6 +117,8 @@ return(
           </Typography>
         </CardContent>
       </Card>
+      </a>
+      <a href="">
       <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
         <CardCover>
           <img
@@ -131,6 +138,7 @@ return(
           </Typography>
         </CardContent>
       </Card>
+      </a>
       </Box>
       </div>
       <div className="pause" style={{ marginBottom: '100px' }}>
@@ -145,56 +153,8 @@ return(
       </div>
 
 
-      <Box
-component="ul"
-sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', p: 0, m: 0 ,    justifyContent: 'center',
-alignItems: 'center', padding: 6,mx: 'auto'}}
->
-<Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
-<CardCover>
-  <img
-    src="https://i.pinimg.com/564x/ad/99/5e/ad995e95505c17834826bc43146b41ca.jpg"
-    alt=""
-  />
-</CardCover>
-<CardContent>
-  <Typography
-    level="body-lg"
-    fontWeight="lg"
-    textColor="#fff"
-    mt={{ xs: 12, sm: 18 }}
-    style={{ fontFamily: 'serif' }}
-  >
-    New Collection
-  </Typography>
-  
-</CardContent>
-</Card>
-<Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
-<CardCover>
-  <img
-    src="https://i.pinimg.com/736x/b6/ea/df/b6eadf3d31a0a396b947a85b21619ae5.jpg"
-    alt=""
-  />
-</CardCover>
-<CardContent>
-  <Typography
-    level="body-lg"
-    fontWeight="lg"
-    textColor="#fff"
-    mt={{ xs: 12, sm: 18 }}
-    style={{ fontFamily: 'serif' }}
-  >
-  Pack
-  </Typography>
-</CardContent>
-</Card>
-</Box>
-      {/* <div className="last" style={{ marginBottom: '100px', display: 'flex' , justifyContent: 'center', gap: '40px' }}>
-  <img src="https://i.pinimg.com/564x/c6/a3/1d/c6a31da48b57f3ca1f7e93becbc8227e.jpg" alt="" />
-  <img src="https://i.pinimg.com/564x/c6/a3/1d/c6a31da48b57f3ca1f7e93becbc8227e.jpg" alt="" />
-  <img src="https://i.pinimg.com/564x/c6/a3/1d/c6a31da48b57f3ca1f7e93becbc8227e.jpg" alt="" />
-</div> */}
+
+
     </div>
     <Foot />
     </div>
