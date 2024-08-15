@@ -24,7 +24,7 @@ const Product = sequelize.define('product', {
       allowNull: true,
     },
     productCategory:{
-      type: DataTypes.ENUM('Earings', 'Rings', 'Necklaces','Bracelets','Pack'),
+      type: DataTypes.ENUM('Earings', 'Rings', 'Necklaces','Bracelets','Pack','Foular'),
       allowNull: false 
   }, 
 
@@ -39,8 +39,12 @@ const Product = sequelize.define('product', {
   },
     productRemise:{
       type:DataTypes.DECIMAL,
-      defaultValue:0.0
+      defaultValue:0
   },
+  colorProduct:{
+    type:DataTypes.STRING,
+    defaultValue: false 
+},
     
   },{tableName:'product',
 });
