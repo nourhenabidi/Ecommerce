@@ -118,7 +118,7 @@ return(
         </CardContent>
       </Card>
       </a>
-      <a href="">
+      <a href="/searchByCategory/bracelets">
       <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
         <CardCover>
           <img
@@ -137,6 +137,7 @@ return(
             Bracelets
           </Typography>
         </CardContent>
+
       </Card>
       </a>
       </Box>
