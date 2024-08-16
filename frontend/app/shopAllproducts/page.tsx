@@ -39,19 +39,11 @@ const shopAllproducts: React.FC = () => {
           <Na />
           <div className='list'style={{ marginBottom: '50px' }}>
           <h1 className='title'>Our Collection</h1>
-          <div className='flex justify-center gap-4 mb-8'>
-  <button className='relative inline-block group'>
-    <span className=' underline decoration-transparent group-hover:decoration-brown-500 group-hover:underline'>Necklaces</span>
-  </button>
-  <button className='relative group'>
-    <span className='underline decoration-transparent group-hover:decoration-brown-500 group-hover:underline'>Necklaces</span>
-  </button>
-  <button className='relative group'>
-    <span className='underline decoration-transparent group-hover:decoration-brown-500 group-hover:underline'>Necklaces</span>
-  </button>
-  <button className='relative group'>
-    <span className='underline decoration-transparent group-hover:decoration-brown-500 group-hover:underline'>Necklaces</span>
-  </button>
+          <div className='flex justify-center gap-20 mb-8 '>
+            <a className='relative no-underline hover:underline ' href="">Necklaces</a>
+            <a className='relative no-underline hover:underline' href="">Earings</a>
+            <a className='relative no-underline hover:underline' href="">Rings</a>
+            <a className='relative no-underline hover:underline' href="">Bracelets</a>
 </div>
 
           <div className="grid grid-cols-3 gap-4">

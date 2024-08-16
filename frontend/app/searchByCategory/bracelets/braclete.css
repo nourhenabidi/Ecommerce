@@ -1,0 +1,69 @@
+.contenu {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px;
+  }
+  .title {
+    color: black;
+    text-align: center;
+    font-size: 3rem; /* Adjust this value for the desired size */
+    margin: 0;
+    padding: 1rem 0; /* Add some padding for spacing */
+    width: 100%;
+  }
+  .imag{
+    padding-top: 80px; 
+  }
+  .imag img {
+    width: 100%; 
+    height: 40vh; 
+    object-fit: cover; 
+    display: block; 
+    margin: 0; 
+    background-position: center;
+    background-size: cover;
+}
+.text-container {
+    width: 50%;
+    margin: auto;
+    
+}
+  .image{
+    width: 100%;
+    height: 200px; /* Set the desired fixed height */
+    position: relative; /* Required for absolute positioning of heart icon */
+    overflow: hidden; /* Hide any overflow */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0; 
+  }
+  .image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the container fully */
+  }
+  .heart-icon {
+    position: absolute;
+    top: 10px; /* Position from the top */
+    right: 10px; /* Position from the right */
+    background: white; /* Background color for visibility */
+    padding: 6px; /* Padding around the icon */
+    border-radius: 50%; /* Circular background */
+    height: 35px; /* Icon height */
+    width: 35px; /* Icon width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .heart-icon svg {
+    width: 24px; /* Adjust size of the SVG icon */
+    height: 24px;
+  }
+  .product-remise {
+    margin-bottom: 4px; /* Adjust this value to move it closer to the price */
+    margin-top: -8px; /* Moves the remise up */
+  }
