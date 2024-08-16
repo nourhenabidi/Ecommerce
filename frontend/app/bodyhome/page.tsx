@@ -55,7 +55,7 @@ return(
       sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', p: 0, m: 0 , justifyContent: 'center',
         alignItems: 'center', padding: 6,mx: 'auto'}}
     >
-      <a href="">
+      <a href="/searchByCategory/earings">
       <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
         <CardCover>
           <img
@@ -76,7 +76,7 @@ return(
         </CardContent>
       </Card>
       </a>
-      <a href="">
+      <a href="/searchByCategory/necklaces">
       <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
         <CardCover>
           <img
@@ -97,7 +97,7 @@ return(
         </CardContent>
       </Card>
       </a>
-      <a href="">
+      <a href="/searchByCategory/rings">
       <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
         <CardCover>
           <img
@@ -149,7 +149,7 @@ return(
 
       <h1 className="text-white text-6xl text-black font-bold  text-sm px-5 py-4">During the golden hour.</h1>
       <p className="text-white text-2xl ">i am nourhen i love jwellery and it's my desire to fulfill my dream.</p>
-      <Link href={'/aboutUs'}><button className='text-white border rounded mt-5 mr-[30px]'>Read more</button></Link> 
+      <Link href={'/aboutUs'}><button className='text-white border border-white rounded mt-5 mr-[30px]'>Read more</button></Link> 
       </div> 
       </div>
 

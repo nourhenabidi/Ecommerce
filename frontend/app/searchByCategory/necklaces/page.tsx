@@ -16,13 +16,13 @@ interface Products {
     colorProduct:string;
   } 
 
-const Bracelets: React.FC =()=>{
-    const [bracelet, setBracelet] = useState<Products[]>([]);
+const Necklaces: React.FC =()=>{
+    const [necklace, setNecklace] = useState<Products[]>([]);
     useEffect(() => {
         const fetchData = async () => {
           try {
             const response = await axios.get('http://localhost:5000/api/products/allProducts');
-            setBracelet(response.data.filter((Products: any) => Products.productCategory === 'Bracelets'));
+            setNecklace(response.data.filter((Products: any) => Products.productCategory === 'Necklaces'));
           } catch (error) {
             console.error('Error fetching car data', error);
           }
@@ -34,7 +34,7 @@ const Bracelets: React.FC =()=>{
         <div className='body'>
            <Heady/>
            <div className="imag">
-      <img src="https://i.pinimg.com/564x/c6/d1/f8/c6d1f818fdc5bcd574fc12deaddd1079.jpg"alt="" />  
+      <img src="https://i.pinimg.com/564x/31/74/ca/3174ca3f7ed71fd34912680f917cc4e3.jpg"alt="" />  
         </div>
  
                      <h1 className='title'>Catalog</h1>
@@ -48,7 +48,7 @@ const Bracelets: React.FC =()=>{
            
            <div className="grid grid-cols-3 gap-4 flex justify-center">
              
-             {Array.isArray(bracelet) && bracelet.map((product) => (
+             {Array.isArray(necklace) && necklace.map((product) => (
 <div key={product.ProductID} className="bg-white rounded-lg shadow mt-4" >
 <a href="#" >
   <div className='image'>
@@ -100,4 +100,4 @@ const Bracelets: React.FC =()=>{
            </div>
     )
 }
-export default Bracelets
+export default Necklaces

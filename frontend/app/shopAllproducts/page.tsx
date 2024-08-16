@@ -18,7 +18,7 @@ interface Products {
 } 
 const shopAllproducts: React.FC = () => {
     const [products, setProduct] = useState<Products[]>([]);
-
+    const userId = 1
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -33,17 +33,25 @@ const shopAllproducts: React.FC = () => {
     
         fetchData();
       }, []);
+      const addToCart = async (product: Products,  userId: number) => {
+        try {
+          const response = await axios.post(`http://localhost:5000/api/cart/add/${userId}/${product.ProductID}`);
+          console.log('Product added to cart:', response.data);
+        } catch (error) {
+          console.error('Error adding product to cart', error);
+        }
+      };
 
     return(
         <div className='body'>
           <Na />
           <div className='list'style={{ marginBottom: '50px' }}>
           <h1 className='title'>Our Collection</h1>
-          <div className='flex justify-center gap-20 mb-8 '>
-            <a className='relative no-underline hover:underline ' href="">Necklaces</a>
-            <a className='relative no-underline hover:underline' href="">Earings</a>
-            <a className='relative no-underline hover:underline' href="">Rings</a>
-            <a className='relative no-underline hover:underline' href="">Bracelets</a>
+          <div className='text-slate-200 flex justify-center gap-16 mb-8 '>
+            <a className='relative hover:underline hover:text-black ' href="/searchByCategory/necklaces">Necklaces</a>
+            <a className='relative hover:underline hover:text-black' href="/searchByCategory/earings">Earings</a>
+            <a className='relative hover:underline hover:text-black' href="/searchByCategory/rings">Rings</a>
+            <a className='relative hover:underline hover:text-black' href="/searchByCategory/bracelets">Bracelets</a>
 </div>
 
           <div className="grid grid-cols-3 gap-4">
@@ -76,19 +84,16 @@ const shopAllproducts: React.FC = () => {
         </div>
     </a>
     <div className="px-5 pb-5">
-        <a href="#">
-          <h4 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Name}</h4>
-            <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Description}</h5>
-        </a>
-        <div className="flex items-center mt-2.5 mb-5">
-   
-            <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-blue-800 ms-3 product-remise">{product.ProductRemise}%</span>
-        </div>
-        <div className="flex items-center justify-between">
-            <span className="text-3xl font-bold text-gray-900 dark:text-black">{product.Price}DT</span>
-            <a href="#" className="text-black  hover:bg-beige focus:ring-4 focus:outline-none  font-medium  text-sm px-5 py-2.5 text-center border dark:hover:bg-beige ">Add to cart</a>
-        </div>
+    <a href="#">
+      <h4 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Name}</h4>
+      <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Description}</h5>
+    </a>
+    <div className="flex flex-col items-end">
+      <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-blue-800 product-remise mb-1 mt-[-4px]">{product.ProductRemise}%</span>
+      <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{product.Price}DT</span>
+     <button onClick={() => addToCart(product)}><a href="#" className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige ">Add to cart</a></button> 
     </div>
+  </div>
 </div>
 
 ))}
@@ -96,16 +101,6 @@ const shopAllproducts: React.FC = () => {
 
       </div>
       </div>
-{/* <div> */}
-{/* <h2 className='title'>Oategory</h2>
-<ul className="menu-hover-fill flex flex-col items-start leading-none text-2xl uppercase space-y-4">
-  <li><a href="#" data-text="home">home</a></li>
-  <li><a href="#" data-text="archives">archives</a></li>
-  <li><a href="#" data-text="tags">tags</a></li>
-  <li><a href="#" data-text="categories">categories</a></li>
-  <li><a href="#" data-text="about">about</a></li>
-</ul>
-</div> */}
       <Fot />
 
     </div>
