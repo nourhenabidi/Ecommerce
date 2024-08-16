@@ -16,13 +16,13 @@ interface Products {
     colorProduct:string;
   } 
 
-const Bracelets: React.FC =()=>{
-    const [bracelet, setBracelet] = useState<Products[]>([]);
+const Rings: React.FC =()=>{
+    const [ring, setRing] = useState<Products[]>([]);
     useEffect(() => {
         const fetchData = async () => {
           try {
             const response = await axios.get('http://localhost:5000/api/products/allProducts');
-            setBracelet(response.data.filter((Products: any) => Products.productCategory === 'Bracelets'));
+            setRing(response.data.filter((Products: any) => Products.productCategory === 'Rings'));
           } catch (error) {
             console.error('Error fetching car data', error);
           }
@@ -34,11 +34,11 @@ const Bracelets: React.FC =()=>{
         <div className='body'>
            <Heady/>
            <div className="imag">
-      <img src="https://i.pinimg.com/564x/c6/d1/f8/c6d1f818fdc5bcd574fc12deaddd1079.jpg"alt="" />  
+      <img src="https://i.pinimg.com/564x/de/b8/db/deb8db9290f96c94b59519786afa9e8a.jpg"alt="" />  
         </div>
  
                      <h1 className='title'>Catalog</h1>
-                     <div className='text-slate-200 flex justify-center gap-16 mb-8 '>
+           <div className='text-slate-200 flex justify-center gap-16 mb-8 '>
             <a className='relative hover:underline hover:text-black ' href="/searchByCategory/necklaces">Necklaces</a>
             <a className='relative hover:underline hover:text-black' href="/searchByCategory/earings">Earings</a>
             <a className='relative hover:underline hover:text-black' href="/searchByCategory/rings">Rings</a>
@@ -48,7 +48,7 @@ const Bracelets: React.FC =()=>{
            
            <div className="grid grid-cols-3 gap-4 flex justify-center">
              
-             {Array.isArray(bracelet) && bracelet.map((product) => (
+             {Array.isArray(ring) && ring.map((product) => (
 <div key={product.ProductID} className="bg-white rounded-lg shadow mt-4" >
 <a href="#" >
   <div className='image'>
@@ -100,4 +100,4 @@ const Bracelets: React.FC =()=>{
            </div>
     )
 }
-export default Bracelets
+export default Rings
