@@ -1,10 +1,11 @@
 const express = require('express');
 const UserAuthcontRouter = express.Router();
-const AuthControllerUser =require('../controllers/userAuthCont')
+const AuthControllerUser =require('../controllers/authentificationUser')
 
 
-UserAuthcontRouter.get("/login", AuthControllerUser.LoginUser);
-UserAuthcontRouter.post("/signup", AuthControllerUser.RegisterUser)
+UserAuthcontRouter.get("/login", AuthControllerUser.loginUser);
+UserAuthcontRouter.post("/signup", AuthControllerUser.signUpUser)
+
 
 
 

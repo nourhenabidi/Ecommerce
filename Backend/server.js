@@ -3,7 +3,6 @@ const cors = require('cors')
 const itemRouter = require("./routes/ProductRouter")
 const userRouter = require ("./routes/UserRouter")
 const userAuthRouter = require("./routes/UserAuthcontRouter");
-const { verifyUser } =require ("./middlewares/userMid.js");
 const wishListRouter=require("./routes/WishRouter.js")
 const cardRouter=require("./routes/CardRout.js")
 const app = express()
@@ -22,11 +21,10 @@ app.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`)
 })
 
-app.use("/api/auth", userAuthRouter); // Auth routes: login, signup
+
 //user routes
-app.use("/api/users",verifyUser,userRouter)
-app.use("/api/products",verifyUser,itemRouter)
-// app.use('/api/auth',auth)
-app.use("/api/wishlist",verifyUser,wishListRouter)
-app.use("/api/card",verifyUser,cardRouter)
+app.use("/api/users",userRouter)
+app.use("/api/products",itemRouter)
+app.use("/api/wishlist",wishListRouter)
+app.use("/api/card",cardRouter)
 
