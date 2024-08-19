@@ -207,12 +207,13 @@ console.log('hiii',data)
                 onClose={handleClose}
               >
             
-                {sessionStorage.getItem("token") ? (
-               <a href="/profile"> 
-               <MenuItem onClick={handleClose}>Account</MenuItem></a>
-               ) : (
+          
+             <a href="/profile"> 
+               <MenuItem onClick={handleClose}>Account</MenuItem>
+             </a>
+            
                 <MenuItem onClick={handleClose}>Join Us</MenuItem>
-              )}
+          
               </Menu>
             
 </div>

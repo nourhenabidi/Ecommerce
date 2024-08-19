@@ -3,12 +3,12 @@ const { userM, wishlistM, cardM, productM } = require('../models/index');
 
 // Define associations here
 // User and WishList: One user can have many wish lists
-userM.hasMany(wishlistM, { foreignKey: 'UserId', as: 'wishLists' });
-wishlistM.belongsTo(userM, { foreignKey: 'UserId', as: 'user' });
+userM.hasMany(wishlistM, { foreignKey: 'id', as: 'wishLists' });
+wishlistM.belongsTo(userM, { foreignKey: 'id', as: 'user' });
 
 // User and Card: One user can have many cards
-userM.hasMany(cardM, { foreignKey: 'UserId', as: 'cards' });
-cardM.belongsTo(userM, { foreignKey: 'UserId', as: 'user' });
+userM.hasMany(cardM, { foreignKey: 'id', as: 'cards' });
+cardM.belongsTo(userM, { foreignKey: 'id', as: 'user' });
 
 productM.hasMany(cardM, { foreignKey: 'ProductId', as: 'cards' });
 cardM.belongsTo(productM, { foreignKey: 'ProductId', as: 'product' });
