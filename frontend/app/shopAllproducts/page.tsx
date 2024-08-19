@@ -1,9 +1,11 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import Na from "../navBar/page"
 import "./prod.css"
 import Fot from"../footer/page"
+import {motion} from "framer-motion"
+import fadeIn from "../fadeIn"
 
 
 interface Products {
@@ -18,7 +20,9 @@ interface Products {
 } 
 const shopAllproducts: React.FC = () => {
     const [products, setProduct] = useState<Products[]>([]);
-    const userId = 1
+    const [animationTriggered, setAnimationTriggered] = useState<boolean>(false);
+    const scrollDown = useRef<HTMLDivElement>(null);
+    // const userId = 1
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -30,9 +34,19 @@ const shopAllproducts: React.FC = () => {
             console.error('Error fetching product data', error);
           }
         };
-    
+        const handleScroll = () => {
+          if (scrollDown.current) {
+            const down = scrollDown.current.getBoundingClientRect();
+            const vs = down.top < window.innerHeight
+            setAnimationTriggered(vs);
+          }
+        };
+        window.addEventListener('scroll', handleScroll);
         fetchData();
+        handleScroll()
       }, []);
+
+
       const addToCart = async (product: Products,  userId: number) => {
         try {
           const response = await axios.post(`http://localhost:5000/api/cart/add/${userId}/${product.ProductID}`);
@@ -42,8 +56,15 @@ const shopAllproducts: React.FC = () => {
         }
       };
 
+
+
     return(
-        <div className='body'>
+      <motion.div 
+      ref={scrollDown}
+          variants={fadeIn('up')}
+           initial='hidden'
+          animate={animationTriggered ? 'show' : 'hidden'}
+      className="body">
           <Na />
           <div className='list'style={{ marginBottom: '50px' }}>
           <h1 className='title'>Our Collection</h1>
@@ -91,7 +112,7 @@ const shopAllproducts: React.FC = () => {
     <div className="flex flex-col items-end">
       <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-blue-800 product-remise mb-1 mt-[-4px]">{product.ProductRemise}%</span>
       <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{product.Price}DT</span>
-     <button onClick={() => addToCart(product)}><a href="#" className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige ">Add to cart</a></button> 
+     <button onClick={() => addToCart(product)}><a href="/cart" className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige ">Add to cart</a></button> 
     </div>
   </div>
 </div>
@@ -103,7 +124,7 @@ const shopAllproducts: React.FC = () => {
       </div>
       <Fot />
 
-    </div>
+    </motion.div>
     
     )
 }

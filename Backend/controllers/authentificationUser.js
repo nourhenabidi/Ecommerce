@@ -10,13 +10,13 @@ function generateToken(user) {
 }
 
 const signUpUser = async (req, res) => {
-    const {email, passwordUser} = req.body;
+    const { email, password } = req.body;
     try {
-        const hashedpasswordUser = await bcrypt.hash(passwordUser, 10);
+        const hashedpasswordUser = await bcrypt.hash(password, 10);
 
         const newUser = {
             email,
-            passwordUser: hashedpasswordUser,
+            password: hashedpasswordUser,
         };
         await User.create(newUser);
         const token = generateToken({ user: newUser });

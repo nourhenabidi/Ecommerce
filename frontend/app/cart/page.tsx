@@ -35,7 +35,10 @@ interface Product {
       }, []);
 
     return(
-        <div></div>
+        <div>
+<Na />
+
+        </div>
     )
   }
   export default Cart

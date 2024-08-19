@@ -1,9 +1,11 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 import axios from 'axios';
 import "../../searchByCategory/category.css"
 import Heady from "../../navBar/page"
 import Fot from"../../footer/page"
+import {motion} from "framer-motion"
+import fadeIn from "../../fadeIn"
 
 interface Products {
     ProductID: number;
@@ -18,6 +20,9 @@ interface Products {
 
 const Rings: React.FC =()=>{
     const [ring, setRing] = useState<Products[]>([]);
+    const [animationTriggered, setAnimationTriggered] = useState<boolean>(false);
+    const scrollDown = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -27,11 +32,25 @@ const Rings: React.FC =()=>{
             console.error('Error fetching car data', error);
           }
         };
-    
+        const handleScroll = () => {
+          if (scrollDown.current) {
+            const down = scrollDown.current.getBoundingClientRect();
+            const vs = down.top < window.innerHeight
+            setAnimationTriggered(vs);
+          }
+        };
+        window.addEventListener('scroll', handleScroll);
+
+        handleScroll()
         fetchData();
       }, []);
     return(
-        <div className='body'>
+         <motion.div 
+      ref={scrollDown}
+          variants={fadeIn('up')}
+           initial='hidden'
+          animate={animationTriggered ? 'show' : 'hidden'}
+      className="body">
            <Heady/>
            <div className="imag">
       <img src="https://i.pinimg.com/564x/de/b8/db/deb8db9290f96c94b59519786afa9e8a.jpg"alt="" />  
@@ -97,7 +116,7 @@ const Rings: React.FC =()=>{
   
              </div>
              <Fot />
-           </div>
+           </motion.div>
     )
 }
 export default Rings
