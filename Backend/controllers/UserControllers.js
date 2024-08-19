@@ -40,6 +40,8 @@ async function createUser(req, res) {
     const newUser = await User.create(req.body);
     const token = generateToken(newUser.id,newUser.fullName);
     newUser.dataValues.token=token
+    console.log(newUser);
+    
     res.json(newUser);
   } catch (error) {
     res.status(400).json({ error: error.message });

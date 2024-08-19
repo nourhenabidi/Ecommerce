@@ -26,6 +26,7 @@ const Navbar: React.FC =()=>{
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [selectedSuggestion, setSelectedSuggestion] = useState<string | null>(null);
     const [value, setValue] = React.useState<Product | null>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
 
 
@@ -73,10 +74,7 @@ console.log('data',res.data)
            }).catch((err)=>{
             console.log(err);
             
-           })
-         
-            
-           
+           })  
         
       };
       
@@ -106,12 +104,12 @@ console.log('data',res.data)
       };
 
 
-      // const handleMenu = (event:React.MouseEvent<HTMLElement>) => {
-      //   setAnchorEl(event.currentTarget);
-      // };
-      // const handleClose = () => {
-      //   setAnchorEl(null);
-      // };
+      const handleMenu = (event:React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+      };
+      const handleClose = () => {
+        setAnchorEl(null);
+      };
       // const toggleSearch = () => {
       //   setShowSearch(!showSearch);
       // };
@@ -188,36 +186,10 @@ console.log('hiii',data)
 <a href="">
 <ShoppingBagIcon />
 </a>
-<a href="/profile">
+
+<button onClick={handleMenu} >
 <AccountCircleIcon />
-</a>
-</div>
-        </div>
-    </div>
-   
-    </div>
-    
-    
-
-  )
-}
-
-export default Navbar
-
-
-
-      {/* 
-   <Badge color="secondary">
-            <FavoriteBorderIcon className='ml-10'/>
-            </Badge>
-            <Badge color="secondary">
-            <ShoppingBagIcon className='ml-9'/>
-            </Badge>
-            <Stack  className='ml-8' direction="row" spacing={2}>
-                <button onClick={handleMenu} >
-                <AccountCircleIcon  />
-                </button>
-                
+</button>
                 <Menu
                 className='mt-9'
                 id="menu-appbar"
@@ -234,9 +206,24 @@ export default Navbar
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+            
+                {sessionStorage.getItem("token") ? (
+               <a href="/profile"> 
+               <MenuItem onClick={handleClose}>Account</MenuItem></a>
+               ) : (
+                <MenuItem onClick={handleClose}>Join Us</MenuItem>
+              )}
               </Menu>
-            </Stack>
-   </div>
-</div> */}
+            
+</div>
+        </div>
+    </div>
+   
+    </div>
+    
+    
+
+  )
+}
+
+export default Navbar
