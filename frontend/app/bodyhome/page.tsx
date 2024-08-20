@@ -56,20 +56,18 @@ return(
  </div>
  
  <div className="us" style={{ marginBottom: '50px'}}>
-<a href="">
 <img src="https://i.pinimg.com/564x/49/09/2b/49092b08046323299774c38aab13eb31.jpg" alt="" />
-</a>
+
 <div className="content" style={{top:"35%",left:"-20%"}}>
 
-      <p className="text-black font-bold text-sm px-5 py-4"  style={{width:"100%"}}>
-      <span className="anim block" style={{marginBottom:55}} >TAKE </span>
-  <span className="anim block" style={{marginBottom:55}}>YOUR LOVELY</span>
-  <span className="anim block"style={{marginBottom:55}} >PACK </span>
+<a href="">
+      <p className="text-black font-bold text-sm px-5 py-4 relative hover:underline"  style={{width:"100%"}}>
+      <span className=" anim block" style={{marginBottom:55}} >TAKE </span>
+  <span className=" anim block" style={{marginBottom:55}}>YOUR LOVELY</span>
+  <span className=" anim block"style={{marginBottom:55}} >PACK </span>
         </p>
-
+        </a>
       </div> 
-      {/* <button> <span className="block border border-black" style={{bottom:"10%"}}>Your Pack Here</span></button> */}
-
       </div>
       <div className=" main" >
         <h1 className=" flex justify-center text-3xl ">Shop by category</h1>
@@ -80,7 +78,13 @@ return(
         alignItems: 'center', padding: 6,mx: 'auto'}}
     >
       <a href="/searchByCategory/earings">
-      <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
+      <Card component="li" sx={{ minWidth: 300, flexGrow: 1,
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              '&:hover': {
+                transform: 'scale(1.05)',
+                boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
+              },
+       }}>
         <CardCover>
           <img
             src="https://i.pinimg.com/564x/ad/99/5e/ad995e95505c17834826bc43146b41ca.jpg"
@@ -101,7 +105,13 @@ return(
       </Card>
       </a>
       <a href="/searchByCategory/necklaces">
-      <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
+      <Card component="li" sx={{ minWidth: 300, flexGrow: 1,
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                '&:hover': {
+                  transform: 'scale(1.05)',
+                  boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
+                },
+       }}>
         <CardCover>
           <img
             src="https://i.pinimg.com/736x/b6/ea/df/b6eadf3d31a0a396b947a85b21619ae5.jpg"
@@ -122,7 +132,13 @@ return(
       </Card>
       </a>
       <a href="/searchByCategory/rings">
-      <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
+      <Card component="li" sx={{ minWidth: 300, flexGrow: 1,
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                '&:hover': {
+                  transform: 'scale(1.05)',
+                  boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
+                },
+       }}>
         <CardCover>
           <img
             src="https://i.pinimg.com/564x/bc/77/71/bc7771f6afe2406ccbdf05003fa7c563.jpg"
@@ -143,7 +159,13 @@ return(
       </Card>
       </a>
       <a href="/searchByCategory/bracelets">
-      <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
+      <Card component="li" sx={{ minWidth: 300, flexGrow: 1,
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                '&:hover': {
+                  transform: 'scale(1.05)',
+                  boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
+                },
+       }}>
         <CardCover>
           <img
             src="https://i.pinimg.com/564x/b3/d6/ee/b3d6eef26fc47b41e166f9681ee65348.jpg"

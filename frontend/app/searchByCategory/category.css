@@ -5,6 +5,18 @@
     align-items: center;
     margin-bottom: 50px;
   }
+  .product-card {
+    background-color: #fff;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth zoom and shadow effect on hover */
+  }
+  .product-card:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Deepen shadow on hover */
+  }
   .title {
     color: black;
     text-align: center;

@@ -44,7 +44,7 @@ function NewArrival() {
 
   
     return (
-        <div>
+        <div >
             <h1 className="flex justify-center text-3xl "style={{ marginBottom: '50px' }}>New Arrivals</h1>
  
            <div className='list grid grid-cols-2 sm:grid-cols-50'style={{ marginBottom: '50px' }}>
@@ -68,7 +68,7 @@ function NewArrival() {
       >
           {Array.isArray(news) && news.map((e) => (
             <SwiperSlide key={e.ProductID}>
-            <div  className="w-full max-w-sm bg-white group reative rounded-lg shadow ">
+            <div  className="product-card w-full max-w-sm bg-white group reative rounded-lg shadow ">
   
   <a href="#" >
 

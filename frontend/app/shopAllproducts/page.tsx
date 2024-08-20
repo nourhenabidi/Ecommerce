@@ -68,7 +68,7 @@ const shopAllproducts: React.FC = () => {
           <Na />
           <div className='list'style={{ marginBottom: '50px' }}>
           <h1 className='title'>Our Collection</h1>
-          <div className='text-slate-200 flex justify-center gap-16 mb-8 '>
+          <div className='text-slate-400 flex justify-center gap-16 mb-8 '>
             <a className='relative hover:underline hover:text-black ' href="/searchByCategory/necklaces">Necklaces</a>
             <a className='relative hover:underline hover:text-black' href="/searchByCategory/earings">Earings</a>
             <a className='relative hover:underline hover:text-black' href="/searchByCategory/rings">Rings</a>
@@ -78,7 +78,7 @@ const shopAllproducts: React.FC = () => {
           <div className="grid grid-cols-3 gap-4">
              
              {Array.isArray(products) && products.map((product) => (
-<div key={product.ProductID} className="bg-white rounded-lg shadow mt-4" >
+<div key={product.ProductID} className="product-card bg-white rounded-lg shadow mt-4" >
   
     <a href="#" >
     
