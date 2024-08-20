@@ -212,7 +212,7 @@ console.log('hiii',data)
                <MenuItem onClick={handleClose}>Account</MenuItem>
              </a>
             
-                <MenuItem onClick={handleClose}>Join Us</MenuItem>
+               <a href="/authDrop/Signin"><MenuItem onClick={handleClose}>Join Us</MenuItem></a> 
           
               </Menu>
             

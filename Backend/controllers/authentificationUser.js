@@ -11,6 +11,7 @@ function generateToken(user) {
 
 const signUpUser = async (req, res) => {
     const { email, password } = req.body;
+    console.log(email ,password)
     try {
         const hashedpasswordUser = await bcrypt.hash(password, 10);
 
@@ -21,7 +22,7 @@ const signUpUser = async (req, res) => {
         await User.create(newUser);
         const token = generateToken({ user: newUser });
 
-        res.status(201).json({ message: 'user created successfully', token });
+        res.status(201).json({ message: 'user created successfully',newUser, token });
     } catch (error) {
         console.error('Error during user signup:', error);
         res.status(500).json({ error: 'Failed to create user' });
@@ -31,7 +32,7 @@ const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ where: { email: email } });
-   console.log('user',user )
+   console.log(user, 'user here' )
         if (user) {
             const isPasswordValid = await bcrypt.compare(password, user.password);
             if (isPasswordValid) {

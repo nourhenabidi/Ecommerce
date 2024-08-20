@@ -23,6 +23,8 @@ app.listen(PORT, () => {
 
 
 //user routes
+
+app.use('/api/up',userAuthRouter)
 app.use("/api/users",userRouter)
 app.use("/api/products",itemRouter)
 app.use("/api/wishlist",wishListRouter)
