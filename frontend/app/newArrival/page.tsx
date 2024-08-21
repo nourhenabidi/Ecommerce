@@ -66,6 +66,7 @@ function NewArrival() {
         modules={[FreeMode, Pagination]}
         className="max-w-[90%] lg:max-w-[80%]"
       >
+      
           {Array.isArray(news) && news.map((e) => (
             <SwiperSlide key={e.ProductID}>
             <div  className="product-card w-full max-w-sm bg-white group reative rounded-lg shadow ">

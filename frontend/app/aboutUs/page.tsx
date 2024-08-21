@@ -37,7 +37,7 @@ const aboutUs :React.FC =()=>{
     <div className="fully" style={{ marginBottom: '50px' }}>
       
         <div>
-      <img src="https://i.pinimg.com/564x/78/70/05/787005072c466cab7303683ce92f11ea.jpg"alt="" />  
+      <img src="https://i.pinimg.com/564x/68/e3/7f/68e37fc535f9cd597de4192e5bb88bee.jpg"alt="" />  
 
         </div>
         <div className="text-container absolute right-32 top-1/2 transform -translate-y-1/2">
