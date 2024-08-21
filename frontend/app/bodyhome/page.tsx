@@ -13,7 +13,6 @@ import NewAri from "../newArrival/page"
 import fadeIn from "../fadeIn"
 import { motion} from "framer-motion";
 
-
 const bodyhome: React.FC =()=>{
   const [animationTriggered, setAnimationTriggered] = useState<boolean>(false);
   const scrollDown = useRef<HTMLDivElement>(null);
@@ -42,7 +41,7 @@ return(
     <div className="fullbody"  style={{ marginBottom: '50px' }}>
       
         <div >
-      <img  src="https://i.pinimg.com/564x/ab/d3/a1/abd3a1fffad64b1cdbb73859d135fd6d.jpg"alt="" />  
+      <img  src="https://i.pinimg.com/736x/80/fe/6d/80fe6d1ba55d33e662ac4efbb695b127.jpg"alt="" />  
 
         </div>
         <div className="text-container absolute left-32 top-1/2 transform -translate-y-1/2">

@@ -129,7 +129,7 @@ console.log('hiii',data)
     <a href="/shopAllproducts" onClick={() => handleItemClick(1)}>Shop</a>
 
     <a href="/contact" onClick={() => handleItemClick(1)}>Contact</a>
-<a href="/aboutUs" onClick={() => handleItemClick(1)}>Why Us</a>
+<a href="/whyUs" onClick={() => handleItemClick(1)}>Why Us</a>
 
 
 </div>
