@@ -1,15 +1,11 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import TextField from '@mui/material/TextField';
-import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
-import Stack from '@mui/material/Stack';
+import  { createFilterOptions } from '@mui/material/Autocomplete';
 import axios from "axios";
-
 import "./nav.css"
-import { Menu, MenuItem } from '@mui/material';
+import Drop from "./AuthDrop"
 
 interface Product {
   Name: string;
@@ -25,8 +21,6 @@ const Navbar: React.FC =()=>{
     const [activeIndex, setActiveIndex]=useState<number|null>(null)
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [selectedSuggestion, setSelectedSuggestion] = useState<string | null>(null);
-    const [value, setValue] = React.useState<Product | null>(null);
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
 
 
@@ -62,11 +56,11 @@ const Navbar: React.FC =()=>{
       //   }
       // };
 
-      const fetchSuggestions = async (x:any) => {
+      const fetchSuggestions = async (name:any) => {
        
       
        
-           await axios.get(`http://localhost:5000/api/products/category/${x}`)
+           await axios.get(`http://localhost:5000/api/products/oneProduct/${name}`)
            .then((res)=>{
             setData(res.data)
 console.log('data',res.data)
@@ -103,13 +97,6 @@ console.log('data',res.data)
         setActiveIndex(index === activeIndex ? null : index);
       };
 
-
-      const handleMenu = (event:React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-      };
-      const handleClose = () => {
-        setAnchorEl(null);
-      };
       // const toggleSearch = () => {
       //   setShowSearch(!showSearch);
       // };
@@ -119,7 +106,7 @@ console.log('hiii',data)
 
   return (
    
-    <div >
+    <div className='body'>
 
 
     <div className=' fixed top-0 w-full  z-10  '>
@@ -140,10 +127,10 @@ console.log('hiii',data)
 </div>
 <div className='flex flex-1 flex row items-center gap-8 justify-end'>
 
-<div className="relative  bg-white rounded">
+<div className="relative">
   <input type="text" 
   placeholder="Search here .." 
-  className="rounded-[8px]  outline-none placeholder:text-sm"
+  className=" outline-none placeholder:text-sm"
    style={{ width: '200px' }}
    value={searched}
    onChange={handleSearchChange}
@@ -186,36 +173,7 @@ console.log('hiii',data)
 <a href="">
 <ShoppingBagIcon />
 </a>
-
-<button onClick={handleMenu} >
-<AccountCircleIcon />
-</button>
-                <Menu
-                className='mt-9'
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-            
-          
-             <a href="/profile"> 
-               <MenuItem onClick={handleClose}>Account</MenuItem>
-             </a>
-            
-               <a href="/authDrop/Signin"><MenuItem onClick={handleClose}>Join Us</MenuItem></a> 
-          
-              </Menu>
-            
+            <Drop/>
 </div>
         </div>
     </div>

@@ -2,6 +2,7 @@
 import React from 'react';
 import "./foot.css"
 
+
 interface FooterNavItem {
     href: string;
     name: string;
@@ -68,7 +69,7 @@ const Footer: React.FC = () => {
                         ))
                     }
                                     <div className="flex-1 mt-6 md:mt-0">
-                                        <a href=""></a>
+                                    
                         {/* <form onSubmit={(e) => e.preventDefault()} className="flex items-center gap-x-3 md:justify-end">
                             <div className="relative">
                                 <svg className="w-6 h-6 text-white absolute left-3 inset-y-0 my-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
