@@ -1,6 +1,5 @@
 "use client";
 import React ,{ useState,useRef,useEffect, KeyboardEvent }  from 'react';
-import './login.css'
 import axios from "axios";
 import { toast } from 'react-hot-toast';
 import { IoCloseSharp } from "react-icons/io5";
@@ -13,7 +12,18 @@ type Props = {
 
 const Login = ({ isOpen, onClose }: Props) => {
   const [isSignUp, setIsSignUp] = useState(false);
-  const [userData, setUserData] = useState({ email: "", password: "", username: "" })
+  const [userData, setUserData] = useState({ email: "", password: "" })
+
+  // Function to parse JWT
+  const parseJWT = (token: string) => {
+    const base64Url = token.split('.')[1]; // Get the payload part
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'); // Convert Base64Url to Base64
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+  };
 
   const login = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     try {
@@ -29,6 +39,8 @@ const Login = ({ isOpen, onClose }: Props) => {
         );
         const res = await loginPromise
         sessionStorage.setItem("token", res.data.token)
+        const parsedData = parseJWT(res.data.token);
+        console.log(parsedData);
         sessionStorage.setItem("P", res.data.user.password)
         console.log(res.data)
     } catch (error) {
@@ -78,7 +90,7 @@ useEffect(() => {
   }
 }, [isOpen, isSignUp]);
 
-const handleKeyboardEvent = (e: KeyboardEventHandler<HTMLDivElement>) => {
+const handleKeyboardEvent = (e: KeyboardEvent<HTMLDivElement>) => {
   if (e.key === 'Escape') {
       onClose();
   }
@@ -91,6 +103,7 @@ const toggleSignUp = () => {
 if (!isOpen) return null;
 
   return (
+    <div className='body'>
     <div
     id="login-popup"
     tabIndex={-1}
@@ -98,7 +111,7 @@ if (!isOpen) return null;
     className="bg-black/50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 h-full items-center justify-center flex"
 >
     <div className="relative p-4 w-full max-w-md h-full md:h-auto">
-        <div className="relative bg-white rounded-lg shadow animate-slide-up">
+        <div className="relative bg-white shadow animate-slide-up">
             <button
                 type="button"
                 className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
@@ -109,16 +122,16 @@ if (!isOpen) return null;
             </button>
 
             <div className="p-5">
-                <h3 className="text-2xl mb-0.5 font-medium">{isSignUp ? 'Sign Up' : 'Login'}</h3>
-                <p className="mb-4 text-sm font-normal text-gray-800" >
+                {/* <h3 className="text-2xl mb-0.5 font-medium">{isSignUp ? 'Sign Up' : 'Login'}</h3>
+                <p className="mb-4 text-sm font-normal text-balck" >
                     {isSignUp ? 'Please sign up to continue.' : 'Please log in to continue.'}
-                </p>
+                </p> */}
 
                 <div className="text-center">
-                    <p className="mb-3 text-2xl font-semibold leading-5 text-slate-900">
+                    <p className="mb-3 text-2xl font-semibold leading-5 text-black">
                         {isSignUp ? 'Create an account' : 'Login to your account'}
                     </p>
-                    <p className="mt-2 text-sm leading-4 text-slate-600">
+                    <p className="mt-2 text-sm leading-4 text-orange-950">
                         {isSignUp ? 'Fill in the details to create an account.' : 'You must be logged in to perform this action.'}
                     </p>
                 </div>
@@ -139,22 +152,9 @@ if (!isOpen) return null;
                         name="email"
                         autoComplete="email"
                         required
-                        className="block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-black focus:ring-offset-1"
+                        className="block w-full  border border-black px-3 py-2 shadow-sm outline-none placeholder:text-gray-400"
                         placeholder="Email Address"
                     />
-                    {isSignUp && (
-                        <>
-                            <label htmlFor="username" className="sr-only">Username</label>
-                            <input onChange={e => gatherData(e)}
-                                type="text"
-                                name="username"
-                                autoComplete="username"
-                                required
-                                className="block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-black mt-2 focus:ring-offset-1"
-                                placeholder="Username"
-                            />
-                        </>
-                    )}
                     <label htmlFor="password" className="sr-only">Password</label>
                     <input
                         onChange={e => gatherData(e)}
@@ -162,17 +162,17 @@ if (!isOpen) return null;
                         name="password"
                         autoComplete={isSignUp ? "new-password" : "current-password"}
                         required
-                        className="mt-2 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-black focus:ring-offset-1"
+                        className="mt-2 block w-full  border border-black px-3 py-2 shadow-sm outline-none placeholder:text-gray-400 "
                         placeholder="Password"
                     />
                     {!isSignUp && (
                         <p className="mb-3 mt-2 text-sm text-gray-500">
-                            <a href="/forgot-password" className="text-blue-800 hover:text-blue-600">Reset your password?</a>
+                            <a href="/forgot-password" className="text-orange-950 hover:text-blue-600">Reset your password?</a>
                         </p>
                     )}
                     <button onClick={(e) => { isSignUp ? signUp(e) : login(e) }}
                         type="submit"
-                        className="inline-flex w-full items-center justify-center rounded-lg bg-black p-2 py-3 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 disabled:bg-gray-400"
+                        className="mt-6 inline-flex w-full items-center justify-center  bg-black p-2 py-3 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 disabled:bg-gray-400"
                     >
                         {isSignUp ? 'Sign Up' : 'Continue'}
                     </button>
@@ -182,18 +182,19 @@ if (!isOpen) return null;
                     {isSignUp ? (
                         <>
                             Already have an account?
-                            <button onClick={toggleSignUp} className="font-medium text-[#4285f4] ml-1">Sign in</button>
+                            <button onClick={toggleSignUp} className="font-medium text-orange-950 ml-1">Sign in</button>
                         </>
                     ) : (
                         <>
                             Don't have an account?
-                            <button onClick={toggleSignUp} className="font-medium text-[#4285f4] ml-1">Sign up</button>
+                            <button onClick={toggleSignUp} className="font-medium text-orange-950 ml-1">Sign up</button>
                         </>
                     )}
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
   );
 };

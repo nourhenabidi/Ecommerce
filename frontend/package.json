@@ -19,10 +19,13 @@
     "@mui/icons-material": "^5.16.6",
     "@mui/joy": "^5.0.0-beta.48",
     "@mui/material": "^5.16.6",
+    "@radix-ui/react-avatar": "^1.1.0",
+    "@radix-ui/react-dropdown-menu": "^2.1.1",
     "@types/react-slick": "^0.23.13",
     "axios": "^1.7.3",
     "framer-motion": "^11.3.28",
     "leaflet": "^1.9.4",
+    "lucide-react": "^0.263.1",
     "next": "14.2.5",
     "next-image-loader": "^2.0.0",
     "primereact": "^10.8.2",
@@ -37,8 +40,10 @@
     "react-slick": "^0.30.2",
     "react-toastify": "^10.0.5",
     "swiper": "^11.1.9",
+    "tailwindcss-animate": "^1.0.7",
     "tw-elements": "^2.0.0",
-    "ui-button": "^2.1.12"
+    "ui-button": "^2.1.12",
+    "vaul": "^0.9.1"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.12",

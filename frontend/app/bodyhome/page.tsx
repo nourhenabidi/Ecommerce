@@ -38,7 +38,7 @@ return(
       animate={animationTriggered ? 'show' : 'hidden'}
   className="body">
     <Navbar />
-    <div className="fullbody"  style={{ marginBottom: '50px' }}>
+    <div className="fullbody" >
       
         <div >
       <img  src="https://i.pinimg.com/736x/80/fe/6d/80fe6d1ba55d33e662ac4efbb695b127.jpg"alt="" />  
