@@ -26,7 +26,7 @@
 
   }
   
-  .image-container img {
+  .images {
     width: 100%;
     height: 100%;
     object-fit: cover; /* Ensure the image covers the container fully */

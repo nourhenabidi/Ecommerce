@@ -16,7 +16,13 @@ import { motion} from "framer-motion";
 const bodyhome: React.FC =()=>{
   const [animationTriggered, setAnimationTriggered] = useState<boolean>(false);
   const scrollDown = useRef<HTMLDivElement>(null);
+  const [chnageImage, setChangeImage] = useState<number>(0);
 
+  const images: string[] = [
+    'https://i.pinimg.com/736x/80/fe/6d/80fe6d1ba55d33e662ac4efbb695b127.jpg',
+    "https://i.pinimg.com/736x/b5/0e/eb/b50eeb23b5eabc48e7d1db341b6e4738.jpg",
+    "https://i.pinimg.com/736x/e9/4a/3d/e94a3d41ba9ec4d6f79273d9235892da.jpg"
+];
   useEffect(() => {
     const handleScroll = () => {
       if (scrollDown.current) {
@@ -28,7 +34,14 @@ const bodyhome: React.FC =()=>{
     window.addEventListener('scroll', handleScroll);
 
   }, []);
-  
+
+  const changeImage = () => {
+    setChangeImage((pr) => (pr + 1) % images.length);
+  };
+  useEffect(() => {
+    const interval = setInterval(changeImage, 5000); 
+    return () => clearInterval(interval); 
+  }, []);
 
 return(
   <motion.div 
@@ -39,10 +52,8 @@ return(
   className="body">
     <Navbar />
     <div className="fullbody" >
-      
         <div >
-      <img  src="https://i.pinimg.com/736x/80/fe/6d/80fe6d1ba55d33e662ac4efbb695b127.jpg"alt="" />  
-
+      <img src={images[chnageImage]} alt="" />
         </div>
         <div className="text-container absolute left-32 top-1/2 transform -translate-y-1/2">
       <h1 className="anim text-white text-4xl font-bold mb-9">the autumn equinox</h1>
