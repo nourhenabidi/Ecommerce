@@ -74,7 +74,7 @@ function NewArrival() {
   <a href="#" >
 
     <div className="image-container">
-      <img src={e.ProductImage} alt="product image" />
+      <img className='images' src={e.ProductImage} alt="product image" />
       <div className="heart-icon">
                   <button>
                     <svg

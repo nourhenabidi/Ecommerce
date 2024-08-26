@@ -23,7 +23,6 @@ const Navbar: React.FC =()=>{
     const [selectedSuggestion, setSelectedSuggestion] = useState<string | null>(null);
 
 
-
     useEffect(() => {
         const fetchData = async () => {
           
@@ -37,8 +36,10 @@ const Navbar: React.FC =()=>{
           }
         };
     
+        
         fetchData();
       }, []);
+    
 
       // const search = async () => {
       //   try {
@@ -57,9 +58,6 @@ const Navbar: React.FC =()=>{
       // };
 
       const fetchSuggestions = async (name:any) => {
-       
-      
-       
            await axios.get(`http://localhost:5000/api/products/oneProduct/${name}`)
            .then((res)=>{
             setData(res.data)
@@ -104,6 +102,7 @@ console.log('data',res.data)
 console.log('hi',suggestions)
 console.log('hiii',data)
 
+
   return (
    
     <div className='body'>
@@ -130,7 +129,7 @@ console.log('hiii',data)
 <div className="relative">
   <input type="text" 
   placeholder="Search here .." 
-  className=" outline-none placeholder:text-sm"
+  className=" outline-none placeholder:text-sm bg-transparent"
    style={{ width: '200px' }}
    value={searched}
    onChange={handleSearchChange}
@@ -179,7 +178,6 @@ console.log('hiii',data)
     </div>
    
     </div>
-    
     
 
   )
