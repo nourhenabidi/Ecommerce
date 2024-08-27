@@ -49,7 +49,7 @@ module.exports = {
             if (wishList) {
                 res.status(200).json(wishList);
             } else {
-                res.status(404).json({ message: 'Wish list item not found' });
+                res.status(404).json({ message: 'Wishlist item not found' });
             }
         } catch (err) {
             res.status(500).json({ message: err.message });

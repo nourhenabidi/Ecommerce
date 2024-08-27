@@ -4,7 +4,7 @@
       "password": "abidi123",
       "database": "ecommerce",
       "host": "localhost",
-      "dialect": "mysql",
+      "dialect": "mysql"
       
     }
 
