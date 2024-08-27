@@ -10,7 +10,7 @@ const app = express()
 const PORT = 5000
 //email
 const session = require('express-session');
-require('dotenv').config();
+// require('dotenv').config();
 
 
 
