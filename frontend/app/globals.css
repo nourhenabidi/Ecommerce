@@ -304,4 +304,6 @@
       opacity: 0;
     }
   }
- 
+  .toast-progress {
+    display: none; /* Hides the progress bar */
+}

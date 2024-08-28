@@ -1,19 +1,24 @@
 "use client";
 import React ,{ useState,useRef,useEffect, KeyboardEvent }  from 'react';
 import axios from "axios";
-import { toast } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import { IoCloseSharp } from "react-icons/io5";
-
+import 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
 };
 
-const Login = ({ isOpen, onClose }: Props) => {
+const SignInModal = ({ isOpen, onClose }: Props) => {
+    if (!isOpen) return null;
   const [isSignUp, setIsSignUp] = useState(false);
   const [userData, setUserData] = useState({ email: "", password: "" })
-
+  const [refresh, setRefresh] = useState(false);
+  const router = useRouter();
+  const emailInput = useRef<HTMLInputElement>(null);
+//   const [error, setError] = useState<string>('');
   // Function to parse JWT
   const parseJWT = (token: string) => {
     const base64Url = token.split('.')[1]; // Get the payload part
@@ -43,14 +48,17 @@ const Login = ({ isOpen, onClose }: Props) => {
         console.log(parsedData);
         sessionStorage.setItem("P", res.data.user.password)
         console.log(res.data)
+        router.push(`/bodyhome?account=${res.data.user.id}`);
+        onClose(); // Close the popup
     } catch (error) {
         console.log(error);
 
     }
 }
 const signUp = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault()
   try {
-      e.preventDefault()
+      
       const signUpPromise = axios.post(`http://localhost:5000/api/up/signup`, userData)
       toast.promise(
           signUpPromise,
@@ -63,11 +71,34 @@ const signUp = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       const res = await signUpPromise
       sessionStorage.setItem('token', res.data.token)
       sessionStorage.setItem("P", res.data.user.password)
+      router.push(`/bodyhome?account=${res.data.user.id}`);
+      onClose(); // Close the popup
   }
   catch (err) {
       console.log(err);
   }
 }
+useEffect(() => {
+    // Check if the user is logged in or not
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      const parsedData = parseJWT(token);
+      console.log("User data:", parsedData);
+      // Optionally handle user data or redirect if needed
+    }
+  }, [refresh]);
+
+// const ErrNotif = () => toast.error('please check your information!', {
+//     position: "top-center",
+//     duration: 5000,
+//     closeOnClick: true,
+//     pauseOnHover: true,
+//     draggable: true,
+//     progress: undefined,
+//     theme: "colored",
+
+//   });
+
 
 const gatherData = (e: React.ChangeEvent<HTMLInputElement>) => {
   console.log(e.target.name, e.target.value)
@@ -75,7 +106,7 @@ const gatherData = (e: React.ChangeEvent<HTMLInputElement>) => {
   setUserData({ ...userData, [e.target.name]: e.target.value })
 }
 console.log(userData);
-const emailInput = useRef<HTMLInputElement>(null)
+
 useEffect(() => {
   if (emailInput.current && isOpen) {
       setTimeout(() => {
@@ -100,7 +131,7 @@ const toggleSignUp = () => {
   setIsSignUp(prev => !prev);
 };
 
-if (!isOpen) return null;
+
 
   return (
     <div className='body'>
@@ -142,7 +173,7 @@ if (!isOpen) return null;
                     <div className="h-px w-full bg-slate-200"></div>
                 </div>
 
-                <form className="w-full">
+                <form className="w-full" >
 
                     <label htmlFor="email" className="sr-only">Email address</label>
                     <input
@@ -174,7 +205,8 @@ if (!isOpen) return null;
                         type="submit"
                         className="mt-6 inline-flex w-full items-center justify-center  bg-black p-2 py-3 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 disabled:bg-gray-400"
                     >
-                        {isSignUp ? 'Sign Up' : 'Continue'}
+                        {isSignUp ? 'Register' : 'Continue'}
+                
                     </button>
                 </form>
 
@@ -182,7 +214,7 @@ if (!isOpen) return null;
                     {isSignUp ? (
                         <>
                             Already have an account?
-                            <button onClick={toggleSignUp} className="font-medium text-orange-950 ml-1">Sign in</button>
+                            <button onClick={toggleSignUp} className="font-medium text-orange-950 ml-1">Login</button>
                         </>
                     ) : (
                         <>
@@ -199,4 +231,4 @@ if (!isOpen) return null;
   );
 };
 
-export default Login;
+export default SignInModal;

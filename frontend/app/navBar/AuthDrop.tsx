@@ -47,11 +47,11 @@ const AuthDrop = () => {
             <DropdownMenuLabel>Join Us !</DropdownMenuLabel>
           )}
           <DropdownMenuSeparator className="bg-gray-400" />
-          {!isLoggedIn && (
+          {/* {!isLoggedIn && (
             <DropdownMenuItem onClick={openSignInModal}>
               Sign up
             </DropdownMenuItem>
-          )}
+          )} */}
           {!isLoggedIn && (
             <DropdownMenuItem onClick={openSignInModal}>
               Login
@@ -62,9 +62,7 @@ const AuthDrop = () => {
             <>
               <DropdownMenuSeparator className="bg-gray-400" />
               <DropdownMenuItem>Profile</DropdownMenuItem>
-              {isLoggedIn&& (
-                <DropdownMenuItem>Log out</DropdownMenuItem>
-              )}
+    
             </>
           )}
         </DropdownMenuContent>
