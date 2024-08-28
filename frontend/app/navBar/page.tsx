@@ -99,8 +99,6 @@ console.log('data',res.data)
       //   setShowSearch(!showSearch);
       // };
 
-console.log('hi',suggestions)
-console.log('hiii',data)
 
 
   return (

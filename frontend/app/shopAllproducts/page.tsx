@@ -22,7 +22,8 @@ interface Products {
 const shopAllproducts: React.FC = () => {
     const [products, setProduct] = useState<Products[]>([]);
     const [animationTriggered, setAnimationTriggered] = useState<boolean>(false);
-    const scrollDown = useRef<HTMLDivElement>(null);
+    // const scrollDown = useRef<HTMLDivElement>(null);
+    const [visible, setVisible] = useState(false);
     // const userId = 1
     useEffect(() => {
         const fetchData = async () => {
@@ -35,18 +36,21 @@ const shopAllproducts: React.FC = () => {
             console.error('Error fetching product data', error);
           }
         };
-        const handleScroll = () => {
-          if (scrollDown.current) {
-            const down = scrollDown.current.getBoundingClientRect();
-            const vs = down.top < window.innerHeight
-            setAnimationTriggered(vs);
-          }
-        };
-        window.addEventListener('scroll', handleScroll);
-        fetchData();
-        handleScroll()
+        fetchData(); 
       }, []);
 
+      useEffect(() => {
+        const checkScrollPosition = () => {
+          if (window.scrollY === 80) {
+            setVisible(true);
+          }
+        };
+  
+        checkScrollPosition();
+        window.scrollTo(0, 80);
+    
+        return () => {};
+      }, []);
 
       // const addToCart = async (product: Products,  userId: number) => {
       //   try {
@@ -61,10 +65,9 @@ const shopAllproducts: React.FC = () => {
 
     return(
       <motion.div 
-      ref={scrollDown}
-          variants={fadeIn('up')}
            initial='hidden'
-          animate={animationTriggered ? 'show' : 'hidden'}
+          animate={visible ? 'show' : 'hidden'}
+          variants={fadeIn('up')}
       className="body">
           <Na />
           <div className='list'style={{ marginBottom: '50px' }}>

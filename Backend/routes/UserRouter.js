@@ -13,8 +13,7 @@ UserRouter.post('/add', UserController.createUser);
 UserRouter.put('/update/:id', UserController.updateUserById);
 // DELETE a user by ID
 UserRouter.delete('/delete/:id', UserController.deleteUserById);
-UserRouter.get('/auth', UserController.authUser);
-UserRouter.get('/auth/callback', UserController.handleAuthCallback);
-UserRouter.get('/send-email', UserController.sendEmail);
+// send email
+UserRouter.post('/sendEmail', UserController.sendEmail);
 
 module.exports=UserRouter 

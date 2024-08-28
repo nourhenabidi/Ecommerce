@@ -23,7 +23,7 @@ const AuthDrop = () => {
   const closeSignInModal = () => {
     setSignInModalOpen(false);
   };
-  console.log(isSignInModalOpen);
+
 
     useEffect(() => {
     if (typeof window !== "undefined") {
@@ -47,11 +47,7 @@ const AuthDrop = () => {
             <DropdownMenuLabel>Join Us !</DropdownMenuLabel>
           )}
           <DropdownMenuSeparator className="bg-gray-400" />
-          {/* {!isLoggedIn && (
-            <DropdownMenuItem onClick={openSignInModal}>
-              Sign up
-            </DropdownMenuItem>
-          )} */}
+ 
           {!isLoggedIn && (
             <DropdownMenuItem onClick={openSignInModal}>
               Login
@@ -61,7 +57,7 @@ const AuthDrop = () => {
           {isLoggedIn&& (
             <>
               <DropdownMenuSeparator className="bg-gray-400" />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem>Login</DropdownMenuItem>
     
             </>
           )}

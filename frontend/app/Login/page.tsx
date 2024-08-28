@@ -1,7 +1,7 @@
 "use client";
 import React ,{ useState,useRef,useEffect, KeyboardEvent }  from 'react';
 import axios from "axios";
-import toast, { Toaster } from 'react-hot-toast';
+import { ToastContainer, toast } from 'react-toastify';
 import { IoCloseSharp } from "react-icons/io5";
 import 'react-hot-toast';
 import { useRouter } from 'next/navigation';
@@ -13,7 +13,9 @@ type Props = {
 
 const SignInModal = ({ isOpen, onClose }: Props) => {
     if (!isOpen) return null;
+    
   const [isSignUp, setIsSignUp] = useState(false);
+  const [close, setclose] = useState(false);
   const [userData, setUserData] = useState({ email: "", password: "" })
   const [refresh, setRefresh] = useState(false);
   const router = useRouter();
@@ -32,52 +34,42 @@ const SignInModal = ({ isOpen, onClose }: Props) => {
 
   const login = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     try {
-        e.preventDefault()
-        const loginPromise = axios.post(`http://localhost:5000/api/up/login`, userData)
-        toast.promise(
-            loginPromise,
-            {
-                loading: 'Logging in...',
-                success: 'Logged in successfully!',
-                error: 'Login failed. Please try again.',
-            }
-        );
-        const res = await loginPromise
-        sessionStorage.setItem("token", res.data.token)
-        const parsedData = parseJWT(res.data.token);
-        console.log(parsedData);
-        sessionStorage.setItem("P", res.data.user.password)
-        console.log(res.data)
-        router.push(`/bodyhome?account=${res.data.user.id}`);
-        onClose(); // Close the popup
-    } catch (error) {
-        console.log(error);
-
-    }
-}
-const signUp = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault()
-  try {
-      
-      const signUpPromise = axios.post(`http://localhost:5000/api/up/signup`, userData)
+      e.preventDefault();
+      const loginPromise = axios.post(`http://localhost:5000/api/up/login`, userData);
       toast.promise(
-          signUpPromise,
-          {
-              loading: 'Signing up...',
-              success: 'Signed up successfully!',
-              error: 'Sign up failed. Please try again.',
-          }
-      )
-      const res = await signUpPromise
-      sessionStorage.setItem('token', res.data.token)
-      sessionStorage.setItem("P", res.data.user.password)
+        loginPromise,
+        {
+          success: 'Logged in successfully!',
+          error: 'Login failed. Please try again.',
+        }
+      );
+      const res = await loginPromise;
+      sessionStorage.setItem("token", res.data.token);
+      const parsedData = parseJWT(res.data.token);
+      console.log(parsedData);
+      sessionStorage.setItem("P", res.data.user.password);
+      console.log(res.data);
+      // Ensure res.data.user.id is available
       router.push(`/bodyhome?account=${res.data.user.id}`);
-      onClose(); // Close the popup
-  }
-  catch (err) {
-      console.log(err);
-  }
-}
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
+    console.log(sessionStorage);
+    
+  };
+  const signUp =  () => {
+
+axios.post('http://localhost:5000/api/up/signup', userData).then((res)=>{
+    sessionStorage.setItem('token', res.data.token);
+     sessionStorage.setItem("P", res.data.newUser.password)
+    
+     window.location.reload()
+}).catch((err)=>console.log(err)
+)
+  };
+
+
 useEffect(() => {
     // Check if the user is logged in or not
     const token = sessionStorage.getItem("token");
@@ -107,7 +99,10 @@ const gatherData = (e: React.ChangeEvent<HTMLInputElement>) => {
 }
 console.log(userData);
 
+
+
 useEffect(() => {
+
   if (emailInput.current && isOpen) {
       setTimeout(() => {
           if (emailInput.current) {
@@ -136,7 +131,7 @@ const toggleSignUp = () => {
   return (
     <div className='body'>
     <div
-    id="login-popup"
+    id={close ? "" : "login-popup"}
     tabIndex={-1}
     onKeyDown={handleKeyboardEvent}
     className="bg-black/50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 h-full items-center justify-center flex"
@@ -151,7 +146,6 @@ const toggleSignUp = () => {
                 <IoCloseSharp /> {/* Assuming CloseIcon renders the SVG */}
                 <span className="sr-only">Close popup</span>
             </button>
-
             <div className="p-5">
                 {/* <h3 className="text-2xl mb-0.5 font-medium">{isSignUp ? 'Sign Up' : 'Login'}</h3>
                 <p className="mb-4 text-sm font-normal text-balck" >
@@ -196,13 +190,13 @@ const toggleSignUp = () => {
                         className="mt-2 block w-full  border border-black px-3 py-2 shadow-sm outline-none placeholder:text-gray-400 "
                         placeholder="Password"
                     />
-                    {!isSignUp && (
+                    {/* {!isSignUp && (
                         <p className="mb-3 mt-2 text-sm text-gray-500">
                             <a href="/forgot-password" className="text-orange-950 hover:text-blue-600">Reset your password?</a>
                         </p>
-                    )}
-                    <button onClick={(e) => { isSignUp ? signUp(e) : login(e) }}
-                        type="submit"
+                    )} */}
+                    <button onClick={(e) => { isSignUp ? signUp() : login(e) }}
+                        type="button"
                         className="mt-6 inline-flex w-full items-center justify-center  bg-black p-2 py-3 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 disabled:bg-gray-400"
                     >
                         {isSignUp ? 'Register' : 'Continue'}

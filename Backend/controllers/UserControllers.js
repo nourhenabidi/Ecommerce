@@ -1,31 +1,9 @@
 require('dotenv').config();
 const User = require('../models/Users');
 const jwt =require('jsonwebtoken')
-const { google } = require('googleapis');
 const nodemailer = require('nodemailer');
+const { type } = require('os');
 
-const CLIENT_ID = process.env.CLIENT_ID;
-const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const REDIRECT_URI = process.env.REDIRECT_URI;
-console.log('Type of CLIENT_ID:', typeof CLIENT_ID);
-console.log('Type of CLIENT_SECRET:', typeof CLIENT_SECRET);
-console.log('Type of REDIRECT_URI:', typeof REDIRECT_URI);
-const OAuth2 = google.auth.OAuth2;
-
-
-const SCOPES = ['https://mail.google.com/'];
-console.log('Initializing oauth2Client');
-
-const oauth2Client = new OAuth2(
-  process.env.CLIENT_ID,
-  process.env.CLIENT_SECRET,
-  "https://developers.google.com/oauthplayground"
-);
-// oauth2Client.re
-oauth2Client.setCredentials({
-  refresh_token:
-    process.env.REFRESH_TOKEN,
-});
 
 const generateToken = (id, fullName) => {
   const expiresIn = 60 * 60 * 48;
@@ -120,56 +98,37 @@ return res.status(200).json(search)
     res.status(500).json({ error: error.message });
   }
 }
-const authUser = (req, res) => {
-  const authUrl = oauth2Client.generateAuthUrl({
-      access_type: 'offline',
-      scope: SCOPES,
-  });
-  res.redirect(authUrl);
-};
-
-const handleAuthCallback = async (req, res) => {
-  const code = req.query.code;
-  const { tokens } = await oauth2Client.getToken(code);
-  req.session.tokens = tokens;
-  res.send('Authentication successful! You can now send emails.');
-};
 
 const sendEmail = async (req, res) => {
-  if (!req.session.tokens) {
-      return res.redirect('/auth');
-  }
+  const { userEmail, subject, message } = req.body;
 
-  oauth2Client.setCredentials(req.session.tokens);
-  const accessToken = await oauth2Client.getAccessToken();
+  // Create a Nodemailer transporter using SMTP
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
+    tls: {
+        rejectUnauthorized: false,  },
+});
 
-  const transport = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-          type: 'OAuth2',
-          user: 'your-email@gmail.com',
-          clientId: CLIENT_ID,
-          clientSecret: CLIENT_SECRET,
-          refreshToken: req.session.tokens.refresh_token,
-          accessToken: accessToken.token,
-      },
-  });
 
+  // Email options
   const mailOptions = {
-      from: 'YOUR_EMAIL@gmail.com',
-      to: 'TO_EMAIL@gmail.com',
-      subject: 'Nodemailer Test',
-      text: 'Hello from Nodemailer!',
-      html: '<h1>Hello from Nodemailer!</h1>',
+      from: userEmail,
+      to: process.env.EMAIL_USER,
+      subject: subject,
+      text: message,
   };
 
   try {
-      const result = await transport.sendMail(mailOptions);
-      res.send('Email sent successfully: ' + result);
+      await transporter.sendMail(mailOptions);
+      res.status(200).send({ message: 'Email sent successfully!' });
   } catch (error) {
-      console.error('Error sending email: ', error);
-      res.status(500).send('Error sending email');
+      console.error('Error sending email:', error);
+      res.status(500).send({ message: 'Error sending email', error: error.message });
   }
 };
 
-module.exports = {searchByName,deleteUserById,getAllUsers,getUserById,createUser,updateUserById ,authUser,handleAuthCallback, sendEmail}
+module.exports = {searchByName,deleteUserById,getAllUsers,getUserById,createUser,updateUserById , sendEmail}
