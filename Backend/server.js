@@ -41,5 +41,5 @@ app.use("/api/users",userRouter)
 //prod routes
 app.use("/api/products",itemRouter)
 app.use("/api/wishlist",wishListRouter)
-app.use("/api/card",cardRouter)
+app.use("/api/cart",cardRouter)
 

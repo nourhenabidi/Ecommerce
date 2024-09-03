@@ -1,14 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const cardController = require('../controllers/cardController');
+const CartRouter = require('../controllers/cardControllers');
 
-// Add a product to the card
-router.post('/add/:idUser/:id', cardController.addToCard);
-
-// Get all products in the card
-router.get('/getCard', cardController.getCard);
-
-// Delete a product from the card by ID
-router.delete('/delete/:id', cardController.deleteFromCard);
+router.get("/Cart",CartRouter.getAllCrats)
+router.get('/OneCart/:id',CartRouter.getOneCart)
+router.delete('/deleteCart/:id',CartRouter.DeleteCart)
+router.post('/addCart',CartRouter.addCart)
+router.put('/updateCart/:id',CartRouter.updateCart)
+router.get('/UserCart/:id',CartRouter.getUserCart)
 
 module.exports = router;

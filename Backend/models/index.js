@@ -1,27 +1,27 @@
-const { userM, wishlistM, cardM, productM } = require('../models/index');
+const { user, wishlist, card, product } = require('../models/index');
 
 
 // Define associations here
 // User and WishList: One user can have many wish lists
-userM.hasMany(wishlistM, { foreignKey: 'id', as: 'wishLists' });
-wishlistM.belongsTo(userM, { foreignKey: 'id', as: 'user' });
+user.hasMany(wishlist, { foreignKey: 'id', as: 'wishLists' });
+wishlist.belongsTo(user, { foreignKey: 'id', as: 'user' });
 
 // User and Card: One user can have many cards
-userM.hasMany(cardM, { foreignKey: 'id', as: 'cards' });
-cardM.belongsTo(userM, { foreignKey: 'id', as: 'user' });
+user.hasMany(card, { foreignKey: 'id', as: 'cards' });
+card.belongsTo(user, { foreignKey: 'user_id', as: 'user' });
 
-productM.hasMany(cardM, { foreignKey: 'ProductId', as: 'cards' });
-cardM.belongsTo(productM, { foreignKey: 'ProductId', as: 'product' });
+product.hasMany(card, { foreignKey: 'ProductId', as: 'cards' });
+card.belongsTo(product, { foreignKey: 'Product_id', as: 'product' });
 
 // Product and WishList: Many-to-Many relationship using a join table
-productM.belongsToMany(wishlistM, { through: 'WishListProducts', foreignKey: 'ProductId', as: 'wishLists' });
-wishlistM.belongsToMany(productM, { through: 'WishListProducts', foreignKey: 'WishListId', as: 'products' });
+product.belongsToMany(wishlist, { through: 'WishListProducts', foreignKey: 'ProductId', as: 'wishLists' });
+wishlist.belongsToMany(product, { through: 'WishListProducts', foreignKey: 'WishListId', as: 'products' });
 
 // Export models with relationships
 module.exports = {
     sequelize,
-    cardM,
-    productM,
-    userM,
-    wishlistM
+    card,
+    product,
+    user,
+    wishlist
 };

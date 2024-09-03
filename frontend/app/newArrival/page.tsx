@@ -27,7 +27,9 @@ interface Newproduct{
 function NewArrival() {
 
     const [news,setNews]= useState<Newproduct[]>([])
-
+    const [cartList, setCartList] = useState<Newproduct[]>([]);
+  
+    // const id = sessionStorage.getItem('id');
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -41,7 +43,11 @@ function NewArrival() {
         fetchData();
     }, []);
   
-
+    const addCart=(obj:object)=>{
+      axios.post("http://localhost:5000/api/cart/addCart",obj).then((res)=>{console.log(res)})
+      .catch((err)=>console.log(err))
+    }
+ 
   
     return (
         <div >
@@ -103,7 +109,16 @@ function NewArrival() {
     <div className="flex flex-col items-end">
       <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-blue-800 product-remise mb-1 mt-[-4px]">{e.ProductRemise}%</span>
       <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{e.Price}DT</span>
-      <a href="#" className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige ">Add to cart</a>
+      <button className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige "
+      onClick={() =>
+        addCart({
+          productName: e.Name,
+          CartImage: e.ProductImage,
+          productPrice: e.Price,
+          // Quantity: e.P,
+          user_id: id,
+        })
+      }>Add to cart</button>
     </div>
   </div>
   

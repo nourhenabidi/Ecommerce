@@ -10,46 +10,63 @@ import Typography from '@mui/joy/Typography';
 import Navbar from "../navBar/page";
 import Foot from "../footer/page"
 import NewAri from "../newArrival/page"
-import fadeIn from "../fadeIn"
-import { motion} from "framer-motion";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+interface Products {
+  id:number;
+  ProductID: number;
+  Name: string;
+  Description: string;
+  Price: string;
+  Availability:string;
+  ProductImage:string[];
+  ProductRemise:string;
+  colorProduct:string;
+  
+} 
+interface cat {
+productCategory:string
+  
+} 
+
 
 const bodyhome: React.FC =()=>{
-  const [animationTriggered, setAnimationTriggered] = useState<boolean>(false);
-  const scrollDown = useRef<HTMLDivElement>(null);
+  const [products, setProduct] = useState<Products[]>([]);
+  const [SelectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [chnageImage, setChangeImage] = useState<number>(0);
-
+  const router=useRouter()
   const images: string[] = [
-    'https://i.pinimg.com/736x/80/fe/6d/80fe6d1ba55d33e662ac4efbb695b127.jpg',
-    "https://i.pinimg.com/736x/b5/0e/eb/b50eeb23b5eabc48e7d1db341b6e4738.jpg",
-    "https://i.pinimg.com/736x/e9/4a/3d/e94a3d41ba9ec4d6f79273d9235892da.jpg"
+    'https://i.pinimg.com/736x/a1/1c/61/a11c619def3a03c690c44fdc87b429ff.jpg',
+    "https://i.pinimg.com/564x/f1/49/a7/f149a71c36ec88fc66bafa8da56179b1.jpg"
 ];
-  useEffect(() => {
-    const handleScroll = () => {
-      if (scrollDown.current) {
-        const down = scrollDown.current.getBoundingClientRect();
-        const vs = down.top < window.innerHeight
-        setAnimationTriggered(vs);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-
-  }, []);
 
   const changeImage = () => {
     setChangeImage((pr) => (pr + 1) % images.length);
   };
+
   useEffect(() => {
     const interval = setInterval(changeImage, 5000); 
     return () => clearInterval(interval); 
   }, []);
 
+  const getByCategory = async (productCategory: string): Promise<void> => {
+    try {
+      const response = await axios.get<Products[]>(
+        `http://localhost:5000/api/products/category/${productCategory}`
+      );
+      setProduct(response.data);
+      router.push(`/SearchByCategory/?category=${productCategory}`);
+  
+      setSelectedCategory(productCategory); 
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+
 return(
-  <motion.div 
-  ref={scrollDown}
-      variants={fadeIn('up')}
-       initial='hidden'
-      animate={animationTriggered ? 'show' : 'hidden'}
-  className="body">
+  <div className="body">
+
     <Navbar />
     <div className="fullbody" >
         <div >
@@ -59,7 +76,9 @@ return(
       <h1 className="anim text-white text-4xl font-bold mb-9">the autumn equinox</h1>
       <h1 className="anim text-white text-2xl ">Fall has arrived .</h1>
       <h1 className="anim text-white text-2xl">Shop for our new releases starting today .</h1>
-      <Link href={'/shopAllproducts'}><button className='anim text-white border rounded mt-5 mr-[30px]'>Shop Now</button></Link>
+      <a href="/shopAllproducts">
+      <button className='anim text-white border rounded mt-5 mr-[30px]'>Shop Now</button>
+      </a>
     </div>
     <div className=" main" >
  <NewAri />
@@ -70,7 +89,7 @@ return(
 
 <div className="content" style={{top:"35%",left:"-20%"}}>
 
-<a href="">
+<a>
       <p className="text-black font-bold text-sm px-5 py-4 relative hover:underline"  style={{width:"100%"}}>
       <span className=" anim block" style={{marginBottom:55}} >TAKE </span>
   <span className=" anim block" style={{marginBottom:55}}>YOUR LOVELY</span>
@@ -87,7 +106,7 @@ return(
       sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', p: 0, m: 0 , justifyContent: 'center',
         alignItems: 'center', padding: 6,mx: 'auto'}}
     >
-      <a href="/searchByCategory/earings">
+  <button onClick={()=>{getByCategory("Earings")}}> 
       <Card component="li" sx={{ minWidth: 300, flexGrow: 1,
               transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               '&:hover': {
@@ -113,8 +132,8 @@ return(
           </Typography>
         </CardContent>
       </Card>
-      </a>
-      <a href="/searchByCategory/necklaces">
+      </button>
+      <button onClick={()=>{getByCategory("Necklaces")}}> 
       <Card component="li" sx={{ minWidth: 300, flexGrow: 1,
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                 '&:hover': {
@@ -140,8 +159,9 @@ return(
           </Typography>
         </CardContent>
       </Card>
-      </a>
-      <a href="/searchByCategory/rings">
+      </button>
+
+      <a href="/SearchByCategory">
       <Card component="li" sx={{ minWidth: 300, flexGrow: 1,
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                 '&:hover': {
@@ -168,7 +188,7 @@ return(
         </CardContent>
       </Card>
       </a>
-      <a href="/searchByCategory/bracelets">
+      <a href="/SearchByCategory">
       <Card component="li" sx={{ minWidth: 300, flexGrow: 1,
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                 '&:hover': {
@@ -214,7 +234,8 @@ return(
 
     </div>
     <Foot />
-    </motion.div >
+   
+    </div>
 )
 }
 export default bodyhome

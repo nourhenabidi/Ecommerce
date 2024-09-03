@@ -1,20 +1,20 @@
 "use client";
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu"
+} from "../ui/dropdown-menu";
 import SignInModal from "../Login/page";
+import Signup from "../Signup/page"; // Import the Signup component
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-
-const AuthDrop = () => {
+const WhereDrop = () => {
   const [isSignInModalOpen, setSignInModalOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isSignUpModalOpen, setSignUpModalOpen] = useState(false); // State for sign-up modal
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   const openSignInModal = () => {
     setSignInModalOpen(true);
@@ -24,16 +24,31 @@ const AuthDrop = () => {
     setSignInModalOpen(false);
   };
 
+  const openSignUpModal = () => {
+    setSignInModalOpen(false); // Close login modal if it's open
+    setSignUpModalOpen(true); // Open sign-up modal
+  };
 
-    useEffect(() => {
+  const closeSignUpModal = () => {
+    setSignUpModalOpen(false);
+  };
+  const handleSignUpSuccess = () => {
+    closeSignUpModal(); // Close the sign-up modal
+    openSignInModal();  // Open the login modal
+  };
+  useEffect(() => {
     if (typeof window !== "undefined") {
-      // Check if the code is running on the client side
       const token = sessionStorage.getItem("token");
-      setIsLoggedIn(!!token); // Update the logged-in state
+      setIsAuthenticated(!!token);
     }
   }, []);
+
+  if (isAuthenticated === null) {
+    // Optionally render a loading state or nothing while determining authentication
+    return null;
+  }
+
   return (
-    
     <>
       <DropdownMenu>
         <DropdownMenuTrigger>
@@ -41,32 +56,30 @@ const AuthDrop = () => {
         </DropdownMenuTrigger>
 
         <DropdownMenuContent>
-          {isLoggedIn ? (
-            <DropdownMenuLabel >My Account</DropdownMenuLabel>
-          ) : (
-            <DropdownMenuLabel>Join Us !</DropdownMenuLabel>
-          )}
-          <DropdownMenuSeparator className="bg-gray-400" />
- 
-          {!isLoggedIn && (
+          <DropdownMenuLabel>Join Us!</DropdownMenuLabel>
+          {!sessionStorage.getItem("token") && (
             <DropdownMenuItem onClick={openSignInModal}>
-              Login
+              Sign in
             </DropdownMenuItem>
-          )}
-
-          {isLoggedIn&& (
-            <>
-              <DropdownMenuSeparator className="bg-gray-400" />
-              <DropdownMenuItem>Login</DropdownMenuItem>
-    
-            </>
           )}
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <SignInModal isOpen={isSignInModalOpen} onClose={closeSignInModal} />
+      {/* Sign-In Modal */}
+      <SignInModal
+        isOpen={isSignInModalOpen}
+        onClose={closeSignInModal}
+        onSignUp={openSignUpModal} // Pass the function to open sign-up modal
+      />
+
+      {/* Sign-Up Modal */}
+      <Signup 
+        isOpen={isSignUpModalOpen} 
+        onClose={closeSignUpModal} 
+        onSignUpSuccess={handleSignUpSuccess} // Pass the function to open login modal after successful sign-up
+      />
     </>
   );
 };
 
-export default AuthDrop;
+export default WhereDrop;

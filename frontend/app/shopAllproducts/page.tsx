@@ -4,12 +4,14 @@ import axios from 'axios';
 import Na from "../navBar/page"
 import "./prod.css"
 import Fot from"../footer/page"
-import {motion} from "framer-motion"
-import fadeIn from "../fadeIn"
-// import Link from 'next/link'
-
+// import { useSearchParams }  from 'next/navigation';
+ 
+// interface Prodprops{
+//   productCategory: string;
+// }
 
 interface Products {
+  id:number;
   ProductID: number;
   Name: string;
   Description: string;
@@ -18,13 +20,15 @@ interface Products {
   ProductImage:string[];
   ProductRemise:string;
   colorProduct:string;
+  
 } 
 const shopAllproducts: React.FC = () => {
     const [products, setProduct] = useState<Products[]>([]);
-    const [animationTriggered, setAnimationTriggered] = useState<boolean>(false);
-    // const scrollDown = useRef<HTMLDivElement>(null);
-    const [visible, setVisible] = useState(false);
-    // const userId = 1
+    const [SelectedCategory, setSelectedCategory] = useState<string | null>(null)
+    // const searchParams = useSearchParams();
+    // const category = searchParams.get('category');
+    const id = localStorage.getItem('id');
+ 
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -39,55 +43,53 @@ const shopAllproducts: React.FC = () => {
         fetchData(); 
       }, []);
 
-      useEffect(() => {
-        const checkScrollPosition = () => {
-          if (window.scrollY === 80) {
-            setVisible(true);
-          }
-        };
-  
-        checkScrollPosition();
-        window.scrollTo(0, 80);
-    
-        return () => {};
-      }, []);
+      const addCart=(obj:object)=>{
+        axios.post("http://localhost:5000/api/cart/addCart",obj).then((res)=>{console.log(res)})
+        .catch((err)=>console.log(err))
+      }
 
-      // const addToCart = async (product: Products,  userId: number) => {
-      //   try {
-      //     const response = await axios.post(`http://localhost:5000/api/cart/add/${userId}/${product.ProductID}`);
-      //     console.log('Product added to cart:', response.data);
-      //   } catch (error) {
-      //     console.error('Error adding product to cart', error);
-      //   }
-      // };
-
+      const getByCategory = async (productCategory: string): Promise<void> => {
+        try {
+          const response = await axios.get<Products[]>(
+            `http://localhost:5000/api/products/category/${productCategory}`
+          );
+          setProduct(response.data);
+          setSelectedCategory(productCategory); 
+        } catch (error) {
+          console.error(error);
+        }
+      };
 
 
     return(
-      <motion.div 
-           initial='hidden'
-          animate={visible ? 'show' : 'hidden'}
-          variants={fadeIn('up')}
+      <div 
+ 
       className="body">
           <Na />
           <div className='list'style={{ marginBottom: '50px' }}>
           <h1 className='title'>Our Collection</h1>
           <div className='text-slate-400 flex justify-center gap-16 mb-8 '>
-            <a className='relative hover:underline hover:text-black ' href="/searchByCategory/necklaces">Necklaces</a>
-            <a className='relative hover:underline hover:text-black' href="/searchByCategory/earings">Earings</a>
-            <a className='relative hover:underline hover:text-black' href="/searchByCategory/rings">Rings</a>
-            <a className='relative hover:underline hover:text-black' href="/searchByCategory/bracelets">Bracelets</a>
+          <button onClick={()=>{getByCategory("Necklaces")}}>   <a className='relative hover:underline hover:text-black ' >Necklaces</a></button>
+            <button onClick={()=>{getByCategory("Earings")}}>  <a className='relative hover:underline hover:text-black' >Earings</a></button>
+           <button onClick={()=>{getByCategory("Rings")}}> <a className='relative hover:underline hover:text-black'>Rings</a></button>
+           <button onClick={()=>{getByCategory("Bracelets")}}>  <a className='relative hover:underline hover:text-black' >Bracelets</a></button>
+           <button onClick={()=>{getByCategory("Pack")}}>  <a className='relative hover:underline hover:text-black' >Packs</a></button>
 </div>
 
           <div className="grid grid-cols-3 gap-4">
              
              {Array.isArray(products) && products.map((product) => (
+              
 <div  key={product.ProductID} className="product-card bg-white rounded-lg shadow mt-4" >
   
-    <a href="#" >
+    <a href="" >
     
       <div className="image-container">
-        <img src={product.ProductImage} alt="product image" />
+     
+        <img src={product.ProductImage} alt="product image" 
+        // onClick={() => router.push(`/productDetail/${product.ProductID}`)}
+        />
+        
         <div className="heart-icon">
                     <button>
                       <svg
@@ -116,9 +118,20 @@ const shopAllproducts: React.FC = () => {
     <div className="flex flex-col items-end">
       <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-blue-800 product-remise mb-1 mt-[-4px]">{product.ProductRemise}%</span>
       <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{product.Price}DT</span>
-     {/* <button onClick={() => addToCart(product)}> */}
-      <a href="/cart" className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige ">Add to cart</a>
-      {/* </button>  */}
+     <button 
+       className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige "
+       onClick={() =>
+        addCart({
+          product_ProductID: product.ProductID,
+          productName: product.Name,
+          CartImage: product.ProductImage,
+          productPrice: product.Price,
+          // Quantity: product.Description,
+          user_idUser:id,
+        })
+      }
+       >Add to cart
+      </button> 
     </div>
   </div>
 </div>
@@ -131,7 +144,7 @@ const shopAllproducts: React.FC = () => {
       </div>
       <Fot />
 
-    </motion.div>
+    </div>
     
     )
 }

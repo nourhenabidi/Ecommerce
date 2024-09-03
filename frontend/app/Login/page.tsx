@@ -9,15 +9,16 @@ import { useRouter } from 'next/navigation';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  onSignUp: () => void; // Add this prop for navigation to sign-up
 };
 
-const SignInModal = ({ isOpen, onClose }: Props) => {
+const SignInModal = ({ isOpen, onClose,onSignUp  }: Props) => {
     if (!isOpen) return null;
     
   const [isSignUp, setIsSignUp] = useState(false);
   const [close, setclose] = useState(false);
   const [userData, setUserData] = useState({ email: "", password: "" })
-  const [refresh, setRefresh] = useState(false);
+  
   const router = useRouter();
   const emailInput = useRef<HTMLInputElement>(null);
 //   const [error, setError] = useState<string>('');
@@ -58,16 +59,7 @@ const SignInModal = ({ isOpen, onClose }: Props) => {
     console.log(sessionStorage);
     
   };
-  const signUp =  () => {
 
-axios.post('http://localhost:5000/api/up/signup', userData).then((res)=>{
-    sessionStorage.setItem('token', res.data.token);
-     sessionStorage.setItem("P", res.data.newUser.password)
-    
-     window.location.reload()
-}).catch((err)=>console.log(err)
-)
-  };
 
 
 useEffect(() => {
@@ -78,7 +70,7 @@ useEffect(() => {
       console.log("User data:", parsedData);
       // Optionally handle user data or redirect if needed
     }
-  }, [refresh]);
+  },[]);
 
 // const ErrNotif = () => toast.error('please check your information!', {
 //     position: "top-center",
@@ -122,9 +114,9 @@ const handleKeyboardEvent = (e: KeyboardEvent<HTMLDivElement>) => {
   }
 };
 
-const toggleSignUp = () => {
-  setIsSignUp(prev => !prev);
-};
+// const goSignUp = () => {
+// router.push('/Signup')
+// };
 
 
 
@@ -154,10 +146,10 @@ const toggleSignUp = () => {
 
                 <div className="text-center">
                     <p className="mb-3 text-2xl font-semibold leading-5 text-black">
-                        {isSignUp ? 'Create an account' : 'Login to your account'}
+                        Login to your account
                     </p>
                     <p className="mt-2 text-sm leading-4 text-orange-950">
-                        {isSignUp ? 'Fill in the details to create an account.' : 'You must be logged in to perform this action.'}
+                       You must be logged in to perform this action.
                     </p>
                 </div>
 
@@ -185,7 +177,7 @@ const toggleSignUp = () => {
                         onChange={e => gatherData(e)}
                         type="password"
                         name="password"
-                        autoComplete={isSignUp ? "new-password" : "current-password"}
+                        autoComplete="current-password"
                         required
                         className="mt-2 block w-full  border border-black px-3 py-2 shadow-sm outline-none placeholder:text-gray-400 "
                         placeholder="Password"
@@ -195,27 +187,23 @@ const toggleSignUp = () => {
                             <a href="/forgot-password" className="text-orange-950 hover:text-blue-600">Reset your password?</a>
                         </p>
                     )} */}
-                    <button onClick={(e) => { isSignUp ? signUp() : login(e) }}
+                    <button onClick={(e) => {  login(e) }}
+                    
                         type="button"
                         className="mt-6 inline-flex w-full items-center justify-center  bg-black p-2 py-3 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 disabled:bg-gray-400"
                     >
-                        {isSignUp ? 'Register' : 'Continue'}
+                        Continue
                 
                     </button>
                 </form>
 
                 <div className="mt-6 text-center text-sm text-slate-600">
-                    {isSignUp ? (
-                        <>
-                            Already have an account?
-                            <button onClick={toggleSignUp} className="font-medium text-orange-950 ml-1">Login</button>
-                        </>
-                    ) : (
+              
                         <>
                             Don't have an account?
-                            <button onClick={toggleSignUp} className="font-medium text-orange-950 ml-1">Sign up</button>
+                            <button onClick={onSignUp} className="font-medium text-orange-950 ml-1">Sign up</button>
                         </>
-                    )}
+                  
                 </div>
             </div>
         </div>
