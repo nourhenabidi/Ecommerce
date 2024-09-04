@@ -19,7 +19,6 @@ const SignInModal = ({ isOpen, onClose,onSignUp  }: Props) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [close, setclose] = useState(false);
   const [userData, setUserData] = useState({ email: "", password: "" })
-  // const router = useRouter();
   const emailInput = useRef<HTMLInputElement>(null);
 
   // Function to parse JWT
@@ -126,9 +125,7 @@ const handleKeyboardEvent = (e: KeyboardEvent<HTMLDivElement>) => {
   }
 };
 
-// const goSignUp = () => {
-// router.push('/Signup')
-// };
+
 
 
 

@@ -17,6 +17,7 @@ const WhereDrop = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   const openSignInModal = () => {
+    setSignUpModalOpen(false); // Close sign-up if open
     setSignInModalOpen(true);
   };
 
@@ -32,10 +33,12 @@ const WhereDrop = () => {
   const closeSignUpModal = () => {
     setSignUpModalOpen(false);
   };
+
   const handleSignUpSuccess = () => {
     closeSignUpModal(); // Close the sign-up modal
     openSignInModal();  // Open the login modal
   };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const token = sessionStorage.getItem("token");
@@ -58,9 +61,12 @@ const WhereDrop = () => {
         <DropdownMenuContent>
           <DropdownMenuLabel>Join Us!</DropdownMenuLabel>
           {!sessionStorage.getItem("token") && (
-            <DropdownMenuItem onClick={openSignInModal}>
-              Sign in
-            </DropdownMenuItem>
+            <>
+              <DropdownMenuItem onClick={openSignInModal}>
+                Sign in
+              </DropdownMenuItem>
+
+            </>
           )}
         </DropdownMenuContent>
       </DropdownMenu>

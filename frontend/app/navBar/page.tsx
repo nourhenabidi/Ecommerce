@@ -6,12 +6,19 @@ import  { createFilterOptions } from '@mui/material/Autocomplete';
 import axios from "axios";
 import "./nav.css"
 import Drop from "./AuthDrop"
+import Cart from '../cart/page';
 
 interface Product {
+  ProductID: number;
   Name: string;
+  ProductImage: string[];
+  Price: number;
 }
 
-const filter = createFilterOptions<Product>();
+type Quantities = {
+  [ProductId: number]: number;
+};
+// const filter = createFilterOptions<Product>();
 
 const Navbar: React.FC =()=>{
     const [data, setData] = useState<Product[] | null>(null);
@@ -21,41 +28,32 @@ const Navbar: React.FC =()=>{
     const [activeIndex, setActiveIndex]=useState<number|null>(null)
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [selectedSuggestion, setSelectedSuggestion] = useState<string | null>(null);
+    const [isCartVisible, setIsCartVisible] = useState(false);
+    const [quantities, setQuantities] = useState<Quantities>({});
+
+    const token = sessionStorage.getItem('token');
 
 
-    useEffect(() => {
-        const fetchData = async () => {
-          
-          try {
-            const response = await axios.get('http://localhost:5000/api/products/allProducts');
-            setData(response.data);
-          } catch (error) {
-            setError('Error fetching data');
-          } finally {
-            setLoading(false);
-          }
-        };
-    
+
+    const fetchProducts = async (): Promise<void> => {
+      try {
+        const response = await axios.get<Product[]>(`http://localhost:5000/api/cart/getcart/1`);
+        setData(response.data);
+        const initialQuantities: Quantities = {};
+        response.data.forEach((product) => {
+          initialQuantities[product.ProductID] = 1;
+        });
+        setQuantities(initialQuantities);
+        return response.data
+      } catch (error) {
+      console.log(token);
         
-        fetchData();
-      }, []);
+        console.error('Error fetching data:', error);
+      }
+    };
+
     
 
-      // const search = async () => {
-      //   try {
-      //     const response = await fetch(`http://localhost:5000/api/products/category/${searched}`);
-    
-      //     if (!response.ok) {
-      //       console.error(`HTTP error! Status: ${response.status}`);
-      //     }
-    
-      //     const searchData: Product[] = await response.json();
-      //     setData(searchData);
-      //     console.log("found", searchData);
-      //   } catch (error) {
-      //     console.error(error);
-      //   }
-      // };
 
       const fetchSuggestions = async (name:any) => {
            await axios.get(`http://localhost:5000/api/products/oneProduct/${name}`)
@@ -88,17 +86,18 @@ console.log('data',res.data)
         console.log('Clicked suggestion:', suggestion)
         setSelectedSuggestion(suggestion);
         setSearched(suggestion);
-        setSuggestions({});
+        setSuggestions([]);
       };
 
       const handleItemClick = (index: number) => {
         setActiveIndex(index === activeIndex ? null : index);
       };
 
-      // const toggleSearch = () => {
-      //   setShowSearch(!showSearch);
-      // };
+  
+      const toggleCart = () => {
+        setIsCartVisible((prev) => !prev);
 
+      };
 
 
   return (
@@ -154,7 +153,7 @@ console.log('data',res.data)
 
                 
  
- <button className="absolute right-[0] bottom-[0] btn_search" onClick={()=>{handleSuggestionClick()}}>
+ <button className="absolute right-[0] bottom-[0] btn_search" onClick={()=>{fetchSuggestions(searched)}}>
   <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" className="cursor-pointer" height="20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M443.5 420.2L336.7 312.4c20.9-26.2 33.5-59.4 33.5-95.5 
 0-84.5-68.5-153-153.1-153S64 132.5 64 217s68.5 153 153.1 153c36.6 0 70.1-12.8 96.5-34.2l106.1 107.1c3.2 3.4 7.6 5.1 11.9 5.1 4.1 0 8.2-1.5 11.3-4.5 6.6-6.3 6.8-16.7.6-23.3zm-226.4-83.1c-32.1 0-62.3-12.5-85-35.2-22.7-22.7-35.2-52.9-35.2-84.9 0-32.1 12.5-62.3 35.2-84.9 22.7-22.7 52.9-35.2 85-35.2s62.3 12.5 85 35.2c22.7 22.7 35.2 52.9 35.2 84.9 0 32.1-12.5 62.3-35.2 84.9-22.7 22.7-52.9 35.2-85 35.2z"></path>
 </svg>
@@ -167,9 +166,13 @@ console.log('data',res.data)
   
 <FavoriteBorderIcon />
 </a>
-<a href="/cart">
-<ShoppingBagIcon />
-</a>
+<div>
+      <button onClick={()=>{toggleCart()}} aria-label="Open cart">
+        <div className="h-6 w-6 text-gray-800"> 
+        <ShoppingBagIcon  />
+        </div>
+      </button>
+      {isCartVisible && <Cart fetchProducts={fetchProducts} />}
             <Drop/>
 </div>
         </div>
@@ -177,7 +180,7 @@ console.log('data',res.data)
    
     </div>
     
-
+</div>
   )
 }
 

@@ -4,7 +4,7 @@ import axios from 'axios';
 import Na from "../navBar/page"
 import "../SearchByCategory/category.css"
 import Fot from"../footer/page"
-
+import SignInModal from "../Login/page";
  
 
 
@@ -23,6 +23,7 @@ interface Products {
 const shopAllproducts: React.FC = () => {
     const [products, setProduct] = useState<Products[]>([]);
     const [SelectedCategory, setSelectedCategory] = useState<string | null>(null)
+    const [isSignInModalOpen, setSignInModalOpen] = useState(false);
     const id=sessionStorage.getItem('token')?.split(',')[1]
  
     useEffect(() => {
@@ -39,11 +40,20 @@ const shopAllproducts: React.FC = () => {
         fetchData(); 
       }, []);
 
-      const addCart=(obj:object)=>{
-        axios.post("http://localhost:5000/api/cart/addCart",obj).then((res)=>{console.log(res)})
-        .catch((err)=>console.log(err))
-      }
-
+      const addCart = async (obj: object) => {
+        if (id) {
+          try {
+            await axios.post("http://localhost:5000/api/cart/addCart", obj);
+            // Redirect to cart page after adding item to the cart
+            window.location.href = '/cart';
+          } catch (err) {
+            console.log(err);
+          }
+        } else {
+          // Show sign-in modal if not authenticated
+          setSignInModalOpen(true);
+        }
+      };
       const getByCategory = async (productCategory: string): Promise<void> => {
         try {
           const response = await axios.get<Products[]>(
@@ -144,7 +154,11 @@ const shopAllproducts: React.FC = () => {
       </div>
       </div>
       <Fot />
-
+      <SignInModal
+        isOpen={isSignInModalOpen}
+        onClose={() => setSignInModalOpen(false)}
+        onSignUp={() => {/* Handle sign-up logic if needed */}}
+      />
     </div>
     
     )

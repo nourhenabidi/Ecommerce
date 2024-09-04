@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/free-mode";
 import { FreeMode, Pagination } from "swiper/modules";
-
+import SignInModal from "../Login/page";
 
 
 interface Newproduct{
@@ -28,8 +28,8 @@ interface Newproduct{
 function NewArrival() {
 
     const [news,setNews]= useState<Newproduct[]>([])
-    const [cartList, setCartList] = useState<Newproduct[]>([]);
-    const id = localStorage.getItem('id');
+    const [isSignInModalOpen, setSignInModalOpen] = useState(false);
+    const token=sessionStorage.getItem('token')
     
     useEffect(() => {
         const fetchData = async () => {
@@ -44,11 +44,18 @@ function NewArrival() {
         fetchData();
     }, []);
   
-    const addCart=(obj:object)=>{
-      axios.post("http://localhost:5000/api/cart/addCart",obj).then((res)=>{console.log(res)})
-      .catch((err)=>console.log(err))
-    }
- 
+    const addCart = async (obj: object) => {
+      if (token) {
+        try {
+          await axios.post("http://localhost:5000/api/cart/addCart", obj);
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        // Show sign-in modal if not authenticated
+        setSignInModalOpen(true);
+      }
+    };
   
     return (
         <div >
@@ -110,16 +117,20 @@ function NewArrival() {
     <div className="flex flex-col items-end">
       <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-blue-800 product-remise mb-1 mt-[-4px]">{e.ProductRemise}%</span>
       <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{e.Price}DT</span>
-      <button className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige "
-      onClick={() =>
+      <button 
+       className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige "
+       onClick={() =>
         addCart({
+          product_ProductID: e.ProductID,
           productName: e.Name,
           CartImage: e.ProductImage,
           productPrice: e.Price,
-          // Quantity: e.P,
-          user_id: id,
+          // Quantity: product.Description,
+          user_idUser:token,
         })
-      }>Add to cart</button>
+      }
+       >Add to cart
+      </button> 
     </div>
   </div>
   
@@ -128,7 +139,11 @@ function NewArrival() {
 ))}
 </Swiper>
 </div>
-
+<SignInModal
+        isOpen={isSignInModalOpen}
+        onClose={() => setSignInModalOpen(false)}
+        onSignUp={() => {/* Handle sign-up logic if needed */}}
+      />
 </div>
     )}
 

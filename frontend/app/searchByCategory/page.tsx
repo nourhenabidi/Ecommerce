@@ -6,6 +6,7 @@ import "./category.css";
 import Navbar from '../navBar/page';
 import Footer from '../footer/page';
 import { useRouter } from "next/navigation";
+import SignInModal from "../Login/page";
 
 interface Products {
   ProductID: number;
@@ -24,8 +25,9 @@ const SearchByCategory: React.FC = () => {
   const [categories, setCategories] = useState<Products[]>([]);
   const searchParams = useSearchParams();
   const [SelectedCategory, setSelectedCategory] = useState<string | null>(null)
-
-  // const category = searchParams.get('category');
+  const [isSignInModalOpen, setSignInModalOpen] = useState(false);
+  const id=sessionStorage.getItem('token')?.split(',')[1]
+ 
   const router=useRouter()
 console.log("cat=====",searchParams.get("category"));
 
@@ -57,6 +59,21 @@ const getByCategory = async (productCategory: string): Promise<void> => {
     setSelectedCategory(productCategory); 
   } catch (error) {
     console.error(error);
+  }
+};
+
+const addCart = async (obj: object) => {
+  if (id) {
+    try {
+      await axios.post("http://localhost:5000/api/cart/addCart", obj);
+      // Redirect to cart page after adding item to the cart
+      window.location.href = '/cart';
+    } catch (err) {
+      console.log(err);
+    }
+  } else {
+    // Show sign-in modal if not authenticated
+    setSignInModalOpen(true);
   }
 };
 
@@ -117,9 +134,20 @@ const getByCategory = async (productCategory: string): Promise<void> => {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-3xl font-bold text-gray-900 dark:text-black">{product.Price}DT</span>
-                  <a href="#" className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige">
-                    Add to cart
-                  </a>
+                  <button 
+       className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige "
+       onClick={() =>
+        addCart({
+          product_ProductID: product.ProductID,
+          productName: product.Name,
+          CartImage: product.ProductImage,
+          productPrice: product.Price,
+          // Quantity: product.Description,
+          user_idUser:id,
+        })
+      }
+       >Add to cart
+      </button> 
                 </div>
               </div>
             </div>
@@ -128,6 +156,11 @@ const getByCategory = async (productCategory: string): Promise<void> => {
       </div> 
       </div>
       <Footer />
+      <SignInModal
+        isOpen={isSignInModalOpen}
+        onClose={() => setSignInModalOpen(false)}
+        onSignUp={() => {/* Handle sign-up logic if needed */}}
+      />
     </div>
   );
 };
