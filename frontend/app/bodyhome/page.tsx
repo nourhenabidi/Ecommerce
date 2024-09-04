@@ -12,6 +12,7 @@ import Foot from "../footer/page"
 import NewAri from "../newArrival/page"
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useSearchParams }  from 'next/navigation';
 interface Products {
   id:number;
   ProductID: number;
@@ -34,6 +35,8 @@ const bodyhome: React.FC =()=>{
   const [products, setProduct] = useState<Products[]>([]);
   const [SelectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [chnageImage, setChangeImage] = useState<number>(0);
+  const searchParams = useSearchParams();
+  const category = searchParams.get('category');
   const router=useRouter()
   const images: string[] = [
     'https://i.pinimg.com/736x/a1/1c/61/a11c619def3a03c690c44fdc87b429ff.jpg',
@@ -89,13 +92,15 @@ return(
 
 <div className="content" style={{top:"35%",left:"-20%"}}>
 
-<a>
+<button onClick={()=>{getByCategory("Pack")}}> 
+  <a>
       <p className="text-black font-bold text-sm px-5 py-4 relative hover:underline"  style={{width:"100%"}}>
       <span className=" anim block" style={{marginBottom:55}} >TAKE </span>
   <span className=" anim block" style={{marginBottom:55}}>YOUR LOVELY</span>
   <span className=" anim block"style={{marginBottom:55}} >PACK </span>
         </p>
         </a>
+        </button>
       </div> 
       </div>
       <div className=" main" >
@@ -161,7 +166,7 @@ return(
       </Card>
       </button>
 
-      <a href="/SearchByCategory">
+      <button onClick={()=>{getByCategory("Rings")}}> 
       <Card component="li" sx={{ minWidth: 300, flexGrow: 1,
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                 '&:hover': {
@@ -187,8 +192,8 @@ return(
           </Typography>
         </CardContent>
       </Card>
-      </a>
-      <a href="/SearchByCategory">
+      </button>
+      <button onClick={()=>{getByCategory("Bracelets")}}> 
       <Card component="li" sx={{ minWidth: 300, flexGrow: 1,
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                 '&:hover': {
@@ -215,7 +220,7 @@ return(
         </CardContent>
 
       </Card>
-      </a>
+      </button>
       </Box>
       </div>
       <div className="pause" style={{ marginBottom: '100px' }}>

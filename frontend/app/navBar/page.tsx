@@ -167,7 +167,7 @@ console.log('data',res.data)
   
 <FavoriteBorderIcon />
 </a>
-<a href="">
+<a href="/cart">
 <ShoppingBagIcon />
 </a>
             <Drop/>

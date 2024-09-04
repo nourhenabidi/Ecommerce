@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams }  from 'next/navigation';
 import axios from 'axios';
 import "./category.css";
+import Navbar from '../navBar/page';
+import Footer from '../footer/page';
 import { useRouter } from "next/navigation";
 
 interface Products {
@@ -17,10 +19,14 @@ interface Products {
   productCategory: string;
 }
 
+
 const SearchByCategory: React.FC = () => {
   const [categories, setCategories] = useState<Products[]>([]);
   const searchParams = useSearchParams();
+  const [SelectedCategory, setSelectedCategory] = useState<string | null>(null)
+
   // const category = searchParams.get('category');
+  const router=useRouter()
 console.log("cat=====",searchParams.get("category"));
 
 const category = searchParams.get('category');
@@ -40,27 +46,43 @@ console.log("catttttttttt",category);
   ,[category]);
 console.log("state===== cats",categories);
 
+const getByCategory = async (productCategory: string): Promise<void> => {
+  try {
+    const response = await axios.get<Products[]>(
+      `http://localhost:5000/api/products/category/${productCategory}`
+    );
+    setCategories(response.data);
+    router.push(`/SearchByCategory/?category=${productCategory}`);
+
+    setSelectedCategory(productCategory); 
+  } catch (error) {
+    console.error(error);
+  }
+};
+
   return (
     <div className="body">
-
-       <h1 className='title'style={{ marginBottom: '50px' }}>Catalog</h1>
+<Navbar />
+<div className='all'>
+       <h1 className='title'>Catalog</h1>
       <div className='text-slate-400 flex justify-center gap-16 mb-8'>
-        <a className='relative hover:underline hover:text-black' >Necklaces</a>
-        <a className='relative hover:underline hover:text-black' >Earings</a>
-        <a className='relative hover:underline hover:text-black' >Rings</a>
-        <a className='relative hover:underline hover:text-black' >Bracelets</a>
-        <a className='relative hover:underline hover:text-black' >Packs</a>
+        <button className='relative hover:underline hover:text-black' onClick={()=>{getByCategory("Necklaces")}} >Necklaces</button>
+        <button className='relative hover:underline hover:text-black'onClick={()=>{getByCategory("Earings")}}  >Earings</button>
+        <button className='relative hover:underline hover:text-black'onClick={()=>{getByCategory("Rings")}} >Rings</button>
+        <button className='relative hover:underline hover:text-black' onClick={()=>{getByCategory("Bracelets")}} >Bracelets</button>
+        <button className='relative hover:underline hover:text-black' onClick={()=>{getByCategory("Pack")}} >Packs</button>
       </div>
 
       <div className='contenu'>
         <div className="grid grid-cols-3 gap-4 flex justify-center">
           {Array.isArray(categories) && categories.map((product) => (
+            
             <div key={product.ProductID} className="product-card bg-white rounded-lg shadow mt-4">
               <a href="#">
                 <div className='image'>
                   <img
                     src={product.ProductImage} 
-                    alt={product.Name}
+                    alt=""
                   />
                   <div className="heart-icon">
                     <button>
@@ -104,7 +126,8 @@ console.log("state===== cats",categories);
           ))}
         </div>
       </div> 
-
+      </div>
+      <Footer />
     </div>
   );
 };

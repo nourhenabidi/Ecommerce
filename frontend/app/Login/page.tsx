@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { IoCloseSharp } from "react-icons/io5";
 import 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import 'react-toastify/dist/ReactToastify.css';
 
 type Props = {
   isOpen: boolean;
@@ -18,10 +19,9 @@ const SignInModal = ({ isOpen, onClose,onSignUp  }: Props) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [close, setclose] = useState(false);
   const [userData, setUserData] = useState({ email: "", password: "" })
-  
-  const router = useRouter();
+  // const router = useRouter();
   const emailInput = useRef<HTMLInputElement>(null);
-//   const [error, setError] = useState<string>('');
+
   // Function to parse JWT
   const parseJWT = (token: string) => {
     const base64Url = token.split('.')[1]; // Get the payload part
@@ -32,7 +32,18 @@ const SignInModal = ({ isOpen, onClose,onSignUp  }: Props) => {
 
     return JSON.parse(jsonPayload);
   };
-
+  
+  const ErrNotif = () => toast.error('please check your information!', {
+    position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  });
+ 
   const login = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     try {
       e.preventDefault();
@@ -51,10 +62,11 @@ const SignInModal = ({ isOpen, onClose,onSignUp  }: Props) => {
       sessionStorage.setItem("P", res.data.user.password);
       console.log(res.data);
       // Ensure res.data.user.id is available
-      router.push(`/bodyhome?account=${res.data.user.id}`);
+      // router.push(`/bodyhome?account=${res.data.user.id}`);
       onClose();
     } catch (error) {
       console.log(error);
+      ErrNotif()
     }
     console.log(sessionStorage);
     
@@ -193,7 +205,7 @@ const handleKeyboardEvent = (e: KeyboardEvent<HTMLDivElement>) => {
                         className="mt-6 inline-flex w-full items-center justify-center  bg-black p-2 py-3 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 disabled:bg-gray-400"
                     >
                         Continue
-                
+                        <ToastContainer />
                     </button>
                 </form>
 

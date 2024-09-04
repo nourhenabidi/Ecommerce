@@ -11,6 +11,7 @@ import { FreeMode, Pagination } from "swiper/modules";
 
 
 interface Newproduct{
+  id:number;
     ProductID: number;
     Name: string;
     ProductImage:string[];
@@ -28,8 +29,8 @@ function NewArrival() {
 
     const [news,setNews]= useState<Newproduct[]>([])
     const [cartList, setCartList] = useState<Newproduct[]>([]);
-  
-    // const id = sessionStorage.getItem('id');
+    const id = localStorage.getItem('id');
+    
     useEffect(() => {
         const fetchData = async () => {
             try {

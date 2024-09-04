@@ -2,13 +2,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import Na from "../navBar/page"
-import "./prod.css"
+import "../SearchByCategory/category.css"
 import Fot from"../footer/page"
-// import { useSearchParams }  from 'next/navigation';
+
  
-// interface Prodprops{
-//   productCategory: string;
-// }
+
 
 interface Products {
   id:number;
@@ -25,9 +23,7 @@ interface Products {
 const shopAllproducts: React.FC = () => {
     const [products, setProduct] = useState<Products[]>([]);
     const [SelectedCategory, setSelectedCategory] = useState<string | null>(null)
-    // const searchParams = useSearchParams();
-    // const category = searchParams.get('category');
-    const id = localStorage.getItem('id');
+    const id=sessionStorage.getItem('token')?.split(',')[1]
  
     useEffect(() => {
         const fetchData = async () => {
@@ -66,7 +62,7 @@ const shopAllproducts: React.FC = () => {
  
       className="body">
           <Na />
-          <div className='list'style={{ marginBottom: '50px' }}>
+          <div className='all'style={{ marginBottom: '50px' }}>
           <h1 className='title'>Our Collection</h1>
           <div className='text-slate-400 flex justify-center gap-16 mb-8 '>
           <button onClick={()=>{getByCategory("Necklaces")}}>   <a className='relative hover:underline hover:text-black ' >Necklaces</a></button>
@@ -75,8 +71,8 @@ const shopAllproducts: React.FC = () => {
            <button onClick={()=>{getByCategory("Bracelets")}}>  <a className='relative hover:underline hover:text-black' >Bracelets</a></button>
            <button onClick={()=>{getByCategory("Pack")}}>  <a className='relative hover:underline hover:text-black' >Packs</a></button>
 </div>
-
-          <div className="grid grid-cols-3 gap-4">
+<div className='contenu'>
+          <div className="grid grid-cols-3 gap-4 flex justify-center">
              
              {Array.isArray(products) && products.map((product) => (
               
@@ -84,10 +80,10 @@ const shopAllproducts: React.FC = () => {
   
     <a href="" >
     
-      <div className="image-container">
+      <div className="image">
      
-        <img src={product.ProductImage} alt="product image" 
-        // onClick={() => router.push(`/productDetail/${product.ProductID}`)}
+        <img src={product.ProductImage} alt="" 
+
         />
         
         <div className="heart-icon">
@@ -115,8 +111,12 @@ const shopAllproducts: React.FC = () => {
       <h4 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Name}</h4>
       <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Description}</h5>
     </a>
-    <div className="flex flex-col items-end">
-      <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-blue-800 product-remise mb-1 mt-[-4px]">{product.ProductRemise}%</span>
+    <div className="flex items-center mt-2.5 mb-5">
+                  <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-blue-800 ms-3 product-remise">
+                    {product.ProductRemise}%
+                  </span>
+                </div>
+      <div className='flex items-center justify-between'>
       <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{product.Price}DT</span>
      <button 
        className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige "
@@ -132,14 +132,15 @@ const shopAllproducts: React.FC = () => {
       }
        >Add to cart
       </button> 
+      </div>
     </div>
   </div>
-</div>
+
 
 
 ))}
 
-
+</div>
       </div>
       </div>
       <Fot />

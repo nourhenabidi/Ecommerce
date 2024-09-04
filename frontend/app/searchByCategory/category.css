@@ -1,3 +1,6 @@
+.all{
+  padding-top: 80px;
+}
 .contenu {
     width: 100%;
     display: flex;
