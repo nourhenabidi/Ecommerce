@@ -8,7 +8,9 @@ import "swiper/css/pagination";
 import "swiper/css/free-mode";
 import { FreeMode, Pagination } from "swiper/modules";
 import SignInModal from "../Login/page";
-
+import jwtDecode from 'jwt-decode';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface Newproduct{
   id:number;
@@ -22,7 +24,12 @@ interface Newproduct{
     colorProduct:string;
 } 
 
-
+interface DecodedToken {
+  user: {
+    id: number;
+    email: string;
+  };
+}
 
 
 function NewArrival() {
@@ -43,20 +50,41 @@ function NewArrival() {
 
         fetchData();
     }, []);
-  
-    const addCart = async (obj: object) => {
+
+    const getUserIdFromToken = () => {
       if (token) {
         try {
-          await axios.post("http://localhost:5000/api/cart/addCart", obj);
-        } catch (err) {
-          console.log(err);
+          const decodedToken: DecodedToken = jwtDecode<DecodedToken>(token);
+          return decodedToken.user.id;
+        } catch (error) {
+          console.error('Invalid token');
         }
-      } else {
+      }
+      return null;
+    };
+
+    const addCart = async (obj: object) => {
+    const userId = getUserIdFromToken();
+    if (userId) {
+      try {
+        const cartData = { ...obj, user_idUser: userId }; 
+        await axios.post("http://localhost:5000/api/cart/addCart", cartData);
+        notify()
+      } catch (err) {
+        console.log(err);
+      }
         // Show sign-in modal if not authenticated
         setSignInModalOpen(true);
       }
     };
+    const notify = () => {
   
+      toast.success("Success Notification!", {
+        position:"top-right",
+        autoClose: false
+      });
+ 
+    };
     return (
         <div >
             <h1 className="flex justify-center text-3xl "style={{ marginBottom: '50px' }}>New Arrivals</h1>
@@ -119,17 +147,22 @@ function NewArrival() {
       <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{e.Price}DT</span>
       <button 
        className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige "
-       onClick={() =>
-        addCart({
-          product_ProductID: e.ProductID,
-          productName: e.Name,
-          CartImage: e.ProductImage,
-          productPrice: e.Price,
-          // Quantity: product.Description,
-          user_idUser:token,
-        })
-      }
-       >Add to cart
+       onClick={() => {
+        // Ensure both functions are called
+        try {
+          addCart({
+            product_ProductID: e.ProductID,
+            productName: e.Name,
+            CartImage: e.ProductImage,
+            productPrice: e.Price,
+            user_idUser: token,
+          });
+          notify();
+        } catch (error) {
+          console.error("An error occurred while adding to cart or notifying:", error);
+        }
+      }}
+    >Add to cart
       </button> 
     </div>
   </div>

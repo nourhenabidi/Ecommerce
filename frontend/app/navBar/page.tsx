@@ -44,7 +44,6 @@ const Navbar: React.FC =()=>{
           initialQuantities[product.ProductID] = 1;
         });
         setQuantities(initialQuantities);
-        return response.data
       } catch (error) {
       console.log(token);
         
@@ -162,15 +161,15 @@ console.log('data',res.data)
 
 </div>
 
-<a href="">
+<a href="/wishlist">
   
 <FavoriteBorderIcon />
 </a>
 <div>
       <button onClick={()=>{toggleCart()}} aria-label="Open cart">
-        <div className="h-6 w-6 text-gray-800"> 
+      
         <ShoppingBagIcon  />
-        </div>
+       
       </button>
       {isCartVisible && <Cart fetchProducts={fetchProducts} />}
             <Drop/>

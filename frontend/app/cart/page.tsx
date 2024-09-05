@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-
+import { IoCloseSharp } from "react-icons/io5";
 
 
 interface Product {
@@ -19,8 +19,13 @@ interface CartProps {
   fetchProducts:() => void;
 }
 
+type Props = {
 
-const Cart:React.FC<CartProps> = ({fetchProducts}) => {
+  onClose: () => void;
+ 
+};
+
+const Cart:React.FC<CartProps> = ({fetchProducts}, {onClose}) => {
 
   const [products, setProducts] = useState<Product[]>([]);
   const [quantities, setQuantities] = useState<Quantities>({});
@@ -91,12 +96,10 @@ const Cart:React.FC<CartProps> = ({fetchProducts}) => {
                   <div className="flex items-start justify-between">
                     <h2 className="text-lg font-medium text-gray-900" id="slide-over-title">Shopping Cart</h2>
                     <div className="ml-3 flex h-7 items-center">
-                      <button type="button"onClick={closeCart} className="relative -m-2 p-2 text-gray-400 hover:text-gray-500">
-                        <span className="absolute -inset-0.5"></span>
+                      <button type="button"onClick={onClose} className="relative -m-2 p-2 text-gray-400 hover:text-gray-500">
+                      <IoCloseSharp />
                         <span className="sr-only">Close panel</span>
-                        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+                      
                       </button>
                     </div>
                   </div>
@@ -105,9 +108,11 @@ const Cart:React.FC<CartProps> = ({fetchProducts}) => {
                     <div className="flow-root">
                       <ul role="list" className="-my-6 divide-y divide-gray-200">
                         {products.map((product) => (
+                      
                           <li key={product.ProductID} className="flex py-6">
+                              
                             <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                              <img src={product.ProductImage[0]} alt={product.Name} className="h-full w-full object-cover object-center" />
+                              <img src={product.ProductImage}  className="h-full w-full object-cover object-center" />
                             </div>
 
                             <div className="ml-4 flex flex-1 flex-col">
@@ -155,7 +160,7 @@ const Cart:React.FC<CartProps> = ({fetchProducts}) => {
                   <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                     <p>
                       or
-                      <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500" onClick={() => router.push('/')}>
+                      <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500" onClick={() => router.push('/shopAllproducts')}>
                         Continue Shopping
                         <span aria-hidden="true"> &rarr;</span>
                       </button>

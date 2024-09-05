@@ -3,7 +3,11 @@ const {DataTypes } = require('sequelize');
 
 
     const WishList=sequelize.define('WishList',{
-
+        wishID: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+          },
        wishListName:{
             type:DataTypes.STRING,
             allowNull:false

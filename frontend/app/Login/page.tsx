@@ -83,16 +83,7 @@ useEffect(() => {
     }
   },[]);
 
-// const ErrNotif = () => toast.error('please check your information!', {
-//     position: "top-center",
-//     duration: 5000,
-//     closeOnClick: true,
-//     pauseOnHover: true,
-//     draggable: true,
-//     progress: undefined,
-//     theme: "colored",
 
-//   });
 
 
 const gatherData = (e: React.ChangeEvent<HTMLInputElement>) => {

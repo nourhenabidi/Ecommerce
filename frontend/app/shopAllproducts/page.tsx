@@ -5,7 +5,8 @@ import Na from "../navBar/page"
 import "../SearchByCategory/category.css"
 import Fot from"../footer/page"
 import SignInModal from "../Login/page";
- 
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 interface Products {
@@ -46,6 +47,7 @@ const shopAllproducts: React.FC = () => {
             await axios.post("http://localhost:5000/api/cart/addCart", obj);
             // Redirect to cart page after adding item to the cart
             window.location.href = '/cart';
+            notify()
           } catch (err) {
             console.log(err);
           }
@@ -66,7 +68,13 @@ const shopAllproducts: React.FC = () => {
         }
       };
 
+      const notify = () => {
 
+        toast.success("Success Adding !", {
+          position: "top-right",
+          autoClose: false
+        });
+      }
     return(
       <div 
  
@@ -129,6 +137,7 @@ const shopAllproducts: React.FC = () => {
       <div className='flex items-center justify-between'>
       <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{product.Price}DT</span>
      <button 
+     
        className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige "
        onClick={() =>
         addCart({
@@ -141,6 +150,7 @@ const shopAllproducts: React.FC = () => {
         })
       }
        >Add to cart
+       <ToastContainer />
       </button> 
       </div>
     </div>
