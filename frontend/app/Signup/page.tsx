@@ -19,15 +19,24 @@ const Signup = ({ isOpen, onClose, onSignUpSuccess  }: Props) => {
   const signUp = async () => {
     try {
       const res = await axios.post("http://localhost:5000/api/up/signup", userData);
+  
+      // Save token to session storage
       sessionStorage.setItem("token", res.data.token);
-      sessionStorage.setItem("P", res.data.newUser.password);
-
+  
+      // Ensure res.data.user is an object, not a string
+      if (typeof res.data.user === 'string') {
+        sessionStorage.setItem("user", res.data.user); // Store the string directly
+      } else {
+        sessionStorage.setItem("user", JSON.stringify(res.data.user)); // Convert to JSON string if it's an object
+      }
+  
       onSignUpSuccess(); 
       onClose();
     } catch (err) {
       console.log(err);
     }
   };
+  
 
   useEffect(() => {
     if (emailInput.current && isOpen) {

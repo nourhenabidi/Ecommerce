@@ -8,8 +8,8 @@ import "swiper/css/pagination";
 import "swiper/css/free-mode";
 import { FreeMode, Pagination } from "swiper/modules";
 import SignInModal from "../Login/page";
-import jwtDecode from 'jwt-decode';
-import { toast } from "react-toastify";
+// import { decode } from 'jwt-decode';
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface Newproduct{
@@ -36,7 +36,10 @@ function NewArrival() {
 
     const [news,setNews]= useState<Newproduct[]>([])
     const [isSignInModalOpen, setSignInModalOpen] = useState(false);
-    const token=sessionStorage.getItem('token')
+    let userId;
+    if (JSON.parse(sessionStorage.getItem("user"))) {
+     userId=JSON.parse(sessionStorage.getItem("user"))  
+    }
     
     useEffect(() => {
         const fetchData = async () => {
@@ -50,41 +53,49 @@ function NewArrival() {
 
         fetchData();
     }, []);
+// console.log("eazeazeazea");
 
-    const getUserIdFromToken = () => {
-      if (token) {
-        try {
-          const decodedToken: DecodedToken = jwtDecode<DecodedToken>(token);
-          return decodedToken.user.id;
-        } catch (error) {
-          console.error('Invalid token');
-        }
-      }
-      return null;
+    // const getUserIdFromToken = (token: string | null) => {
+    //   if (token) {
+    //     try {
+    //       const decodedToken: DecodedToken = decode<DecodedToken>(token); // Use jwt_decode directly
+    //       return decodedToken.user.id;
+    //     } catch (error) {
+    //       console.error('Invalid token', error);
+    //     }
+    //   }
+    //   return null;
+    // };
+
+    const notify = () => {
+      toast.success("Item added to cart successfully!", {
+        position: "top-right",
+        autoClose: 3000, // Auto-close after 3 seconds
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     };
-
+    
     const addCart = async (obj: object) => {
-    const userId = getUserIdFromToken();
-    if (userId) {
+   
+    if (JSON.parse(sessionStorage.getItem("user"))) {
       try {
         const cartData = { ...obj, user_idUser: userId }; 
-        await axios.post("http://localhost:5000/api/cart/addCart", cartData);
+    const res= await axios.post("http://localhost:5000/api/cart/addCart", cartData);
+        console.log(res);
         notify()
+    
       } catch (err) {
         console.log(err);
       }
-        // Show sign-in modal if not authenticated
-        setSignInModalOpen(true);
-      }
+    } else setSignInModalOpen(true);
     };
-    const notify = () => {
-  
-      toast.success("Success Notification!", {
-        position:"top-right",
-        autoClose: false
-      });
- 
-    };
+
+
     return (
         <div >
             <h1 className="flex justify-center text-3xl "style={{ marginBottom: '50px' }}>New Arrivals</h1>
@@ -149,28 +160,27 @@ function NewArrival() {
        className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige "
        onClick={() => {
         // Ensure both functions are called
-        try {
           addCart({
             product_ProductID: e.ProductID,
             productName: e.Name,
             CartImage: e.ProductImage,
             productPrice: e.Price,
-            user_idUser: token,
+            user_idUser: userId,
           });
-          notify();
-        } catch (error) {
-          console.error("An error occurred while adding to cart or notifying:", error);
-        }
+        
       }}
     >Add to cart
-      </button> 
+      </button>
+      
     </div>
+    
   </div>
   
 </div>
 </SwiperSlide>
 ))}
 </Swiper>
+<ToastContainer /> 
 </div>
 <SignInModal
         isOpen={isSignInModalOpen}

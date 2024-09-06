@@ -61,70 +61,8 @@ const Wishlist: React.FC = () => {
 
   return (
     <div className="wishlist">
-      {/* <Badge badgeContent="5" color="error">
-        <ShoppingCartIcon
-          color="black"
-          onClick={handleOpen}
-          sx={{ width: "35px" }}
-        />
-      </Badge> */}
-      <div className="wishlist__container">
-        <div className="wishlist__header">
-          <h2>Your Wishlist</h2>
-        </div>
-        <div className="wishlist__items__container">
-          {wishList.map((el, j) => (
-            <div key={j} className="wishlist__items">
-              <div className="wishcard">
-                <div className="wish__remove__item__icon">
-                  <IconButton
-                    onClick={() => {
-                      handelRemoveItem(el.id);
-                    }}
-                  >
-                    <HighlightOffIcon />
-                  </IconButton>
-                </div>
-                <div className="wish__item__image">
-                  <img
-                    src={el.ProductImage}
-                    alt="item"
-                    className="wish__image"
-                  />
-                </div>
-                <div className="wish__item__name">{el.Name}</div>
-                <div className="wish__item__price">${el.Price}</div>
-                <div className="add__to__cart">
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      console.log("hello");
-
-                      handelAddToCart(el);
-                    }}
-                    sx={[
-                      {
-                        "&:hover": {
-                          backgroundColor: "#FFE26E",
-                          borderColor: "#FFE26E",
-                          color: "black",
-                        },
-                        borderColor: "black",
-                        backgroundColor: "black",
-                        color: "#FFE26E",
-                      },
-                    ]}
-                  >
-                    Add to cart
-                  </Button>
-                </div>
-              </div>
-
-              {/* <div>No items</div> */}
-            </div>
-          ))}
-        </div>
-      </div>
+ 
+ 
     </div>
   );
 };

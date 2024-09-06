@@ -7,7 +7,7 @@ import Fot from"../footer/page"
 import SignInModal from "../Login/page";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-
+import Signup from '../Signup/page';
 
 interface Products {
   id:number;
@@ -26,7 +26,13 @@ const shopAllproducts: React.FC = () => {
     const [SelectedCategory, setSelectedCategory] = useState<string | null>(null)
     const [isSignInModalOpen, setSignInModalOpen] = useState(false);
     const id=sessionStorage.getItem('token')?.split(',')[1]
- 
+    console.log("storage ",sessionStorage);
+    
+    const [isSignUpModalOpen, setSignUpModalOpen] = useState(false); // State for sign-up modal
+
+    const openSignUpModal = () => {
+      setSignUpModalOpen(true); // Open sign-up modal
+    };
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -156,8 +162,6 @@ const shopAllproducts: React.FC = () => {
     </div>
   </div>
 
-
-
 ))}
 
 </div>
@@ -167,7 +171,13 @@ const shopAllproducts: React.FC = () => {
       <SignInModal
         isOpen={isSignInModalOpen}
         onClose={() => setSignInModalOpen(false)}
-        onSignUp={() => {/* Handle sign-up logic if needed */}}
+        onSignUp={() =>openSignUpModal()}
+      />
+
+      <Signup 
+        isOpen={isSignUpModalOpen} 
+        onClose={()=>{setSignInModalOpen(false),setSignUpModalOpen(false)}} 
+        onSignUp={() =>openSignUpModal()}
       />
     </div>
     

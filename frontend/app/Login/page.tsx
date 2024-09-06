@@ -11,9 +11,10 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   onSignUp: () => void; // Add this prop for navigation to sign-up
+  onLoginSuccess: () => void;
 };
 
-const SignInModal = ({ isOpen, onClose,onSignUp  }: Props) => {
+const SignInModal = ({ isOpen, onClose,onSignUp,onLoginSuccess}: Props) => {
     if (!isOpen) return null;
     
   const [isSignUp, setIsSignUp] = useState(false);
@@ -58,11 +59,12 @@ const SignInModal = ({ isOpen, onClose,onSignUp  }: Props) => {
       sessionStorage.setItem("token", res.data.token);
       const parsedData = parseJWT(res.data.token);
       console.log(parsedData);
-      sessionStorage.setItem("P", res.data.user.password);
+      sessionStorage.setItem("user",JSON.stringify(res.data.user));
       console.log(res.data);
       // Ensure res.data.user.id is available
       // router.push(`/bodyhome?account=${res.data.user.id}`);
       onClose();
+      onLoginSuccess();
     } catch (error) {
       console.log(error);
       ErrNotif()

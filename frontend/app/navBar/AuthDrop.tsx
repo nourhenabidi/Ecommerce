@@ -9,12 +9,12 @@ import {
 } from "../ui/dropdown-menu";
 import SignInModal from "../Login/page";
 import Signup from "../Signup/page"; // Import the Signup component
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const WhereDrop = () => {
   const [isSignInModalOpen, setSignInModalOpen] = useState(false);
   const [isSignUpModalOpen, setSignUpModalOpen] = useState(false); // State for sign-up modal
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   const openSignInModal = () => {
     setSignUpModalOpen(false); // Close sign-up if open
@@ -39,19 +39,23 @@ const WhereDrop = () => {
     openSignInModal();  // Open the login modal
   };
 
+  const handleLogout = () => {
+    sessionStorage.clear();
+    setIsAuthenticated(false); // Set isAuthenticated to false to reflect the logged-out state
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const token = sessionStorage.getItem("token");
-      setIsAuthenticated(!!token);
+      setIsAuthenticated(!!token); // Set authentication state based on token existence
     }
   }, []);
 
-  if (isAuthenticated === null) {
-    // Optionally render a loading state or nothing while determining authentication
-    return null;
-  }
-
-  return (
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true); // Set authentication state to true after login
+    closeSignInModal();       // Close the sign-in modal after successful login
+  };
+ return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger>
@@ -60,12 +64,19 @@ const WhereDrop = () => {
 
         <DropdownMenuContent>
           <DropdownMenuLabel>Join Us!</DropdownMenuLabel>
-          {!sessionStorage.getItem("token") && (
+          {!isAuthenticated && (
             <>
               <DropdownMenuItem onClick={openSignInModal}>
                 Sign in
               </DropdownMenuItem>
-
+            </>
+          )}
+          
+          {isAuthenticated && (
+            
+            <>
+            <DropdownMenuLabel>Account</DropdownMenuLabel>
+              <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
             </>
           )}
         </DropdownMenuContent>
@@ -75,13 +86,14 @@ const WhereDrop = () => {
       <SignInModal
         isOpen={isSignInModalOpen}
         onClose={closeSignInModal}
-        onSignUp={openSignUpModal} // Pass the function to open sign-up modal
+        onLoginSuccess={handleLoginSuccess} // Pass the login success handler to update the dropdown
+        onSignUp={openSignUpModal}         // Pass the function to open sign-up modal
       />
 
       {/* Sign-Up Modal */}
-      <Signup 
-        isOpen={isSignUpModalOpen} 
-        onClose={closeSignUpModal} 
+      <Signup
+        isOpen={isSignUpModalOpen}
+        onClose={closeSignUpModal}
         onSignUpSuccess={handleSignUpSuccess} // Pass the function to open login modal after successful sign-up
       />
     </>

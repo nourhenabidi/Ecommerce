@@ -22,13 +22,18 @@ const {DataTypes } = require('sequelize');
             type:DataTypes.TEXT,
             allowNull:false
         },
-
        wishListImage:{
             type: DataTypes.JSON,
             allowNull:false
-        } 
-     
-
+        } ,
+        user_id:{
+            type:DataTypes.INTEGER,
+            allowNull:true
+          },
+          product_ProductID:{
+            type : DataTypes.INTEGER ,
+            allowNull: true
+          }
     },
     {
         tableName: 'WishList',
