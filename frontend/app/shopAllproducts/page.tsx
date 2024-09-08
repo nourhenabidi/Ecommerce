@@ -8,6 +8,7 @@ import SignInModal from "../Login/page";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import Signup from '../Signup/page';
+import Link from 'next/link';
 
 interface Products {
   id:number;
@@ -102,11 +103,11 @@ const shopAllproducts: React.FC = () => {
               
 <div  key={product.ProductID} className="product-card bg-white rounded-lg shadow mt-4" >
   
-    <a href="" >
+<Link href={`/productdetail?ProductID=${product.ProductID}`}>
     
       <div className="image">
      
-        <img src={product.ProductImage} alt="" 
+        <img src={product.ProductImage[0]} alt="" 
 
         />
         
@@ -129,7 +130,7 @@ const shopAllproducts: React.FC = () => {
                     </button>
                     </div>
         </div>
-    </a>
+    </Link>
     <div className="px-5 pb-5">
     <a href="#">
       <h4 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Name}</h4>
