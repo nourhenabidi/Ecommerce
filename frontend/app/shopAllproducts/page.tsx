@@ -107,9 +107,7 @@ const shopAllproducts: React.FC = () => {
     
       <div className="image">
      
-        <img src={product.ProductImage[0]} alt="" 
-
-        />
+        <img src={product.ProductImage[0]} alt="" />
         
         <div className="heart-icon">
                     <button>

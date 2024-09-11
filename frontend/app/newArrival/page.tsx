@@ -8,9 +8,9 @@ import "swiper/css/pagination";
 import "swiper/css/free-mode";
 import { FreeMode, Pagination } from "swiper/modules";
 import SignInModal from "../Login/page";
-// import { decode } from 'jwt-decode';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Link from 'next/link';
 
 interface Newproduct{
   id:number;
@@ -38,8 +38,9 @@ function NewArrival() {
     const [isSignInModalOpen, setSignInModalOpen] = useState(false);
     let userId;
     if (JSON.parse(sessionStorage.getItem("user"))) {
-     userId=JSON.parse(sessionStorage.getItem("user"))  
+     userId=JSON.parse(sessionStorage.getItem("user")).id 
     }
+   
     
     useEffect(() => {
         const fetchData = async () => {
@@ -53,24 +54,11 @@ function NewArrival() {
 
         fetchData();
     }, []);
-// console.log("eazeazeazea");
-
-    // const getUserIdFromToken = (token: string | null) => {
-    //   if (token) {
-    //     try {
-    //       const decodedToken: DecodedToken = decode<DecodedToken>(token); // Use jwt_decode directly
-    //       return decodedToken.user.id;
-    //     } catch (error) {
-    //       console.error('Invalid token', error);
-    //     }
-    //   }
-    //   return null;
-    // };
 
     const notify = () => {
       toast.success("Item added to cart successfully!", {
         position: "top-right",
-        autoClose: 3000, // Auto-close after 3 seconds
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -84,7 +72,7 @@ function NewArrival() {
    
     if (JSON.parse(sessionStorage.getItem("user"))) {
       try {
-        const cartData = { ...obj, user_idUser: userId }; 
+        const cartData = obj 
     const res= await axios.post("http://localhost:5000/api/cart/addCart", cartData);
         console.log(res);
         notify()
@@ -124,10 +112,10 @@ function NewArrival() {
             <SwiperSlide key={e.ProductID}>
             <div  className="product-card w-full max-w-sm bg-white group reative rounded-lg shadow ">
   
-  <a href="#" >
+            <Link href={`/productdetail?ProductID=${e.ProductID}`}>
 
     <div className="image-container">
-      <img className='images' src={e.ProductImage} alt="product image" />
+      <img className='images' src={e.ProductImage[0]} alt="product image" />
       <div className="heart-icon">
                   <button>
                     <svg
@@ -147,7 +135,7 @@ function NewArrival() {
                   </button>
                   </div>
       </div>
-  </a>
+  </Link>
   <div className="px-5 pb-5">
     <a href="#">
       <h4 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{e.Name}</h4>
@@ -165,9 +153,8 @@ function NewArrival() {
             productName: e.Name,
             CartImage: e.ProductImage,
             productPrice: e.Price,
-            user_idUser: userId,
+            user_id: userId,
           });
-        
       }}
     >Add to cart
       </button>

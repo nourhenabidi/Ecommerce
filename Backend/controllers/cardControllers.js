@@ -1,35 +1,33 @@
 const Card = require('../models/Card');
-const Product = require("../models/Product")
 
 
 const getProductsOfUserInCart = async (req, res) => {
-    const userId = req.params.id;
-    try {
-      // Fetching all cart items for the user
-      const carts = await Card.findAll({ where: { user_id:userId } });
-      
-      // Extracting ProductIDs from the cart items
-      const productIds = carts.map(cart => cart.product_ProductID);
-  
-      // Checking if there are any product IDs to query
-      if (productIds.length > 0) {
-        // Fetching products using the extracted ProductIDs
-        const products = await Product.findAll({
-          where: { ProductID: productIds }
-        });
-        
-        res.status(200).json(products);
-      } else {
-        res.status(404).json({ message: "No products found in the cart" });
-      }
-    } catch (err) {
-      res.status(500).json(err);
+  try {
+    const userId = req.params.id; // Get userId from request params
+    console.log("User ID: ", userId); // Log user ID to verify correctness
+
+    // Fetch all cart items for the user
+    const carts = await Card.findAll({ where: { user_id: userId } });
+    console.log("Carts: ", carts); // Check if carts are being fetched
+
+    if (carts.length === 0) {
+      return res.status(404).json({ message: "No cart items found for this user" });
     }
-  };
+
+    // Respond with the fetched carts
+    res.json(carts);
+  } catch (err) {
+    console.error(err); // Log the error for debugging
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
   const addProductToCart = (req,res) => {
     Card.create(req.body)
     .then((result)=>{res.status(201).json({result:"successfully added to cart"})})
-   .catch((err)=>{res.status(500).json({err:err})})
+   .catch((err)=>{console.log(err);
+   })
   }
 
 

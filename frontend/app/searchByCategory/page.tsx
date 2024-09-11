@@ -7,6 +7,8 @@ import Navbar from '../navBar/page';
 import Footer from '../footer/page';
 import { useRouter } from "next/navigation";
 import SignInModal from "../Login/page";
+import Link from 'next/link';
+
 
 interface Products {
   ProductID: number;
@@ -95,10 +97,10 @@ const addCart = async (obj: object) => {
           {Array.isArray(categories) && categories.map((product) => (
             
             <div key={product.ProductID} className="product-card bg-white rounded-lg shadow mt-4">
-              <a href="#">
+             <Link href={`/productdetail?ProductID=${product.ProductID}`}>
                 <div className='image'>
                   <img
-                    src={product.ProductImage} 
+                    src={product.ProductImage[0]} 
                     alt=""
                   />
                   <div className="heart-icon">
@@ -120,7 +122,7 @@ const addCart = async (obj: object) => {
                     </button>
                   </div>
                 </div>
-              </a>
+              </Link>
 
               <div className="px-5 pb-5">
                 <a href="#">

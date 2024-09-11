@@ -1,12 +1,11 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import  { createFilterOptions } from '@mui/material/Autocomplete';
 import axios from "axios";
-import "./nav.css"
-import Drop from "./AuthDrop"
+import Drop from "./AuthDrop";
 import Cart from '../cart/page';
+import "./nav.css";
 
 interface Product {
   ProductID: number;
@@ -18,169 +17,114 @@ interface Product {
 type Quantities = {
   [ProductId: number]: number;
 };
-// const filter = createFilterOptions<Product>();
 
-const Navbar: React.FC =()=>{
-    const [data, setData] = useState<Product[] | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [searched,setSearched]=useState<string>("");
-    const [activeIndex, setActiveIndex]=useState<number|null>(null)
-    const [suggestions, setSuggestions] = useState<string[]>([]);
-    const [selectedSuggestion, setSelectedSuggestion] = useState<string | null>(null);
-    const [isCartVisible, setIsCartVisible] = useState(false);
-    const [quantities, setQuantities] = useState<Quantities>({});
+const Navbar: React.FC = () => {
+  const [searched, setSearched] = useState<string>("");
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [selectedSuggestion, setSelectedSuggestion] = useState<string | null>(null);
+  const [isCartVisible, setIsCartVisible] = useState(false);
+  const [data, setData] = useState<Product[]>([]);
+ const [user, setuser] = useState({})
+useEffect(()=>{
+  if (sessionStorage.getItem('user')) {
 
-    const token = sessionStorage.getItem('token');
+    setuser(sessionStorage.getItem('user'))
+  }
 
+  console.log("eeeeeeeeeeee",sessionStorage.getItem('user'));
+},[])
+  const fetchProducts = async (): Promise<void> => {
+    try {
+      const response = await axios.get<Product[]>(`http://localhost:5000/api/cart/getcart/${JSON.parse(user).id}`);
+  console.log(response.data);
+  
+      setData(response.data);
+      sessionStorage.setItem("products",JSON.stringify(response.data))
+    } catch (error) {
+      console.log(error,"errr")
+      console.error('Error fetching data:', user.id);
+    }
+  };
 
+  useEffect(() => {
+    if (isCartVisible) {
+      fetchProducts(); // Fetch products when the cart is opened
+    }
+  }, [isCartVisible]);
 
-    const fetchProducts = async (): Promise<void> => {
-      try {
-        const response = await axios.get<Product[]>(`http://localhost:5000/api/cart/getcart/1`);
-        setData(response.data);
-        const initialQuantities: Quantities = {};
-        response.data.forEach((product) => {
-          initialQuantities[product.ProductID] = 1;
-        });
-        setQuantities(initialQuantities);
-      } catch (error) {
-      console.log(token);
-        
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    
-
-
-      const fetchSuggestions = async (name:any) => {
-           await axios.get(`http://localhost:5000/api/products/oneProduct/${name}`)
-           .then((res)=>{
-            setData(res.data)
-console.log('data',res.data)
-            setSuggestions(res.data)
-           }).catch((err)=>{
-            console.log(err);
-            
-           })  
-        
-      };
-      
-      
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearched(event.target.value);
+  };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      fetchSuggestions(searched)
-    }else{
-      console.log('y have error')
+      fetchSuggestions(searched);
     }
   };
-      const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const query = event.target.value;
-        setSearched(query);
-        
-      };
-      const handleSuggestionClick = (suggestion: string) => {
-        console.log('Clicked suggestion:', suggestion)
-        setSelectedSuggestion(suggestion);
-        setSearched(suggestion);
-        setSuggestions([]);
-      };
 
-      const handleItemClick = (index: number) => {
-        setActiveIndex(index === activeIndex ? null : index);
-      };
+  const fetchSuggestions = async (query: string) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/products/oneProduct/${query}`);
+      setSuggestions(response.data.map((item: Product) => item.Name));
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+    }
+  };
 
-  
-      const toggleCart = () => {
-        setIsCartVisible((prev) => !prev);
+  const handleSuggestionClick = (suggestion: string) => {
+    setSearched(suggestion);
+    setSuggestions([]);
+  };
 
-      };
-
+  const toggleCart = () => {
+    setIsCartVisible(!isCartVisible);
+  };
 
   return (
-   
     <div className='body'>
-
-
-    <div className=' fixed top-0 w-full  z-10  '>
-        <div className=' navi flex justify-between items-center p-6 text-[16px] md:text-[20px]'>
-<div className=' hidden md:flex flex-1 space-x-7'>
-    <a href="/bodyhome" onClick={() => handleItemClick(1)}>Home</a>
-    <a href="/shopAllproducts" onClick={() => handleItemClick(1)}>Shop</a>
-
-    <a href="/contact" onClick={() => handleItemClick(1)}>Contact</a>
-<a href="/whyUs" onClick={() => handleItemClick(1)}>Why Us</a>
-
-
-</div>
-
-<div className='flex flex-1 justify-center align-center'>
-  <h1>MOA Collection</h1>
-  
-</div>
-<div className='flex flex-1 flex row items-center gap-8 justify-end'>
-
-<div className="relative">
-  <input type="text" 
-  placeholder="Search here .." 
-  className=" outline-none placeholder:text-sm bg-transparent"
-   style={{ width: '200px' }}
-   value={searched}
-   onChange={handleSearchChange}
-  onKeyDown={handleKeyPress}
-   />
-
-
-{suggestions.length > 0 && (
-                  <ul className='select' style={{position:"absolute",zIndex:"7"}}>
-                    {data?.map((suggestion, index) => (
-                   <li
-                      style={{zIndex:99999}}
-                        key={index}
-                        className="p-2 cursor-pointer hover:bg-gray-200"
-                        onClick={() => handleSuggestionClick(suggestion.Name)}
-                      >
-                        {suggestion?.Name}
-                        
-                      </li>
-                    ))}
-                  </ul>
-)}
-
-
-                
- 
- <button className="absolute right-[0] bottom-[0] btn_search" onClick={()=>{fetchSuggestions(searched)}}>
-  <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" className="cursor-pointer" height="20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M443.5 420.2L336.7 312.4c20.9-26.2 33.5-59.4 33.5-95.5 
-0-84.5-68.5-153-153.1-153S64 132.5 64 217s68.5 153 153.1 153c36.6 0 70.1-12.8 96.5-34.2l106.1 107.1c3.2 3.4 7.6 5.1 11.9 5.1 4.1 0 8.2-1.5 11.3-4.5 6.6-6.3 6.8-16.7.6-23.3zm-226.4-83.1c-32.1 0-62.3-12.5-85-35.2-22.7-22.7-35.2-52.9-35.2-84.9 0-32.1 12.5-62.3 35.2-84.9 22.7-22.7 52.9-35.2 85-35.2s62.3 12.5 85 35.2c22.7 22.7 35.2 52.9 35.2 84.9 0 32.1-12.5 62.3-35.2 84.9-22.7 22.7-52.9 35.2-85 35.2z"></path>
-</svg>
-</button>
- 
-
-</div>
-
-<a href="/wishlist">
-  
-<FavoriteBorderIcon />
-</a>
-<div>
-      <button onClick={()=>{toggleCart()}} aria-label="Open cart">
-      
-        <ShoppingBagIcon  />
-       
-      </button>
-      {isCartVisible && <Cart fetchProducts={fetchProducts} />}
-            <Drop/>
-</div>
+      <div className='fixed top-0 w-full z-10'>
+        <div className='navi flex justify-between items-center p-6'>
+          <div className='hidden md:flex flex-1 space-x-7'>
+            <a href="/bodyhome">Home</a>
+            <a href="/shopAllproducts">Shop</a>
+            <a href="/contact">Contact</a>
+            <a href="/whyUs">Why Us</a>
+          </div>
+          <div className='flex flex-1 justify-center'>
+            <h1>MOA Collection</h1>
+          </div>
+          <div className='flex flex-1 items-center gap-8 justify-end'>
+            <div className="relative">
+              <input type="text" 
+                placeholder="Search here .." 
+                className="outline-none bg-transparent"
+                value={searched}
+                onChange={handleSearchChange}
+                onKeyDown={handleKeyPress}
+              />
+              {suggestions.length > 0 && (
+                <ul className='select'>
+                  {suggestions.map((suggestion, index) => (
+                    <li key={index} onClick={() => handleSuggestionClick(suggestion)}>
+                      {suggestion}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <a href="/wishlist">
+              <FavoriteBorderIcon />
+            </a>
+            <button onClick={toggleCart}>
+              <ShoppingBagIcon />
+            </button>
+            {isCartVisible && <Cart fetchProducts={fetchProducts} onClose={toggleCart} />}
+            <Drop />
+          </div>
         </div>
+      </div>
     </div>
-   
-    </div>
-    
-</div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
