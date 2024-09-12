@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import SearchIcon from '@mui/icons-material/Search';
 import axios from "axios";
 import Drop from "./AuthDrop";
 import Cart from '../cart/page';
@@ -40,7 +41,7 @@ useEffect(()=>{
     try {
       const response = await axios.get<Product[]>(`http://localhost:5000/api/cart/getcart/${JSON.parse(user).id}`);
   console.log(response.data);
-  
+
       setData(response.data);
       sessionStorage.setItem("products",JSON.stringify(response.data))
     } catch (error) {
@@ -135,6 +136,7 @@ useEffect(()=>{
                   ))}
                 </ul>
               )}
+              <SearchIcon />
             </div>
             <button onClick={toggleWish}>
               <FavoriteBorderIcon />

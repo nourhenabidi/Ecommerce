@@ -26,11 +26,11 @@ const shopAllproducts: React.FC = () => {
     const [products, setProduct] = useState<Products[]>([]);
     const [SelectedCategory, setSelectedCategory] = useState<string | null>(null)
     const [isSignInModalOpen, setSignInModalOpen] = useState(false);
-    const id=sessionStorage.getItem('token')?.split(',')[1]
-    console.log("storage ",sessionStorage);
-    
     const [isSignUpModalOpen, setSignUpModalOpen] = useState(false); // State for sign-up modal
-
+    let userId;
+    if (JSON.parse(sessionStorage.getItem("user"))) {
+      userId = JSON.parse(sessionStorage.getItem("user")).id;
+    }
     const openSignUpModal = () => {
       setSignUpModalOpen(true); // Open sign-up modal
     };
@@ -47,21 +47,29 @@ const shopAllproducts: React.FC = () => {
         };
         fetchData(); 
       }, []);
-
+      const notify = () => {
+        toast.success("Item added to cart successfully!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      };
       const addCart = async (obj: object) => {
-        if (id) {
+        if (JSON.parse(sessionStorage.getItem("user"))) {
           try {
-            await axios.post("http://localhost:5000/api/cart/addCart", obj);
-            // Redirect to cart page after adding item to the cart
-            window.location.href = '/cart';
-            notify()
+            const cartData = obj;
+            const res = await axios.post("http://localhost:5000/api/cart/addCart", cartData);
+            console.log(res);
+            notify();
           } catch (err) {
             console.log(err);
           }
-        } else {
-          // Show sign-in modal if not authenticated
-          setSignInModalOpen(true);
-        }
+        } else setSignInModalOpen(true);
       };
       const getByCategory = async (productCategory: string): Promise<void> => {
         try {
@@ -75,13 +83,7 @@ const shopAllproducts: React.FC = () => {
         }
       };
 
-      const notify = () => {
-
-        toast.success("Success Adding !", {
-          position: "top-right",
-          autoClose: false
-        });
-      }
+ 
     return(
       <div 
  
@@ -144,25 +146,23 @@ const shopAllproducts: React.FC = () => {
      <button 
      
        className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige "
-       onClick={() =>
+       onClick={() => {
         addCart({
           product_ProductID: product.ProductID,
           productName: product.Name,
           CartImage: product.ProductImage,
           productPrice: product.Price,
-          // Quantity: product.Description,
-          user_idUser:id,
-        })
-      }
-       >Add to cart
-       <ToastContainer />
-      </button> 
+          user_id: userId,
+        });
+      }}
+    >Add to cart
+    </button>
       </div>
     </div>
   </div>
 
 ))}
-
+<ToastContainer />
 </div>
       </div>
       </div>

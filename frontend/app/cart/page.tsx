@@ -22,9 +22,9 @@ interface CartProps {
 const Cart: React.FC<CartProps> = ({ onClose }) => {
   const [quantities, setQuantities] = useState<Quantities>({});
 
-  const handleDeleteOne = (ProductID: number) => {
-    // Handle product deletion
-  };
+  // const handleDeleteOne = (ProductID: number) => {
+    
+  // };
 
   const increaseQuantity = (ProductID: number) => {
     
@@ -112,7 +112,7 @@ const Cart: React.FC<CartProps> = ({ onClose }) => {
                   <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                     <p>
                       or
-                      <button type="button" className="font-medium text-orange-900 hover:text-orange-600">Continue Shopping <span aria-hidden="true"> &rarr;</span></button>
+                      <a href='/shopAllproducts' type="button" className="font-medium text-orange-900 hover:text-orange-600">Continue Shopping <span aria-hidden="true"> &rarr;</span></a>
                     </p>
                   </div>
                 </div>

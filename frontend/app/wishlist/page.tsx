@@ -61,7 +61,7 @@ const Wishlist: React.FC = () => {
   
   const [show3, setshow3] = useState(false);
   return (
-    <div className="wishlist">
+   
 
         <div className="mx-auto container px-4 md:px-6 2xl:px-0 py-12 flex justify-center items-center">
             <div className="flex flex-col jusitfy-start items-start">
@@ -111,7 +111,7 @@ const Wishlist: React.FC = () => {
                 </div>
             </div>
         </div>
-</div>
+
   
   );
 };

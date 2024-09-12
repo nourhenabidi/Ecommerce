@@ -73,6 +73,7 @@ function NewArrival() {
       }
     } else setSignInModalOpen(true);
   };
+
   const addwish = async (obj: object) => {
     if (JSON.parse(sessionStorage.getItem("user"))) {
       try {
@@ -85,11 +86,7 @@ function NewArrival() {
       }
     } else setSignInModalOpen(true);
   };
-  // const handleLike = (productId: number) => {
-  //   setLikedProducts((prev) =>
-  //     prev.includes(productId) ? prev.filter(id => id !== productId) : [...prev, productId]
-  //   );
-  // };
+
 
   return (
     <div>
