@@ -39,9 +39,11 @@ const bodyhome: React.FC =()=>{
   const category = searchParams.get('category');
   const router=useRouter()
   const images: string[] = [
-    'https://aicdn.picsart.com/2995710d-d454-4510-8763-71d108d9bf9d.png',
-    "https://aicdn.picsart.com/d484541f-2968-4ecb-af9a-97af23cd8cda.png"
+    'https://i.pinimg.com/736x/2c/a4/81/2ca4815f404114666894b99d72cb905f.jpg',
+    "https://i.pinimg.com/736x/de/fa/41/defa4101dea55deb68928f61988cdecf.jpg",
+    "https://i.pinimg.com/736x/39/81/d2/3981d25bb723b672235a29607a360b3a.jpg"
 ];
+
 
   const changeImage = () => {
     setChangeImage((pr) => (pr + 1) % images.length);

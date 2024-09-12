@@ -11,11 +11,12 @@ interface Product {
 }
 
 type Quantities = {
+
   [ProductID: number]: number;
 };
 
 interface CartProps {
-  onClose: () => void;
+   onClose: () => void;
 }
 
 const Cart: React.FC<CartProps> = ({ onClose }) => {

@@ -1,23 +1,15 @@
 const WishList = require('../models/WishList');
 
 module.exports = {
-    addToWishList: async (req, res) => {
-        try {
-            const { wishListName, wishListPrice, wishListDescription, wishListImage } = req.body;
-            const { UserId } = req.params;
-
-            const newWishList = await WishList.create({
-                wishListName,
-                wishListPrice,
-                wishListDescription,
-                wishListImage,
-                UserId
+ addToWishList : (req, res) => {
+        WishList.create(req.body)
+            .then((result) => {
+                res.status(201).json({ result: "Successfully added to wishlist" });
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(500).json({ message: err.message });
             });
-
-            res.status(200).json(newWishList);
-        } catch (err) {
-            res.status(500).json({ message: err.message });
-        }
     },
 
     deleteFromWishlist: async (req, res) => {
@@ -55,12 +47,24 @@ module.exports = {
             res.status(500).json({ message: err.message });
         }
     },
-    getAll: async (req, res) => {
+     getWishListsByUserId : async (req, res) => {
         try {
-            const wishLists = await WishList.findAll();
-            res.status(200).json(wishLists);
+          const userId = req.params.id; // Get userId from request params
+          console.log("User ID: ", userId); // Log user ID to verify correctness
+      
+          // Fetch all wishlists for the user
+          const wishLists = await WishList.findAll({ where: { user_id: userId } });
+          console.log("WishLists: ", wishLists); // Check if wishlists are being fetched
+      
+          if (wishLists.length === 0) {
+            return res.status(404).json({ message: "No wishlists found for this user" });
+          }
+      
+          // Respond with the fetched wishlists
+          res.json(wishLists);
         } catch (err) {
-            res.status(500).json({ message: err.message });
+          console.error(err); // Log the error for debugging
+          res.status(500).json({ error: 'Internal server error' });
         }
-    },
+      },
 }

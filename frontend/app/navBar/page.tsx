@@ -5,6 +5,7 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import axios from "axios";
 import Drop from "./AuthDrop";
 import Cart from '../cart/page';
+import Wishlist from '../wishlist/page';
 import "./nav.css";
 
 interface Product {
@@ -21,18 +22,20 @@ type Quantities = {
 const Navbar: React.FC = () => {
   const [searched, setSearched] = useState<string>("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [selectedSuggestion, setSelectedSuggestion] = useState<string | null>(null);
+  // const [selectedSuggestion, setSelectedSuggestion] = useState<string | null>(null);
   const [isCartVisible, setIsCartVisible] = useState(false);
+  const [isWishVisible, setIsWishVisible] = useState(false);
   const [data, setData] = useState<Product[]>([]);
  const [user, setuser] = useState({})
+
 useEffect(()=>{
   if (sessionStorage.getItem('user')) {
 
     setuser(sessionStorage.getItem('user'))
   }
-
   console.log("eeeeeeeeeeee",sessionStorage.getItem('user'));
 },[])
+
   const fetchProducts = async (): Promise<void> => {
     try {
       const response = await axios.get<Product[]>(`http://localhost:5000/api/cart/getcart/${JSON.parse(user).id}`);
@@ -45,12 +48,30 @@ useEffect(()=>{
       console.error('Error fetching data:', user.id);
     }
   };
-
+  
+  const getwishlist = async (): Promise<void> => {
+    try {
+      const response = await axios.get<Product[]>(`http://localhost:5000/api/wishlist/getwish/${JSON.parse(user).id}`);
+  console.log(response.data);
+  
+      setData(response.data);
+      sessionStorage.setItem("products",JSON.stringify(response.data))
+    } catch (error) {
+      console.log(error,"errr")
+      console.error('Error fetching data:', user.id);
+    }
+  };
   useEffect(() => {
     if (isCartVisible) {
       fetchProducts(); // Fetch products when the cart is opened
     }
   }, [isCartVisible]);
+
+  useEffect(() => {
+    if (isWishVisible) {
+      getwishlist(); 
+    }
+  }, [isWishVisible]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearched(event.target.value);
@@ -78,6 +99,9 @@ useEffect(()=>{
 
   const toggleCart = () => {
     setIsCartVisible(!isCartVisible);
+  };
+  const toggleWish = () => {
+    setIsWishVisible(!isCartVisible);
   };
 
   return (
@@ -112,9 +136,10 @@ useEffect(()=>{
                 </ul>
               )}
             </div>
-            <a href="/wishlist">
+            <button onClick={toggleWish}>
               <FavoriteBorderIcon />
-            </a>
+            </button>
+            {isWishVisible && <Wishlist getwishlist={getwishlist} onClose={toggleWish} />}
             <button onClick={toggleCart}>
               <ShoppingBagIcon />
             </button>

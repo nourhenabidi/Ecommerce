@@ -49,15 +49,27 @@
   
 
   .heart-icon svg {
-    width: 24px; /* Adjust size of the SVG icon */
-    height: 24px;
+    width: 30px; /* Adjust size of the SVG icon */
+    height: 30px;
   }
 
   .product-remise {
     margin-bottom: 4px; /* Adjust this value to move it closer to the price */
     margin-top: -8px; /* Moves the remise up */
   }
-  .swiper-pagination-bullet {
-    background: rgb(95, 40, 9) !important; /* Set the color of the dots to beige */
 
-}
+  
+  .swiper-pagination-bullet {
+    background: rgb(5, 2, 0) !important; /* Brown color for dots */
+  }
+  
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: rgb(95, 40, 9) !important; /* Brown color for arrows */
+  }
+  
+  .swiper-button-next:hover,
+  .swiper-button-prev:hover {
+    color: grey !important; /* Grey color on hover */
+  }
+  

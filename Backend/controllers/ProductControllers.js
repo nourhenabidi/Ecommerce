@@ -27,9 +27,19 @@ module.exports={
       let gp=await Product.findOne({where:{ProductID:req.params.ProductID}})
       res.json(gp)
     },
-    deleteProd:async(req,res)=>{
-      let de=await Product.destroy({where:{ProductID:req.params.ProductID}})
-      res.json(de)
+    deleteProd: async (req, res) => {
+      try {
+        let de = await Product.destroy({ where: { ProductID: req.params.ProductID } });
+        if (de) {
+          console.log('Product deleted successfully');
+          res.json({ message: 'Product deleted successfully', de });
+        } else {
+          res.json({ message: 'Product not found' });
+        }
+      } catch (error) {
+        console.error('Error deleting product:', error);
+        res.status(500).json({ message: 'Error deleting product', error });
+      }
     },
     updateProd: async(req,res) => {
       let upProd = await Product.update(req.body,{where:{ProductID : req.params.ProductID}})
