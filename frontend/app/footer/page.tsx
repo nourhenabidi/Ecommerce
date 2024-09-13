@@ -29,7 +29,7 @@ const footerNavs: FooterNavSection[] = [
             },
             {
                 href: '',
-                name: 'Help'
+                name: 'Accessibility'
             },
    
         ],
@@ -61,14 +61,14 @@ const footerNavs: FooterNavSection[] = [
                 href: '/contact',
                 name: 'FAQ'
             },
-            // {
-            //     href: '/whyUs',
-            //     name: 'Why us'
-            // },
-            // {
-            //     href: '',
-            //     name: 'Help'
-            // },
+            {
+                href: '/whyUs',
+                name: 'Privacy Policy'
+            },
+            {
+                href: '',
+                name: 'Terms of Service'
+            },
    
         ],
         

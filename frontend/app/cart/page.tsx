@@ -75,8 +75,11 @@ const Cart: React.FC<CartProps> = ({ onClose }) => {
                     JSON.parse(sessionStorage.getItem("products"))?.map((product) => (
                       <li className="flex py-6" key={product.ProductID}>
                         <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                          <img src={product.CartImage} alt={product.productName} className="h-full w-full object-cover object-center" />
-                        </div>
+                        <img
+      src={product.CartImage && product.CartImage.length > 0 ? product.CartImage[0] : 'default-image-url.jpg'} // Provide a default image URL
+      alt={product.Name}
+      className="h-full w-full object-cover object-center"
+    />                        </div>
 
                         <div className="ml-4 flex flex-1 flex-col">
                           <div>
