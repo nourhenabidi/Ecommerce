@@ -9,8 +9,8 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import { FreeMode, Pagination, Navigation } from "swiper/modules";
 import SignInModal from "../Login/page";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from 'react-toastify';
 import Link from 'next/link';
 
 interface Newproduct {
@@ -28,6 +28,7 @@ interface Newproduct {
 function NewArrival() {
   const [news, setNews] = useState<Newproduct[]>([]);
   const [isSignInModalOpen, setSignInModalOpen] = useState(false);
+  const [isSignUpModalOpen, setSignUpModalOpen] = useState(false);
   const [likedProducts, setLikedProducts] = useState<number[]>([]); // To keep track of liked products
 
   let userId;
@@ -60,6 +61,18 @@ function NewArrival() {
       theme: "colored",
     });
   };
+  const notif = () => {
+    toast.success("Item added to Wishlist successfully!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
 
   const addCart = async (obj: object) => {
     if (JSON.parse(sessionStorage.getItem("user"))) {
@@ -81,7 +94,7 @@ function NewArrival() {
         
         const res = await axios.post("http://localhost:5000/api/wishlist/addwish", wishData);
         console.log(res);
-        notify();
+        notif();
       } catch (err) {
         console.error('Error adding to wishlist:', err.response ? err.response.data : err.message);
       }
@@ -172,9 +185,10 @@ function NewArrival() {
               </div>
             </SwiperSlide>
           ))}
-          <ToastContainer />
+         
         </div>
       </Swiper>
+      <ToastContainer />
       <SignInModal
         isOpen={isSignInModalOpen}
         onClose={() => setSignInModalOpen(false)}

@@ -59,6 +59,18 @@ const shopAllproducts: React.FC = () => {
           theme: "colored",
         });
       };
+      const notif = () => {
+        toast.success("Item added to Wishlist successfully!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      };
       const addCart = async (obj: object) => {
         if (JSON.parse(sessionStorage.getItem("user"))) {
           try {
@@ -82,7 +94,19 @@ const shopAllproducts: React.FC = () => {
           console.error(error);
         }
       };
-
+      const addwish = async (obj: object) => {
+        if (JSON.parse(sessionStorage.getItem("user"))) {
+          try {
+            const wishData = obj;
+            
+            const res = await axios.post("http://localhost:5000/api/wishlist/addwish", wishData);
+            console.log(res);
+            notif();
+          } catch (err) {
+            console.error('Error adding to wishlist:', err.response ? err.response.data : err.message);
+          }
+        } else setSignInModalOpen(true);
+      };
  
     return(
       <div 
@@ -105,14 +129,23 @@ const shopAllproducts: React.FC = () => {
               
 <div  key={product.ProductID} className="product-card bg-white rounded-lg shadow mt-4" >
   
-<Link href={`/productdetail?ProductID=${product.ProductID}`}>
+
     
       <div className="image">
      
         <img src={product.ProductImage[0]} alt="" />
         
         <div className="heart-icon">
-                    <button>
+        <button onClick={() => {
+                     addwish({
+                      product_ProductID: product.ProductID,
+                      wishListName: product.Name,
+                      wishListImage: product.ProductImage,
+                      wishListPrice: product.Price,
+                      user_id: userId,
+                      wishListDescription: product.Description  // Ensure this field is included
+                    });
+                    }}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -130,12 +163,14 @@ const shopAllproducts: React.FC = () => {
                     </button>
                     </div>
         </div>
-    </Link>
+    
     <div className="px-5 pb-5">
-    <a href="#">
+    <Link href={`/productdetail?ProductID=${product.ProductID}`}>
+    
       <h4 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Name}</h4>
       <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Description}</h5>
-    </a>
+  
+    </Link>
     <div className="flex items-center mt-2.5 mb-5">
                   <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-blue-800 ms-3 product-remise">
                     {product.ProductRemise}%

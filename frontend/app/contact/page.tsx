@@ -12,7 +12,7 @@ const Contact:React.FC=()=> {
   return (
     <div className="body" >
       <Na />
-     
+     <div style={{display:'flex',alignItems:"flex-end"}}>
    <div className="flex flex-col justify-start w-1/2 p-8"> 
     <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
       <div
@@ -96,10 +96,10 @@ const Contact:React.FC=()=> {
     </div>
 
     </div>
-  
+  <div>
     <Map />  
-
-
+    </div>
+    </div>
     <Fot/>
     </div>
   )

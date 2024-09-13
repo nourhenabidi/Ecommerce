@@ -43,7 +43,18 @@ const SignInModal = ({ isOpen, onClose,onSignUp,onLoginSuccess}: Props) => {
     progress: undefined,
     theme: "colored",
   });
- 
+  const notify = () => {
+    toast.error("There is no account. You must sign up!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
   const login = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     try {
       e.preventDefault();
@@ -184,18 +195,14 @@ const handleKeyboardEvent = (e: KeyboardEvent<HTMLDivElement>) => {
                         className="mt-2 block w-full  border border-black px-3 py-2 shadow-sm outline-none placeholder:text-gray-400 "
                         placeholder="Password"
                     />
-                    {/* {!isSignUp && (
-                        <p className="mb-3 mt-2 text-sm text-gray-500">
-                            <a href="/forgot-password" className="text-orange-950 hover:text-blue-600">Reset your password?</a>
-                        </p>
-                    )} */}
+              
                     <button onClick={(e) => {  login(e) }}
                     
                         type="button"
                         className="mt-6 inline-flex w-full items-center justify-center  bg-black p-2 py-3 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 disabled:bg-gray-400"
                     >
                         Continue
-                        <ToastContainer />
+                        
                     </button>
                 </form>
 
@@ -210,6 +217,7 @@ const handleKeyboardEvent = (e: KeyboardEvent<HTMLDivElement>) => {
             </div>
         </div>
     </div>
+    <ToastContainer />
 </div>
 </div>
   );
