@@ -2,8 +2,12 @@
 import React, { useState } from 'react';
 import { IoCloseSharp } from "react-icons/io5";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios';
 
 interface Product {
+  CartID: number; 
   ProductID: number;
   Name: string;
   ProductImage: string[];
@@ -11,7 +15,7 @@ interface Product {
 }
 
 type Quantities = {
-
+  
   [ProductID: number]: number;
 };
 
@@ -21,10 +25,38 @@ interface CartProps {
 
 const Cart: React.FC<CartProps> = ({ onClose }) => {
   const [quantities, setQuantities] = useState<Quantities>({});
+  const [refresh,setRefresh] = useState<boolean>(true);
 
-  // const handleDeleteOne = (ProductID: number) => {
-    
-  // };
+  const notify = () => {
+    toast.success("Product removed from cart successfully", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
+
+  const handleDeleteOne = async (CartID: number): Promise<void> => {
+    if (!CartID) {
+      console.log("Invalid CartID");
+      return;
+    }
+  
+    try {
+      const res = await axios.delete(`http://localhost:5000/api/cart/deleteCart/${CartID}`);
+      console.log("Deleted product:", res);
+      notify();
+      
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+    setRefresh(!refresh)
+  };
+  
 
   const increaseQuantity = (ProductID: number) => {
     
@@ -47,7 +79,7 @@ const Cart: React.FC<CartProps> = ({ onClose }) => {
   };
 
   const calculateGrandTotal = () => {
-    const productsInCart = JSON.parse(sessionStorage.getItem("products")) || [];
+    const productsInCart = JSON.parse(sessionStorage.getItem("products")) || [] as Product[];
     return productsInCart.reduce((total, product) => {
       const productQuantity = quantities[product.ProductID] || 1; // Get the quantity or default to 1
       return total + (product.productPrice * productQuantity); // Multiply price by quantity
@@ -85,8 +117,10 @@ const Cart: React.FC<CartProps> = ({ onClose }) => {
                           <div>
                             <div className="flex justify-between text-base font-medium text-gray-900">
                               <h3><a href="#">{product.productName}</a></h3>
+                              
                             </div>
                           </div>
+                          
                           <div className="flex flex-1 items-end justify-between text-sm">
                             <p className="ml-4">{calculateProductTotalPrice(product)} DT</p> {/* Update this dynamically */}
                             <div className="flex">
@@ -95,7 +129,7 @@ const Cart: React.FC<CartProps> = ({ onClose }) => {
                               <button onClick={() => increaseQuantity(product.ProductID)} className="px-2 py-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold rounded-r">+</button>
                             </div>
                             <div className="flex">
-                              <button onClick={() => handleDeleteOne(product.ProductID)} className="font-medium text-red-500 hover:text-red-700"><DeleteOutlineIcon /></button>
+                              <button onClick={() => handleDeleteOne(product.CartID)} className="font-medium text-red-500 hover:text-red-700"><DeleteOutlineIcon /></button>
                             </div>
                           </div>
                         </div>

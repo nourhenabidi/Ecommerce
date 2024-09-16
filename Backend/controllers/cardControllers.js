@@ -30,16 +30,35 @@ const getProductsOfUserInCart = async (req, res) => {
    })
   }
 
-
-
    const getOneCart = async(req,res) =>{
        const carts=await  Card.findOne({where:{CartID:req.params.id}})
        res.json(carts)
    }
-   const DeleteCart = async(req,res) =>{
-       const carts=await Card.destroy({where:{CartID:req.params.id}})
-       res.json(carts)
-   }
+   const DeleteCart = async (req, res) => {
+    const CartID = req.params.CartID; // Extract CartID from route parameters
+  
+    if (!CartID) {
+      return res.status(400).json({ error: 'CartID is required' });
+    }
+  
+    try {
+      const result = await Card.destroy({ where: { CartID } });
+      if (result) {
+        res.json({ message: 'Deleted successfully', affectedRows: result });
+      } else {
+        res.status(404).json({ error: 'Cart item not found' });
+      }
+    } catch (err) {
+      console.error("Error deleting item:", err);
+      res.status(500).json({ error: 'An error occurred while deleting the item' });
+    }
+  };
+  
+  
+  //  const DeleteCart = async(req,res) =>{
+  //      const carts=await Card.destroy({where:{CartID:req.params.id}})
+  //      res.json(carts)
+  //  }
 
    const updateCart = async(req,res) =>{
        const carts=await Card.update(req.body,{where:{CartID:req.params.id}})

@@ -1,10 +1,11 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import "./detail.css"
+import "./detail.css";
 import { useSearchParams } from 'next/navigation';
 import Navbar from '../navBar/page';
 import Footer from '../footer/page';
+
 interface Thumbnail {
   src: string;
   alt: string;
@@ -17,7 +18,7 @@ interface Product {
   Description: string;
   Price: string;
   Availability: string;
-  ProductImage: string[]; // Ensure this is always an array
+  ProductImage: string[];
   ProductRemise: string;
   colorProduct: string;
 }
@@ -26,7 +27,7 @@ const ProductDetail: React.FC = () => {
   const [currentImage, setCurrentImage] = useState<string>('');
   const [product, setProduct] = useState<Product | null>(null);
   const searchParams = useSearchParams();
-  const productId = searchParams.get('ProductID'); // Get the product ID from the URL
+  const productId = searchParams.get('ProductID');
 
   useEffect(() => {
     if (productId) {
@@ -35,7 +36,7 @@ const ProductDetail: React.FC = () => {
           const response = await axios.get<Product>(`http://localhost:5000/api/products/getOneProd/${productId}`);
           setProduct(response.data);
           if (Array.isArray(response.data.ProductImage) && response.data.ProductImage.length > 0) {
-            setCurrentImage(response.data.ProductImage[0]); // Set initial image
+            setCurrentImage(response.data.ProductImage[0]);
           }
         } catch (error) {
           console.error('Error fetching product details', error);
@@ -59,35 +60,37 @@ const ProductDetail: React.FC = () => {
 
   return (
     <div>
-        <Navbar/>
-    <div className="all p-4 flex gap-60">
-      {/* Main Image Section */}
-      <div className="flex-1">
-        <img src={currentImage} alt="Main Product Image" className="w-[700px] max-h-[650px] object-cover" />
+      <Navbar />
+      <div className="all">
+        {/* Main Image Section */}
+        <div className="flex-1">
+          <img src={currentImage} alt="Main Product Image" className="main-product-image" />
+        </div>
+        {/* Thumbnails Section */}
+        <div className="thumbnails">
+          {thumbnails.map((thumbnail) => (
+            <img
+              key={thumbnail.src}
+              src={thumbnail.src}
+              alt={thumbnail.alt}
+              className="thumbnail-image"
+              onClick={() => setCurrentImage(thumbnail.src)}
+            />
+          ))}
+        </div>
+        {/* Product Details */}
+        <div className="product-details">
+          <h1>{product.Name}</h1>
+          <p>{product.Description}</p>
+          <p className="price"> {product.Price} DT</p>
+          <p className="availability"> {product.Availability}</p>
+          <p className="discount">Discount: {product.ProductRemise}%</p>
+          <p className="discount">colors:</p>
+          <button className="add-to-cart-btn bg-orange-950 ">Add to Cart</button>
+        </div>
       </div>
-      {/* Thumbnails Section */}
-      <div className="flex flex-col gap-4 w-32">
-        {thumbnails.map((thumbnail) => (
-          <img
-            key={thumbnail.src}
-            src={thumbnail.src}
-            alt={thumbnail.alt}
-            className="cursor-pointer w-full max-h-[100px] object-cover"
-            onClick={() => setCurrentImage(thumbnail.src)}
-          />
-        ))}
-      </div>
-    {/* Product Details */}
-    <div className="ml-4">
-      <h1 className="text-2xl font-bold">{product.Name}</h1>
-      <p className="mt-2 text-lg">{product.Description}</p>
-      <p className="mt-2 text-xl font-semibold">{product.Price} DT</p>
-      <p className="mt-2 text-sm">Availability: {product.Availability}</p>
-      <p className="mt-2 text-sm">Discount: {product.ProductRemise}%</p>
+      <Footer />
     </div>
-  </div>
-  <Footer />
-  </div>
   );
 };
 

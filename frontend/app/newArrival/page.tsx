@@ -9,6 +9,7 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import { FreeMode, Pagination, Navigation } from "swiper/modules";
 import SignInModal from "../Login/page";
+import Signup from '../Signup/page';
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from 'react-toastify';
 import Link from 'next/link';
@@ -35,7 +36,9 @@ function NewArrival() {
   if (JSON.parse(sessionStorage.getItem("user"))) {
     userId = JSON.parse(sessionStorage.getItem("user")).id;
   }
-
+  const openSignUpModal = () => {
+    setSignUpModalOpen(true); // Open sign-up modal
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -189,10 +192,16 @@ function NewArrival() {
         </div>
       </Swiper>
       <ToastContainer />
-      <SignInModal
+       <SignInModal
         isOpen={isSignInModalOpen}
         onClose={() => setSignInModalOpen(false)}
-        onSignUp={() => {/* Handle sign-up logic if needed */ }}
+        onSignUp={() =>openSignUpModal()}
+      />
+
+      <Signup 
+        isOpen={isSignUpModalOpen} 
+        onClose={()=>{setSignInModalOpen(false),setSignUpModalOpen(false)}} 
+        onSignUp={() =>openSignUpModal()}
       />
     </div>
   )

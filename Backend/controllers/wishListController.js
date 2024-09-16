@@ -12,26 +12,33 @@ module.exports = {
             });
     },
 
-    deleteFromWishlist: async (req, res) => {
+ deleteFromWishlist : async (req, res) => {
+        const { wishID } = req.params; // Extract wishID from route parameters
+    
+        if (!wishID) {
+            return res.status(400).json({ error: 'WishID is required' });
+        }
+    
         try {
-            const { namewishlist } = req.params;
-
-            const wishListItem = await WishList.findOne({
-                where: {
-                    wishListName: namewishlist
-                }
-            });
-
-            if (wishListItem) {
-                await wishListItem.destroy();
-                res.status(200).json({ message: 'Item deleted successfully', wishListItem });
+            // Log the wishID being used
+            console.log("Attempting to delete item with WishID:", wishID);
+    
+            const result = await WishList.destroy({ where: { wishId: wishID } }); // Use the correct column name
+    
+            if (result > 0) { // Check if any rows were affected
+                res.json({ message: 'Deleted successfully', affectedRows: result });
             } else {
-                res.status(404).json({ message: 'Item not found' });
+                res.status(404).json({ error: 'Item not found' });
             }
         } catch (err) {
-            res.status(500).json({ message: err.message });
+            // Log the full error for debugging
+            console.error("Error deleting item:", err);
+            res.status(500).json({ error: 'An error occurred while deleting the item', details: err.message });
         }
-    },
+    }
+    
+    ,
+    
     getWishByName: async (req, res) => {
         try {
             const wishList = await WishList.findOne({ 
