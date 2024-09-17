@@ -85,11 +85,13 @@ const addCart = async (obj: object) => {
 <div className='all'>
        <h1 className='title'>Catalog</h1>
       <div className='text-slate-400 flex justify-center gap-16 mb-8'>
+      <button className='relative hover:underline hover:text-black' onClick={()=>router.push("/shopAllproducts")} >All</button>
         <button className='relative hover:underline hover:text-black' onClick={()=>{getByCategory("Necklaces")}} >Necklaces</button>
         <button className='relative hover:underline hover:text-black'onClick={()=>{getByCategory("Earings")}}  >Earings</button>
         <button className='relative hover:underline hover:text-black'onClick={()=>{getByCategory("Rings")}} >Rings</button>
         <button className='relative hover:underline hover:text-black' onClick={()=>{getByCategory("Bracelets")}} >Bracelets</button>
         <button className='relative hover:underline hover:text-black' onClick={()=>{getByCategory("Pack")}} >Packs</button>
+        <button className='relative hover:underline hover:text-black' onClick={()=>{getByCategory("Accessories hair")}} >Accessories hair</button>
       </div>
 
       <div className='contenu'>
@@ -99,6 +101,9 @@ const addCart = async (obj: object) => {
             <div key={product.ProductID} className="product-card bg-white rounded-lg shadow mt-4">
              <Link href={`/productdetail?ProductID=${product.ProductID}`}>
                 <div className='image'>
+                {product.ProductRemise && (
+      <span className="product-remise">{product.ProductRemise}%</span>
+    )}
                   <img
                     src={product.ProductImage[0]} 
                     alt=""
@@ -122,18 +127,14 @@ const addCart = async (obj: object) => {
                     </button>
                   </div>
                 </div>
-              </Link>
+              
 
               <div className="px-5 pb-5">
                 <a href="#">
                   <h4 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Name}</h4>
                   <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Description}</h5>
                 </a>
-                <div className="flex items-center mt-2.5 mb-5">
-                  <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-blue-800 ms-3 product-remise">
-                    {product.ProductRemise}%
-                  </span>
-                </div>
+
                 <div className="flex items-center justify-between">
                   <span className="text-3xl font-bold text-gray-900 dark:text-black">{product.Price}DT</span>
                   <button 
@@ -152,6 +153,7 @@ const addCart = async (obj: object) => {
       </button> 
                 </div>
               </div>
+              </Link>
             </div>
           ))}
         </div>

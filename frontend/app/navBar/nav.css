@@ -61,12 +61,35 @@ background-color: rgb(251, 251, 251);
   border-radius: 4px;
 }
 
-.search-button {
- background: transparent;
-  border: none;
+.icon {
+  position: absolute; /* Position the icon relative to the input field */
+  right: 10px; /* Space from the right edge of the input field */
+  top: 50%; /* Vertically center the icon */
+  transform: translateY(-50%); /* Adjust vertical alignment */
+  cursor: pointer;
+  color: #000; /* Icon color (adjust as needed) */
+}
+.select {
+  position: absolute; /* Position the dropdown below the input */
+  top: 100%; /* Align it below the input field */
+  left: 0;
+  width: 100%; /* Match the width of the input field */
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10; /* Ensure it appears above other content */
+  max-height: 200px; /* Limit the height of the dropdown */
+  overflow-y: auto; /* Enable scrolling if the list is too long */
+}
+
+.select li {
+  padding: 10px;
   cursor: pointer;
 }
 
-.btn_search{
-  transform: translate(-50%, -50%);
+.select li:hover {
+  background-color: #f0f0f0;
 }
+
+
+

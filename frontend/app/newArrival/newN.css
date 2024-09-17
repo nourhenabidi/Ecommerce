@@ -37,7 +37,6 @@
     position: absolute;
     top: 10px; /* Position from the top */
     right: 10px; /* Position from the right */
-    background: white; /* Background color for visibility */
     padding: 6px; /* Padding around the icon */
     border-radius: 50%; /* Circular background */
     height: 35px; /* Icon height */
@@ -54,13 +53,19 @@
   }
 
   .product-remise {
-    margin-bottom: 4px; /* Adjust this value to move it closer to the price */
-    margin-top: -8px; /* Moves the remise up */
+    position: absolute;
+    top: 10px;
+    left: 10px; /* Move the remise span to the top left */
+    background-color: #ff4d4d; /* Color for the remise background */
+    color: white;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 12px; /* Adjust font size for the remise */
   }
-
   
   .swiper-pagination-bullet {
-    background: rgb(5, 2, 0) !important; /* Brown color for dots */
+    background: rgb(54, 22, 1) !important; /* Brown color for dots */
+    margin-top: 10px;
   }
   
   .swiper-button-next,
@@ -72,4 +77,13 @@
   .swiper-button-prev:hover {
     color: grey !important; /* Grey color on hover */
   }
-  
+  .swiper-pagination {
+    position: absolute;
+    text-align: center;
+    transition: 300ms opacity;
+    transform: translate3d(0, 0, 0);
+    z-index: 10;
+    padding: 155px;
+}
+
+

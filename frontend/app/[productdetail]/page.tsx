@@ -59,9 +59,9 @@ const ProductDetail: React.FC = () => {
     })) : [];
 
   return (
-    <div>
+     <div className="body">
       <Navbar />
-      <div className="all">
+      <div className="all" style={{ marginBottom: '50px' }}>
         {/* Main Image Section */}
         <div className="flex-1">
           <img src={currentImage} alt="Main Product Image" className="main-product-image" />
@@ -81,12 +81,28 @@ const ProductDetail: React.FC = () => {
         {/* Product Details */}
         <div className="product-details">
           <h1>{product.Name}</h1>
-          <p>{product.Description}</p>
           <p className="price"> {product.Price} DT</p>
-          <p className="availability"> {product.Availability}</p>
+          <div className="py-8 border-t border-gray-700 w-3/4 sm:w-2/2 items-center justify-between sm:flex">
+  <p>{product.Description}</p>
+</div>
+
+
+          <div className=" py-8 border-t border-gray-700 w-3/4 sm:w-2/2 items-center justify-between sm:flex">
+          <p className="availability">Availability: {product.Availability}</p>
           <p className="discount">Discount: {product.ProductRemise}%</p>
-          <p className="discount">colors:</p>
+          </div>
+          <div className=" py-8 border-t border-gray-700 w-3/4 sm:w-2/2 items-center justify-between sm:flex">
+          <div className="flex items-center space-x-2 mt-4">
+    <p className="discount"></p>
+    <div className="w-6 h-6 bg-red-500 cursor-pointer"></div>
+    <div className="w-6 h-6 bg-blue-500 cursor-pointer"></div>
+    <div className="w-6 h-6 bg-green-500 cursor-pointer"></div>
+    <div className="w-6 h-6 bg-yellow-500 cursor-pointer"></div>
+  </div>
+          </div>
+          <div className=" py-8 border-t border-gray-700 w-3/4 sm:w-2/2 items-center justify-between sm:flex">
           <button className="add-to-cart-btn bg-orange-950 ">Add to Cart</button>
+          </div>
         </div>
       </div>
       <Footer />

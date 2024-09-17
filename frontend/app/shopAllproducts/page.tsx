@@ -27,6 +27,8 @@ const shopAllproducts: React.FC = () => {
     const [SelectedCategory, setSelectedCategory] = useState<string | null>(null)
     const [isSignInModalOpen, setSignInModalOpen] = useState(false);
     const [isSignUpModalOpen, setSignUpModalOpen] = useState(false); // State for sign-up modal
+    const [likedProducts, setLikedProducts] = useState<number[]>([]); // To keep track of liked products
+ 
     let userId;
     if (JSON.parse(sessionStorage.getItem("user"))) {
       userId = JSON.parse(sessionStorage.getItem("user")).id;
@@ -35,16 +37,16 @@ const shopAllproducts: React.FC = () => {
       setSignUpModalOpen(true); // Open sign-up modal
     };
     useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await axios.get('http://localhost:5000/api/products/allProducts');
-            setProduct(response.data);
-            console.log(response.data);
-            
-          } catch (error) {
-            console.error('Error fetching product data', error);
-          }
-        };
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/products/allProducts');
+        setProduct(response.data);
+        console.log(response.data);
+        
+      } catch (error) {
+        console.error('Error fetching product data', error);
+      }
+    };
         fetchData(); 
       }, []);
       const notify = () => {
@@ -98,29 +100,36 @@ const shopAllproducts: React.FC = () => {
         if (JSON.parse(sessionStorage.getItem("user"))) {
           try {
             const wishData = obj;
-            
             const res = await axios.post("http://localhost:5000/api/wishlist/addwish", wishData);
             console.log(res);
-            notif();
-          } catch (err) {
-            console.error('Error adding to wishlist:', err.response ? err.response.data : err.message);
+      
+            // Update likedProducts state to mark the product as "liked"
+            setLikedProducts((prevLikedProducts) => [...prevLikedProducts, wishData.product_ProductID]);
+      
+            notif(); // Show the success notification
+          } catch (error) {
+            console.error('Error adding to wishlist:', error.response ? error.response.data : error.message);
           }
-        } else setSignInModalOpen(true);
+        } else {
+          setSignInModalOpen(true); // Open sign-in modal if user is not logged in
+        }
       };
  
     return(
-      <div 
- 
-      className="body">
+      <div className="body">
           <Na />
           <div className='all'style={{ marginBottom: '50px' }}>
           <h1 className='title'>Our Collection</h1>
           <div className='text-slate-400 flex justify-center gap-16 mb-8 '>
+          <button className='relative hover:underline hover:text-black' onClick={()=>fetchData()} >All</button>
           <button onClick={()=>{getByCategory("Necklaces")}}>   <a className='relative hover:underline hover:text-black ' >Necklaces</a></button>
             <button onClick={()=>{getByCategory("Earings")}}>  <a className='relative hover:underline hover:text-black' >Earings</a></button>
            <button onClick={()=>{getByCategory("Rings")}}> <a className='relative hover:underline hover:text-black'>Rings</a></button>
            <button onClick={()=>{getByCategory("Bracelets")}}>  <a className='relative hover:underline hover:text-black' >Bracelets</a></button>
            <button onClick={()=>{getByCategory("Pack")}}>  <a className='relative hover:underline hover:text-black' >Packs</a></button>
+           <button onClick={()=>{getByCategory("Accessories hair")}}> <a className='relative hover:underline hover:text-black' >Accessories hair</a></button>
+
+           
 </div>
 <div className='contenu'>
           <div className="grid grid-cols-3 gap-4 flex justify-center">
@@ -130,9 +139,12 @@ const shopAllproducts: React.FC = () => {
 <div  key={product.ProductID} className="product-card bg-white rounded-lg shadow mt-4" >
   
 
-    
+<Link href={`/productdetail?ProductID=${product.ProductID}`}>
       <div className="image">
-     
+      {product.ProductRemise && (
+      <span className="product-remise">{product.ProductRemise}%</span>
+    )}
+
         <img src={product.ProductImage[0]} alt="" />
         
         <div className="heart-icon">
@@ -146,38 +158,34 @@ const shopAllproducts: React.FC = () => {
                       wishListDescription: product.Description  // Ensure this field is included
                     });
                     }}>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="h-6 w-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                        />
-                      </svg>
+           <svg
+  xmlns="http://www.w3.org/2000/svg"
+  fill={likedProducts.includes(product.ProductID) ? "red" : "none"} // Check if the product is in the wishlist
+  viewBox="0 0 24 24"
+  strokeWidth="1.5"
+  stroke="currentColor"
+  className="h-6 w-6"
+>
+  <path
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+  />
+</svg>
                     </button>
                     </div>
         </div>
     
     <div className="px-5 pb-5">
-    <Link href={`/productdetail?ProductID=${product.ProductID}`}>
+    
     
       <h4 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Name}</h4>
-      <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Description}</h5>
+      <h5 className="text-xl font-medium text-sm text-gray-900 dark:text-black">{product.Description}</h5>
   
-    </Link>
-    <div className="flex items-center mt-2.5 mb-5">
-                  <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-blue-800 ms-3 product-remise">
-                    {product.ProductRemise}%
-                  </span>
-                </div>
-      <div className='flex items-center justify-between'>
-      <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{product.Price}DT</span>
+    
+  
+      <div className='flex flex-col items-end'>
+      <span className="text-2xl font-bold text-gray-900 dark:text-black mb-4">{product.Price}DT</span>
      <button 
      
        className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige "
@@ -194,6 +202,7 @@ const shopAllproducts: React.FC = () => {
     </button>
       </div>
     </div>
+    </Link>
   </div>
 
 ))}

@@ -15,14 +15,15 @@ module.exports={
       res.json(adProd)
     }
     ,
-    getProdByName: async (req, res) => {
+    getProdByName : async (req, res) => {
       try {
-          let nou = await Product.findOne({ where: { name: req.params.name } });
-          res.json(nou);
+        let product = await Product.findOne({ where: { name: req.params.name } });
+        res.json([product]); // Wrap the single product in an array
       } catch (err) {
-          res.json(err);
+        res.json(err);
       }
-  },
+    }
+    ,
     getOneProd:async(req,res)=>{
       let gp=await Product.findOne({where:{ProductID:req.params.ProductID}})
       res.json(gp)

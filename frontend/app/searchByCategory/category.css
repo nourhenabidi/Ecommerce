@@ -64,9 +64,7 @@
     position: absolute;
     top: 10px; /* Position from the top */
     right: 10px; /* Position from the right */
-    background: white; /* Background color for visibility */
     padding: 6px; /* Padding around the icon */
-    border-radius: 50%; /* Circular background */
     height: 35px; /* Icon height */
     width: 35px; /* Icon width */
     display: flex;
@@ -75,10 +73,16 @@
   }
   
   .heart-icon svg {
-    width: 24px; /* Adjust size of the SVG icon */
-    height: 24px;
+    width: 30px; /* Adjust size of the SVG icon */
+    height: 30px;
   }
   .product-remise {
-    margin-bottom: 4px; /* Adjust this value to move it closer to the price */
-    margin-top: -8px; /* Moves the remise up */
+    position: absolute;
+    top: 10px;
+    left: 10px; /* Move the remise span to the top left */
+    background-color: #ff4d4d; /* Color for the remise background */
+    color: white;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 12px; /* Adjust font size for the remise */
   }
