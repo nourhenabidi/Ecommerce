@@ -88,7 +88,9 @@ const ProductDetail: React.FC = () => {
 
 
           <div className=" py-8 border-t border-gray-700 w-3/4 sm:w-2/2 items-center justify-between sm:flex">
-          <p className="availability">Availability: {product.Availability}</p>
+          <p className="availability">
+              Availability: {product.Availability === 'In Stock' ? 'In Stock' : 'Out of Stock'}
+            </p>
           <p className="discount">Discount: {product.ProductRemise}%</p>
           </div>
           <div className=" py-8 border-t border-gray-700 w-3/4 sm:w-2/2 items-center justify-between sm:flex">

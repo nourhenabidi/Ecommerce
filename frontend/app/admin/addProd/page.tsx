@@ -59,8 +59,14 @@ const Addprod = () => {
             fileInputRef.current.click();
         }
     };
+    const toggleAvailability = () => {
+        setAvailability(!availability); // Toggle between true and false
+    };
+    const toggleNewProduct = () => {
+        setNewProduct(!newProduct); // Toggle between true and false
+    };
 
-    const notifySuccess = () => toast.success('Car added successfully!', {
+    const notifySuccess = () => toast.success('Product added successfully!', {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -159,21 +165,21 @@ const Addprod = () => {
                         </div>
                         <div className="grid grid-cols-2">
                             <label className="block text-orange-950 text-lg">Availability:</label>
-                            <input
-                                type="checkbox"
-                                checked={availability}
-                                onChange={() => setAvailability(!availability)}
-                                className="form-checkbox h-5 w-5 text-gray-600"
-                            />
+                            <button
+                                onClick={toggleAvailability}
+                                className={`block w-[300px] py-1.5 px-2 ring-1 ring-inset ${availability ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}
+                            >
+                                {availability ? 'In Stock' : 'Out of Stock'}
+                            </button>
                         </div>
                         <div className="grid grid-cols-2">
                             <label className="block text-orange-950 text-lg">New Product:</label>
-                            <input
-                                type="checkbox"
-                                checked={newProduct}
-                                onChange={() => setNewProduct(!newProduct)}
-                                className="form-checkbox h-5 w-5 text-gray-600"
-                            />
+                            <button
+                                onClick={toggleNewProduct}
+                                className={`block w-[300px] py-1.5 px-2 ring-1 ring-inset ${newProduct ? 'bg-blue-500 text-white' : 'bg-gray-500 text-white'}`}
+                            >
+                                {newProduct ? 'New' : 'Not New'}
+                            </button>
                         </div>
                        
                         <button
