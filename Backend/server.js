@@ -36,6 +36,7 @@ app.listen(PORT, () => {
 
 //user routes
 
+app.use('/api/admin',userAuthRouter)
 app.use('/api/up',userAuthRouter)
 app.use("/api/users",userRouter)
 //prod routes

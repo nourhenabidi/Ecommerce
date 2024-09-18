@@ -67,7 +67,7 @@ const client: React.FC =()=>{
     setSearched(event.target.value);
   };
     return (
-      <div className="body">
+      <div >
         <div className="flex h-screen">
         <Sidebar/>
      
@@ -88,8 +88,8 @@ const client: React.FC =()=>{
               <SearchIcon />
               </button>
             </div>
-           <Typography variant="h1" fontWeight="bold" style={{ color: '#000080' }} className="items-center">
-             list clients 
+           <Typography variant="h1" fontWeight="bold" style={{ color: 'black' }} className="items-center">
+             List clients 
            </Typography>
 
            <div className="companies-container">

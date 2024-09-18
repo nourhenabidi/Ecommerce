@@ -17,7 +17,14 @@ const User = sequelize.define('user', {
     type: DataTypes.STRING(255),
     allowNull: true,
   },
-}, {
+  role: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    defaultValue: 'client',
+  },
+},
+
+{
   tableName: 'user',
   engine: 'InnoDB',
 });

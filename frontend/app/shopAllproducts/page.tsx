@@ -36,7 +36,7 @@ const shopAllproducts: React.FC = () => {
     const openSignUpModal = () => {
       setSignUpModalOpen(true); // Open sign-up modal
     };
-    useEffect(() => {
+  
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/products/allProducts');
@@ -47,6 +47,7 @@ const shopAllproducts: React.FC = () => {
         console.error('Error fetching product data', error);
       }
     };
+    useEffect(() => {
         fetchData(); 
       }, []);
       const notify = () => {
