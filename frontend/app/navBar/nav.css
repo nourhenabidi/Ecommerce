@@ -80,6 +80,8 @@ background-color: rgb(251, 251, 251);
   z-index: 10; /* Ensure it appears above other content */
   max-height: 200px; /* Limit the height of the dropdown */
   overflow-y: auto; /* Enable scrolling if the list is too long */
+  display: flex;
+  align-items: center;
 }
 
 .select li {

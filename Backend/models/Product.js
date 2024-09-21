@@ -19,7 +19,11 @@ const Product = sequelize.define('product', {
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    Price: {
+    oldPrice: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    newPrice: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },

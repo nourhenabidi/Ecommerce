@@ -1,89 +1,75 @@
 .list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-  }
-  .product-card {
-    background-color: #fff;
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    overflow: hidden;
-    position: relative;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth zoom and shadow effect on hover */
-  }
-  .product-card:hover {
-    transform: scale(1.05); /* Slight zoom on hover */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Deepen shadow on hover */
-  }
-  .image-container {
-    width: 100%;
-    height: 200px; /* Set the desired fixed height */
-    position: relative; /* Required for absolute positioning of heart icon */
-    overflow: hidden; /* Hide any overflow */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+.product-card {
+  background-color: #fff;
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth zoom and shadow effect on hover */
+}
+.product-card:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Deepen shadow on hover */
+}
+.image-container {
+  width: 100%;
+  height: 200px; /* Set the desired fixed height */
+  position: relative; /* Required for absolute positioning of heart icon */
+  overflow: hidden; /* Hide any overflow */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  }
-  
-  .images {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensure the image covers the container fully */
-  }
-
-  
-  .heart-icon {
-    position: absolute;
-    top: 10px; /* Position from the top */
-    right: 10px; /* Position from the right */
-    padding: 6px; /* Padding around the icon */
-    border-radius: 50%; /* Circular background */
-    height: 35px; /* Icon height */
-    width: 35px; /* Icon width */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-
-  .heart-icon svg {
-    width: 30px; /* Adjust size of the SVG icon */
-    height: 30px;
-  }
-
-  .product-remise {
-    position: absolute;
-    top: 10px;
-    left: 10px; /* Move the remise span to the top left */
-    background-color: #ff4d4d; /* Color for the remise background */
-    color: white;
-    padding: 5px;
-    border-radius: 4px;
-    font-size: 12px; /* Adjust font size for the remise */
-  }
-  
-  .swiper-pagination-bullet {
-    background: rgb(54, 22, 1) !important; /* Brown color for dots */
-    margin-top: 10px;
-  }
-  
-  .swiper-button-next,
-  .swiper-button-prev {
-    color: rgb(95, 40, 9) !important; /* Brown color for arrows */
-  }
-  
-  .swiper-button-next:hover,
-  .swiper-button-prev:hover {
-    color: grey !important; /* Grey color on hover */
-  }
-  .swiper-pagination {
-    position: absolute;
-    text-align: center;
-    transition: 300ms opacity;
-    transform: translate3d(0, 0, 0);
-    z-index: 10;
-    padding: 155px;
 }
 
+.images {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image covers the container fully */
+}
+
+
+.heart-icon {
+  position: absolute;
+  top: 10px; /* Position from the top */
+  right: 10px; /* Position from the right */
+  padding: 6px; /* Padding around the icon */
+  border-radius: 50%; /* Circular background */
+  height: 35px; /* Icon height */
+  width: 35px; /* Icon width */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.heart-icon svg {
+  width: 30px; /* Adjust size of the SVG icon */
+  height: 30px;
+}
+
+.product-remise {
+  position: absolute;
+  top: 10px;
+  left: 10px; /* Move the remise span to the top left */
+  background-color: #ff4d4d; /* Color for the remise background */
+  color: white;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 12px; /* Adjust font size for the remise */
+}
+
+.swiper-pagination-bullet {
+  background: rgb(54, 22, 1) !important; /* Brown color for dots */
+  margin-top: 10px;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: rgb(95, 40, 9) !important; /* Brown color for arrows */
+}
 

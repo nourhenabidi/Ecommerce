@@ -99,6 +99,18 @@ return res.status(200).json(search)
   }
 }
 
+async function getClientLength (req, res) {
+  try {
+    const rowCount = await User.count(
+      {where: { role: "client" }}
+    );
+    res.json({ rowCount });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
 const sendEmail = async (req, res) => {
   const { userEmail, subject, message } = req.body;
 
@@ -111,7 +123,8 @@ const sendEmail = async (req, res) => {
     },
     tls: {
         rejectUnauthorized: false,  },
-});
+})
+console.log(process.env.EMAIL_USER, process.env.EMAIL_PASS,);
 
 
   // Email options
@@ -131,4 +144,4 @@ const sendEmail = async (req, res) => {
   }
 };
 
-module.exports = {searchByName,deleteUserById,getAllUsers,getUserById,createUser,updateUserById , sendEmail}
+module.exports = {searchByName,deleteUserById,getAllUsers,getUserById,createUser,updateUserById , sendEmail,getClientLength}

@@ -19,7 +19,7 @@ interface Product {
 
 const Navbar: React.FC = () => {
   const [searched, setSearched] = useState<string>('');
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<Product[]>([]);
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [data, setData] = useState<Product[]>([]);
@@ -102,7 +102,7 @@ const Navbar: React.FC = () => {
   const handleSuggestionClick = (productName: string) => {
     setSearched(productName);  // Set the search input to the clicked product's name
     setSuggestions([]);  // Close the dropdown
-    router.push("/productdetail");
+    router.push(`/productdetail?ProductID=${suggestions[0].ProductID}`);
   };
 
   const toggleCart = () => {
@@ -142,14 +142,14 @@ const Navbar: React.FC = () => {
     onKeyDown={handleKeyPress}
   />
 {suggestions.length > 0 && (
-  <ul className="select">
+  <div className="select ">
     {suggestions.map((suggestion, index) => (
-      <li key={index} onClick={() => handleSuggestionClick(suggestion.Name)}>
+      <div key={index} onClick={() => handleSuggestionClick(suggestion.Name)}>
 <img className='w-[40px] h-[40px]' src={suggestion.ProductImage[0]} alt="" />  
         <p>{suggestion.Name}</p>
-      </li>
+      </div>
     ))}
-  </ul>
+  </div>
 )}
 
   <SearchIcon className='icon'/>

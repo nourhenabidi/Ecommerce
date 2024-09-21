@@ -5,6 +5,8 @@ import axios from "axios";
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import SearchIcon from '@mui/icons-material/Search';
 import Sidebar from "../sideBar/page";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from 'react-toastify';
 interface Client {
   id: number;
   fullName: string;
@@ -20,6 +22,7 @@ const client: React.FC =()=>{
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searched,setSearched]=useState<string>("");
+  const [refresh,setRefresh] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,18 +54,30 @@ const client: React.FC =()=>{
       console.error(error);
     }
   };
+
+  const notify = () => {
+    toast.success("client removed successfully", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
   const deletee = async (id:number) => {
     try {
-      await fetch(`http://localhost:5000/api/users/delete/:id`, {
-        method: 'DELETE',
-      });
-      console.log("user deleted");
+      const res = await axios.delete(`http://localhost:5000/api/users/delete/${id}`);
+      console.log(res);
+      notify();
     } catch (error) {
-      console.error("delete category:", error);
+      console.error('Error deleting client:', error);
     }
-    location.reload();
-
+    setRefresh(!refresh);
   };
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearched(event.target.value);
   };
@@ -91,7 +106,7 @@ const client: React.FC =()=>{
            <Typography variant="h1" fontWeight="bold" style={{ color: 'black' }} className="items-center">
              List clients 
            </Typography>
-
+           <ToastContainer />
            <div className="companies-container">
           
           <div  className="com-box">
@@ -116,6 +131,9 @@ const client: React.FC =()=>{
                     Phone Number 
                 </th>
                 <th scope="col" className="px-6 py-3 hover:bg-gray-200 cursor-pointer">
+                    role 
+                </th>
+                <th scope="col" className="px-6 py-3 hover:bg-gray-200 cursor-pointer">
                     Edit 
                 </th>
             </tr>
@@ -136,7 +154,9 @@ const client: React.FC =()=>{
                 <td className="px-6 py-4">
                 {e.phoneNumber}
                 </td>
-       
+                <td className="px-6 py-4">
+                {e.role}
+                </td>
 
                 <td className="flex items-center px-6 py-4"> 
                  <button onClick={() => { deletee(e.id) }}> <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline ms-3"><RestoreFromTrashIcon style={{ color: 'red' }}/></a></button>  

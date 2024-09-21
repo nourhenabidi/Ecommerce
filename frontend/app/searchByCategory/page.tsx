@@ -14,7 +14,8 @@ interface Products {
   ProductID: number;
   Name: string;
   Description: string;
-  Price: string;
+  oldPrice?: number;
+  newPrice?: number;
   Availability: string;
   ProductImage: string[]; // Ensure ProductImage is an array of strings
   ProductRemise: string;
@@ -28,13 +29,17 @@ const SearchByCategory: React.FC = () => {
   const searchParams = useSearchParams();
   const [SelectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [isSignInModalOpen, setSignInModalOpen] = useState(false);
-  const id=sessionStorage.getItem('token')?.split(',')[1]
+  let userId: number | undefined; 
+  const user = sessionStorage.getItem("user");
+  if (user) {
+      userId = JSON.parse(user).id;
+  }
  
   const router=useRouter()
 console.log("cat=====",searchParams.get("category"));
 
 const category = searchParams.get('category');
-console.log("catttttttttt",category);
+
 
 
   useEffect(() => {
@@ -48,7 +53,7 @@ console.log("catttttttttt",category);
         })
   }
   ,[category]);
-console.log("state===== cats",categories);
+
 
 const getByCategory = async (productCategory: string): Promise<void> => {
   try {
@@ -65,7 +70,8 @@ const getByCategory = async (productCategory: string): Promise<void> => {
 };
 
 const addCart = async (obj: object) => {
-  if (id) {
+  const user = sessionStorage.getItem("user");
+  if (user) {
     try {
       await axios.post("http://localhost:5000/api/cart/addCart", obj);
       // Redirect to cart page after adding item to the cart
@@ -136,17 +142,22 @@ const addCart = async (obj: object) => {
                 </a>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-3xl font-bold text-gray-900 dark:text-black">{product.Price}DT</span>
-                  <button 
+                {product.oldPrice && (
+                        <span className="text-sm line-through text-gray-500 mb-1">{product.oldPrice} DT</span>
+                      )}
+                      {product.newPrice ? (
+                        <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{product.newPrice} DT</span>
+                      ) : (
+                        <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{product.oldPrice} DT</span>
+                      )}                  <button 
        className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige "
        onClick={() =>
         addCart({
           product_ProductID: product.ProductID,
           productName: product.Name,
           CartImage: product.ProductImage,
-          productPrice: product.Price,
-          // Quantity: product.Description,
-          user_idUser:id,
+          productPrice: product.newPrice,
+          user_idUser:userId,
         })
       }
        >Add to cart

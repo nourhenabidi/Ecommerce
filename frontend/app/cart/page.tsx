@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { IoCloseSharp } from "react-icons/io5";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import "react-toastify/dist/ReactToastify.css";
@@ -7,11 +7,12 @@ import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 
 interface Product {
+  id:number;
   CartID: number; 
   ProductID: number;
-  Name: string;
+  productName: string;
   ProductImage: string[];
-  Price: number;
+  productPrice: number;
 }
 
 type Quantities = {
@@ -20,12 +21,29 @@ type Quantities = {
 };
 
 interface CartProps {
+  fetchProducts: () => Promise<void>;
    onClose: () => void;
+   refresh:boolean;
+   setrefresh: (value: boolean) => void; 
 }
 
-const Cart: React.FC<CartProps> = ({ onClose }) => {
+const Cart: React.FC<CartProps> = ({ onClose,refresh ,setrefresh  }) => {
   const [quantities, setQuantities] = useState<Quantities>({});
-  const [refresh,setRefresh] = useState<boolean>(true);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [userId, setUserId] = useState<number | null>(null);
+
+
+  useEffect(() => {
+    const storedProducts = JSON.parse(sessionStorage.getItem("products") || '[]');
+    setProducts(storedProducts);
+
+    const user = JSON.parse(sessionStorage.getItem("user") || '{}');
+    if (user && user.id) {
+      setUserId(user.id);
+    }
+  }, []);
+
+
 
   const notify = () => {
     toast.success("Product removed from cart successfully", {
@@ -45,21 +63,22 @@ const Cart: React.FC<CartProps> = ({ onClose }) => {
       console.log("Invalid CartID");
       return;
     }
-  
     try {
       const res = await axios.delete(`http://localhost:5000/api/cart/deleteCart/${CartID}`);
       console.log("Deleted product:", res);
       notify();
-      
+      setrefresh(!refresh)
+      console.log("refresh===",refresh);
+       sessionStorage.removeItem("products")
+       //sessionStorage.getItem("products)
+       
     } catch (error) {
       console.error('Error deleting product:', error);
     }
-    setRefresh(!refresh)
   };
   
 
   const increaseQuantity = (ProductID: number) => {
-    
     setQuantities(prevQuantities => ({
       ...prevQuantities,
       [ProductID]: (prevQuantities[ProductID] || 1) + 1
@@ -73,18 +92,21 @@ const Cart: React.FC<CartProps> = ({ onClose }) => {
     }));
   };
 
-  const calculateProductTotalPrice = (product) => {
+  const calculateProductTotalPrice = (product:any) => {
     const quantity = quantities[product.ProductID] || 1; // Get the quantity or default to 1
     return product.productPrice * quantity; // Multiply price by quantity
   };
 
   const calculateGrandTotal = () => {
-    const productsInCart = JSON.parse(sessionStorage.getItem("products")) || [] as Product[];
+    const productsInCartString = sessionStorage.getItem("products");
+    const productsInCart: Product[] = productsInCartString ? JSON.parse(productsInCartString) : [];
+  
     return productsInCart.reduce((total, product) => {
       const productQuantity = quantities[product.ProductID] || 1; // Get the quantity or default to 1
       return total + (product.productPrice * productQuantity); // Multiply price by quantity
     }, 0); // Start with a total of 0
   };
+  
 
   return (
     <div className="relative z-10">
@@ -101,42 +123,47 @@ const Cart: React.FC<CartProps> = ({ onClose }) => {
                   </button>
                 </div>
                 <div className="px-4">
-                  {JSON.parse(sessionStorage.getItem("products"))?.length === 0 ? (
-                    <p>Your cart is empty</p>
-                  ) : (
-                    JSON.parse(sessionStorage.getItem("products"))?.map((product) => (
-                      <li className="flex py-6" key={product.ProductID}>
-                        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                        <img
-      src={product.CartImage && product.CartImage.length > 0 ? product.CartImage[0] : 'default-image-url.jpg'} // Provide a default image URL
-      alt={product.Name}
-      className="h-full w-full object-cover object-center"
-    />                        </div>
+                {products.length === 0 ? (
 
-                        <div className="ml-4 flex flex-1 flex-col">
-                          <div>
-                            <div className="flex justify-between text-base font-medium text-gray-900">
-                              <h3><a href="#">{product.productName}</a></h3>
-                              
-                            </div>
-                          </div>
-                          
-                          <div className="flex flex-1 items-end justify-between text-sm">
-                            <p className="ml-4">{calculateProductTotalPrice(product)} DT</p> {/* Update this dynamically */}
-                            <div className="flex">
-                              <button onClick={() => decreaseQuantity(product.ProductID)} className="px-2 py-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold rounded-l">-</button>
-                              <span className="px-3 py-1 bg-white border border-gray-300 text-gray-800 font-medium">{quantities[product.ProductID] || 1}</span>
-                              <button onClick={() => increaseQuantity(product.ProductID)} className="px-2 py-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold rounded-r">+</button>
-                            </div>
-                            <div className="flex">
-                              <button onClick={() => handleDeleteOne(product.CartID)} className="font-medium text-red-500 hover:text-red-700"><DeleteOutlineIcon /></button>
-                            </div>
-                          </div>
+   
+      <p>Your cart is empty</p>
+    ) : (
+      products.map((product) => (
+        <li className="flex py-6" key={product.ProductID}>
+          <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+          <img
+          src={product.ProductImage && product.ProductImage.length > 0
+             ? product.ProductImage[0]
+            : 'default-image-url.jpg'}
+            alt={product.productName}
+             className="h-full w-full object-cover object-center"
+             />
                         </div>
-                      </li>
-                    ))
-                  )}
-                </div>
+          <div className="ml-4 flex flex-1 flex-col">
+            <div>
+              <div className="flex justify-between text-base font-medium text-gray-900">
+                <h3><a href="#">{product.productName}</a></h3>
+              </div>
+            </div>
+
+            <div className="flex flex-1 items-end justify-between text-sm">
+              <p className="ml-4">{calculateProductTotalPrice(product)} DT</p> {/* Update this dynamically */}
+              <div className="flex">
+                <button onClick={() => decreaseQuantity(product.ProductID)} className="px-2 py-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold rounded-l">-</button>
+                <span className="px-3 py-1 bg-white border border-gray-300 text-gray-800 font-medium">{quantities[product.ProductID] || 1}</span>
+                <button onClick={() => increaseQuantity(product.ProductID)} className="px-2 py-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold rounded-r">+</button>
+              </div>
+              <div className="flex">
+                <button onClick={() => handleDeleteOne(product.CartID)} className="font-medium text-red-500 hover:text-red-700"><DeleteOutlineIcon /></button>
+              </div>
+            </div>
+          </div>
+        </li>
+      ))
+    )}
+  
+</div>
+
                 <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                   <div className="flex justify-between text-base font-medium text-gray-900">
                     <p>Subtotal</p>

@@ -19,25 +19,40 @@ interface Newproduct {
   ProductID: number;
   Name: string;
   ProductImage: string[];
-  Price: string;
+  oldPrice?: number;
+  newPrice?:number;
   ProductRemise: string;
   Availability: string;
   Description: string;
   colorProduct: string;
 }
-
+interface WishData {
+  product_ProductID: number;
+  wishListName: string;
+  wishListImage: string[];
+  wishListPrice: number;
+  wishListDescription: string;
+  user_id: number; // Add user_id here
+}
 function NewArrival() {
   const [news, setNews] = useState<Newproduct[]>([]);
   const [isSignInModalOpen, setSignInModalOpen] = useState(false);
   const [isSignUpModalOpen, setSignUpModalOpen] = useState(false);
   const [likedProducts, setLikedProducts] = useState<number[]>([]); // To keep track of liked products
 
-  let userId;
-  if (JSON.parse(sessionStorage.getItem("user"))) {
-    userId = JSON.parse(sessionStorage.getItem("user")).id;
+  let userId: number | undefined; 
+  const user = sessionStorage.getItem("user");
+  if (user) {
+      userId = JSON.parse(user).id;
   }
   const openSignUpModal = () => {
     setSignUpModalOpen(true); // Open sign-up modal
+  };
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + '...';
+    }
+    return text;
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -78,8 +93,9 @@ function NewArrival() {
   };
 
   const addCart = async (obj: object) => {
-    if (JSON.parse(sessionStorage.getItem("user"))) {
-      try {
+    const user = sessionStorage.getItem("user");
+    if (user) {
+  try {
         const cartData = obj;
         const res = await axios.post("http://localhost:5000/api/cart/addCart", cartData);
         console.log(res);
@@ -90,24 +106,30 @@ function NewArrival() {
     } else setSignInModalOpen(true);
   };
 
-  const addwish = async (obj: object) => {
-    if (JSON.parse(sessionStorage.getItem("user"))) {
+  const addwish = async (obj: WishData) => {
+    const user = sessionStorage.getItem("user");
+    if (user) {
       try {
-        const wishData = obj;
+        const wishData = { ...obj, user_id: userId }; // Add userId to wishData
         const res = await axios.post("http://localhost:5000/api/wishlist/addwish", wishData);
         console.log(res);
   
         // Update likedProducts state to mark the product as "liked"
-        setLikedProducts((prevLikedProducts) => [...prevLikedProducts, wishData.product_ProductID]);
+        setLikedProducts((prevLikedProducts) => [...prevLikedProducts, obj.product_ProductID]);
   
         notif(); // Show the success notification
-      } catch (error) {
-        console.error('Error adding to wishlist:', error.response ? error.response.data : error.message);
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          console.error('Error adding to wishlist:', error.response ? error.response.data : error.message);
+        } else {
+          console.error('Unexpected error:', error);
+        }
       }
     } else {
       setSignInModalOpen(true); // Open sign-in modal if user is not logged in
     }
   };
+  
   
    
 
@@ -133,7 +155,7 @@ function NewArrival() {
         modules={[FreeMode, Pagination, Navigation]}
         className="max-w-[90%] lg:max-w-[80%]"
       >
-
+<ToastContainer />
         <div className='list grid grid-cols-2 sm:grid-cols-50' style={{ marginBottom: '50px' }}>
           {Array.isArray(news) && news.map((e) => (
             
@@ -149,14 +171,14 @@ function NewArrival() {
                  
                   <div className="heart-icon">
                     <button onClick={() => {
-                     addwish({
-                      product_ProductID: e.ProductID,
-                      wishListName: e.Name,
-                      wishListImage: e.ProductImage,
-                      wishListPrice: e.Price,
-                      user_id: userId,
-                      wishListDescription: e.Description  // Ensure this field is included
-                    });
+                  addwish({
+                    product_ProductID: e.ProductID,
+                    wishListName: e.Name,
+                    wishListImage: e.ProductImage,
+                    wishListPrice: e.newPrice !== undefined ? e.newPrice : 0, // Default to 0 if newPrice is undefined
+                    wishListDescription: e.Description,  // Ensure this field is included
+                    user_id: userId as number // Ensure user_id is passed and cast it to number
+                  });
                     }}>
     <svg
   xmlns="http://www.w3.org/2000/svg"
@@ -180,11 +202,19 @@ function NewArrival() {
                 <div className="px-5 pb-5">
                   
                     <h4 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{e.Name}</h4>
-                    <h5 className="text-xl font-medium text-sm text-gray-900 dark:text-black">{e.Description}</h5>
+                    <h5 className="text-xl font-medium text-sm text-gray-900 dark:text-black">{truncateText(e.Description, 25)}</h5>
                   
                   <div className="flex flex-col items-end">
-                    
-                    <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{e.Price}DT</span>
+                  
+                      {e.oldPrice && (
+                        <span className="text-sm line-through text-gray-500 mb-1">{e.oldPrice} DT</span>
+                      )}
+                      {e.newPrice ? (
+                        <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{e.newPrice} DT</span>
+                      ) : (
+                        <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{e.oldPrice} DT</span>
+                      )}
+
                     <button
                       className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige "
                       onClick={() => {
@@ -192,7 +222,7 @@ function NewArrival() {
                           product_ProductID: e.ProductID,
                           productName: e.Name,
                           CartImage: e.ProductImage,
-                          productPrice: e.Price,
+                          productPrice: e.newPrice,
                           user_id: userId,
                         });
                       }}
@@ -208,7 +238,7 @@ function NewArrival() {
          
         </div>
       </Swiper>
-      <ToastContainer />
+      
        <SignInModal
         isOpen={isSignInModalOpen}
         onClose={() => setSignInModalOpen(false)}
@@ -221,6 +251,7 @@ function NewArrival() {
         onSignUp={() =>openSignUpModal()}
       />
     </div>
+    
   )
 }
 

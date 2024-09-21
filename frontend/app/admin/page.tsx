@@ -1,9 +1,11 @@
 import React from 'react'
 import Sidebar from './sideBar/page'
+import Dashboard from './dashboard/page'
 const Admin=() =>{
   return (
     <div>
-       <Sidebar /> 
+       <Sidebar />
+       <Dashboard />
     </div>
   )
 }

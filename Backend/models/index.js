@@ -1,10 +1,14 @@
-const { user, wishlist, card, product } = require('../models/index');
+const { user, wishlist, card, product,form } = require('../models/index');
 
 
 // Define associations here
 // User and WishList: One user can have many wish lists
 user.hasMany(wishlist, { foreignKey: 'id', as: 'wishLists' });
 wishlist.belongsTo(user, { foreignKey: 'id', as: 'user' });
+
+// User and Form: One user can have many forms
+user.hasMany(form, { foreignKey: 'user_id', as: 'forms' });
+form.belongsTo(user, { foreignKey: 'user_id', as: 'user' });
 
 // User and Card: One user can have many cards
 user.hasMany(card, { foreignKey: 'id', as: 'cards' });
@@ -23,5 +27,6 @@ module.exports = {
     card,
     product,
     user,
-    wishlist
+    wishlist,
+    form
 };

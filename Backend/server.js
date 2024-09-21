@@ -6,6 +6,7 @@ const userRouter = require ("./routes/UserRouter")
 const userAuthRouter = require("./routes/UserAuthcontRouter");
 const wishListRouter=require("./routes/WishRouter.js")
 const cardRouter=require("./routes/CardRout.js")
+const formRoutes = require('./routes/formRout');
 require('dotenv').config()
 const app = express()
 const PORT = 5000
@@ -43,4 +44,4 @@ app.use("/api/users",userRouter)
 app.use("/api/products",itemRouter)
 app.use("/api/wishlist",wishListRouter)
 app.use("/api/cart",cardRouter)
-
+app.use('/api/forms', formRoutes);

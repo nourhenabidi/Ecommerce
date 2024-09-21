@@ -79,6 +79,42 @@ module.exports={
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
+},
+ getProdLength:async (req, res)=> {
+  try {
+    const rowCount = await Product.count();
+    res.json({ rowCount });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+},
+getProductsByCategoryCount: async (req, res) => {
+  const { productCategory } = req.params; // Get the category from the request parameters
+  try {
+    // Count products in the specified category
+    const productCount = await Product.count({
+      where: { productCategory }, // Filter by the specified category
+    });
+
+    // Send the count as an object with the category
+    res.json([{ productCategory, productCount }]); // Wrap in an array for consistent response format
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+},
+
+getAllProductsByCategory: async (req, res) => {
+  const { productCategory } = req.params; // Get the category from the request parameters
+  try {
+    const products = await Product.findAll({
+      where: { productCategory: productCategory }, // Filter by the specified category
+    });
+    res.json({ products }); // Send the products in the response
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 }
        
     }

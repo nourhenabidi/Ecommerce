@@ -3,6 +3,8 @@ const UserController = require('../controllers/UserControllers');
 
 // GET all users
 UserRouter.get('/getall', UserController.getAllUsers);
+// GET LENGTH USERS
+UserRouter.get('/getlength', UserController.getClientLength);
 // GET user by ID
 UserRouter.get('/get/:id', UserController.getUserById);
 //search user by name

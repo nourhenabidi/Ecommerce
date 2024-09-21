@@ -63,11 +63,10 @@ const WhereDrop = () => {
         </DropdownMenuTrigger>
 
         <DropdownMenuContent>
-          <DropdownMenuLabel>Join Us!</DropdownMenuLabel>
-          {!isAuthenticated && (
+              {!isAuthenticated && (
             <>
               <DropdownMenuItem onClick={openSignInModal}>
-                Sign in
+               Log in
               </DropdownMenuItem>
             </>
           )}
