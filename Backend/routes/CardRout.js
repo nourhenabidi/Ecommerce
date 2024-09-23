@@ -8,5 +8,5 @@ router.delete('/deleteCart/:CartID',CartRouter.DeleteCart)
 router.post('/addCart',CartRouter.addProductToCart)
 router.put('/updateCart/:id',CartRouter.updateCart)
 router.get('/UserCart/:id',CartRouter.getUserCart)
-
+router.get("/carts/:userId",CartRouter.getUserCarts)
 module.exports = router;

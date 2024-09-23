@@ -3,6 +3,8 @@ import React, { useState, useRef, useEffect, KeyboardEvent } from "react";
 import axios from "axios";
 import { IoCloseSharp } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Props = {
   isOpen: boolean;
@@ -23,17 +25,20 @@ const Signup = ({ isOpen, onClose, onSignUpSuccess  }: Props) => {
       // Save token to session storage
       sessionStorage.setItem("token", res.data.token);
   
-      // Ensure res.data.user is an object, not a string
       if (typeof res.data.user === 'string') {
-        sessionStorage.setItem("user", res.data.user); // Store the string directly
+        sessionStorage.setItem("user", res.data.user);
       } else {
-        sessionStorage.setItem("user", JSON.stringify(res.data.user)); // Convert to JSON string if it's an object
+        sessionStorage.setItem("user", JSON.stringify(res.data.user));
       }
   
-      onSignUpSuccess(); 
+      onSignUpSuccess();
       onClose();
     } catch (err) {
-      console.log(err);
+      if (axios.isAxiosError(err) && err.response?.status === 400) {
+        toast.error("Email already exists. Please use a different email.");
+      } else {
+        console.log(err);
+      }
     }
   };
   
@@ -60,6 +65,7 @@ const Signup = ({ isOpen, onClose, onSignUpSuccess  }: Props) => {
 
   return (
     <div className="body">
+    <ToastContainer />
       <div
         id="login-popup"
         tabIndex={-1}

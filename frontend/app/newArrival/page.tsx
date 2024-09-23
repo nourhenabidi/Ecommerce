@@ -21,7 +21,7 @@ interface Newproduct {
   ProductImage: string[];
   oldPrice?: number;
   newPrice?:number;
-  ProductRemise: string;
+  productRemise: string;
   Availability: string;
   Description: string;
   colorProduct: string;
@@ -163,9 +163,9 @@ function NewArrival() {
               <Link href={`/productdetail?ProductID=${e.ProductID}`}>
               <div className="product-card w-full max-w-sm bg-white group relative rounded-lg shadow">
                 <div className="image-container">
-                {e.ProductRemise && (
-      <span className="product-remise">{e.ProductRemise}%</span>
-    )}
+                {!e.productRemise ||e.productRemise===0 ||e.productRemise==0  ? (
+      ""
+    ) : <span className="product-remise">{e.productRemise}%</span>}
 
                   <img className='images' src={e.ProductImage[0]} alt="product image" />
                  

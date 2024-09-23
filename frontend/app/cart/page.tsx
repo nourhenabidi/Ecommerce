@@ -5,6 +5,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
+import {useRouter} from 'next/navigation'; 
 
 interface Product {
   id:number;
@@ -31,7 +32,7 @@ const Cart: React.FC<CartProps> = ({ onClose,refresh ,setrefresh  }) => {
   const [quantities, setQuantities] = useState<Quantities>({});
   const [products, setProducts] = useState<Product[]>([]);
   const [userId, setUserId] = useState<number | null>(null);
-
+  const router = useRouter();
 
   useEffect(() => {
     const storedProducts = JSON.parse(sessionStorage.getItem("products") || '[]');
@@ -107,7 +108,9 @@ const Cart: React.FC<CartProps> = ({ onClose,refresh ,setrefresh  }) => {
     }, 0); // Start with a total of 0
   };
   
-
+  const handleCheckout = () => {
+    router.push('/formulaire'); // Navigate to the Formulaire page
+  };
   return (
     <div className="relative z-10">
       <div className="fixed inset-0 bg-gray-500 bg-opacity-75"></div>
@@ -132,9 +135,10 @@ const Cart: React.FC<CartProps> = ({ onClose,refresh ,setrefresh  }) => {
         <li className="flex py-6" key={product.ProductID}>
           <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
           <img
-          src={product.ProductImage && product.ProductImage.length > 0
-             ? product.ProductImage[0]
-            : 'default-image-url.jpg'}
+           src={product.ProductImage && product.ProductImage.length > 0
+          ? product.ProductImage[0]
+          : 'default-image-url.jpg'}
+                           
             alt={product.productName}
              className="h-full w-full object-cover object-center"
              />
@@ -161,6 +165,7 @@ const Cart: React.FC<CartProps> = ({ onClose,refresh ,setrefresh  }) => {
         </li>
       ))
     )}
+<ToastContainer />
   
 </div>
 
@@ -171,8 +176,11 @@ const Cart: React.FC<CartProps> = ({ onClose,refresh ,setrefresh  }) => {
                   </div>
                   <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                   <div className="mt-6">
-                    <a href="#" className="flex items-center justify-center rounded-md border border-transparent bg-orange-950 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-orange-700">Checkout</a>
-                  </div>
+                  <button 
+                      onClick={handleCheckout} 
+                      className="flex items-center justify-center rounded-md border border-transparent bg-orange-950 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-orange-700">
+                      Checkout
+                    </button>                  </div>
                   <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                     <p>
                       or

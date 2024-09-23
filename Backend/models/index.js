@@ -14,8 +14,8 @@ form.belongsTo(user, { foreignKey: 'user_id', as: 'user' });
 user.hasMany(card, { foreignKey: 'id', as: 'cards' });
 card.belongsTo(user, { foreignKey: 'user_id', as: 'user' });
 
-product.hasMany(card, { foreignKey: 'ProductId', as: 'cards' });
-card.belongsTo(product, { foreignKey: 'Product_id', as: 'product' });
+product.hasMany(card, {foreignKey: 'product_ProductID',as: 'carts'});
+card.belongsTo(product, {foreignKey: 'product_ProductID',as: 'product' });
 
 // Product and WishList: Many-to-Many relationship using a join table
 product.belongsToMany(wishlist, { through: 'WishListProducts', foreignKey: 'ProductId', as: 'wishLists' });

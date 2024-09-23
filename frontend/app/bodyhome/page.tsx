@@ -13,6 +13,7 @@ import NewAri from "../newArrival/page"
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useSearchParams }  from 'next/navigation';
+
 interface Products {
   id:number;
   ProductID: number;
@@ -231,8 +232,8 @@ return(
 <h2 className=" text-white text-4xl text-black font-medium  text-sm px-5 py-4" style={{ marginBottom: '50px' }}>For You girl</h2>
 
       <h1 className=" text-white text-6xl text-black font-bold  text-sm px-5 py-4">During the golden hour.</h1>
-      <p className=" text-white text-2xl ">i am nourhen i love jwellery and it's my desire to fulfill my dream.</p>
-      <Link href={'/aboutUs'}><button className=' text-white border border-white rounded mt-5 mr-[30px]'>Read more</button></Link> 
+      <p className=" text-white text-2xl "> i love jwellery and it's my desire to fulfill my dream.</p>
+      <Link href={'/aboutUs'}><button className=' text-white border-raduis border-white rounded mt-5 mr-[30px]'>Read more</button></Link> 
       </div> 
       </div>
 

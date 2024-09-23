@@ -17,6 +17,8 @@ const createForm = async (req, res) => {
       fullName,
       phoneNumber,
       position,
+      email:email,
+      userEmail:email,
       user_id: user.id, // Use the ID from the found user
     });
 
