@@ -3,22 +3,22 @@ import React ,{useState , useEffect} from "react";
 import { Typography } from "@mui/material";
 import axios from "axios";
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
-import SearchIcon from '@mui/icons-material/Search';
+
 import Sidebar from "../sideBar/page";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from 'react-toastify';
-interface Client {
+interface Form{
   id: number;
   fullName: string;
   image_user: string;
   phoneNumber: string;
-  email:string;
-  role:string;
+  userEmail:string;
+  position:string;
 } 
 
 
-const client: React.FC =()=>{
-  const [data, setData] = useState<Client[] | null>(null);
+const Clients: React.FC =()=>{
+  const [data, setData] = useState<Form[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searched,setSearched]=useState<string>("");
@@ -27,7 +27,7 @@ const client: React.FC =()=>{
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users/getall');
+        const response = await axios.get('http://localhost:5000/api/forms/getForms');
         setData(response.data);
       } catch (error) {
         setError('Error fetching data');
@@ -39,21 +39,6 @@ const client: React.FC =()=>{
     fetchData();
   }, []);
 
-  const search = async () => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/users/getName/${searched}`);
-
-      if (!response.ok) {
-        console.error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const searchData: Client[] = await response.json();
-      setData(searchData);
-      console.log("found", searchData);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const notify = () => {
     toast.success("client removed successfully", {
@@ -91,18 +76,6 @@ const client: React.FC =()=>{
            {/* Your main content goes here */}
            <div>
 
-<div className="mb-4 ml-[800px]">
-              <input
-                type="text"
-                placeholder="Search ...."
-                value={searched}
-                onChange={handleSearchChange}
-                className="p-2 border border-gray-300 rounded-md"
-              />
-              <button onClick={search} className="ml-2 p-2 bg-blue-500 text-black rounded-md">
-              <SearchIcon />
-              </button>
-            </div>
            <Typography variant="h1" fontWeight="bold" style={{ color: 'black' }} className="items-center">
              List clients 
            </Typography>
@@ -131,7 +104,7 @@ const client: React.FC =()=>{
                     Phone Number 
                 </th>
                 <th scope="col" className="px-6 py-3 hover:bg-gray-200 cursor-pointer">
-                    role 
+                    Position 
                 </th>
                 <th scope="col" className="px-6 py-3 hover:bg-gray-200 cursor-pointer">
                     Edit 
@@ -148,14 +121,14 @@ const client: React.FC =()=>{
                 {e.fullName}
                 </th>
                 <td className="px-6 py-4">
-                {e.email}
+                {e.userEmail}
                 </td>
 
                 <td className="px-6 py-4">
                 {e.phoneNumber}
                 </td>
                 <td className="px-6 py-4">
-                {e.role}
+                {e.position}
                 </td>
 
                 <td className="flex items-center px-6 py-4"> 
@@ -177,4 +150,4 @@ const client: React.FC =()=>{
            </div>
     )
 }
-export default client;
+export default Clients;

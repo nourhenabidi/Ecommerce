@@ -115,7 +115,7 @@
     color: #ff4d4d;
 }
 .contact-left {
-  
+  margin-left: 120px;
         border-radius: 4px;
         display: flex;
         flex-direction: column;

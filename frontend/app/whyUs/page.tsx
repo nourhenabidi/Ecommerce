@@ -17,7 +17,7 @@ const aboutUs :React.FC =()=>{
      
       className="body">
     <Navbar />
-    <div className="fully" style={{ marginBottom: '50px' }}>
+    <div className="fully" >
       
         <div>
       <img src="https://i.pinimg.com/736x/4c/0b/be/4c0bbe67066d0c6d9426664e7659dde7.jpg"alt="" />  

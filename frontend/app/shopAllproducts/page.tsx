@@ -18,7 +18,7 @@ interface Products {
   newPrice?:number;
   Availability:string;
   ProductImage:string[];
-  ProductRemise:string;
+  productRemise:number;
   colorProduct:string;
   user_id: number; 
 } 
@@ -202,7 +202,9 @@ const shopAllproducts: React.FC = () => {
                       backgroundColor: '#f0f0f0' 
                     }}
                   >
-                    {product.ProductRemise && (
+  {!product.productRemise || product.productRemise===0 ||product.productRemise==0  ? (
+      ""
+    ) :
                       <span 
                         className="product-remise" 
                         style={{ 
@@ -216,9 +218,9 @@ const shopAllproducts: React.FC = () => {
                           fontSize: '12px' 
                         }}
                       >
-                        {product.ProductRemise}%
+                        {product.productRemise}%
                       </span>
-                    )}
+                    }
 
                     <img 
                       src={product.ProductImage[0]} 

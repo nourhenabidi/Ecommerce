@@ -110,7 +110,7 @@ const Wishlist: React.FC<WishProps> = ({ onClose }) => {
                 <div className="px-4">
                   {products.length === 0 ? (
                     <p>Your wishlist is empty</p>
-                  ) : (
+                  ) || products.length > 0 : (
                     products.map((product) => (
                       <li className="flex py-6" key={product.ProductID}>
                         <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
@@ -118,7 +118,6 @@ const Wishlist: React.FC<WishProps> = ({ onClose }) => {
                             src={product.wishListImage && product.wishListImage.length > 0
                               ? product.wishListImage[0]
                               : 'default-image-url.jpg'}
-                            alt={product.wishListName}
                             className="h-full w-full object-cover object-center"
                           />
                         </div>

@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { createForm } = require('../controllers/formController'); // Ensure correct import
+const formController  = require('../controllers/formController'); // Import the controller
 
-// POST route to submit a form
-router.post('/submit',createForm); // Correct usage
+// Correctly use formController.createForm and formController.geFormsUsers
+router.post('/submit/:cart_user', formController.createForm);  // Use the correct reference from formController
+router.get("/getForms", formController.geFormsUsers);
 
 module.exports = router;

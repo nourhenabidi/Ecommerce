@@ -13,7 +13,7 @@ interface Products {
     newPrice?:number;
     Availability: boolean;
     ProductImage: string[];
-    ProductRemise: string;
+    productRemise: string;
     newProduct:boolean;
     colorProduct: string;
     productCategory: string;
@@ -87,21 +87,19 @@ const Addprod = () => {
 
     const addProduct = async () => {
         try {
-            const formattedRemise = productRemise.endsWith('%') ? productRemise : `${productRemise}%`;
-
             const newProd: Products = {
                 Name: name,
                 Description: description,
                 oldPrice: oldPrice,
-                newPrice:newPrice,
+                newPrice: newPrice,
                 ProductImage: image,
-                ProductRemise:formattedRemise,
+                productRemise: productRemise, // Send as a plain number
                 Availability: availability,
-                newProduct:newProduct,
+                newProduct: newProduct,
                 colorProduct: colorProduct,
                 productCategory: productCategory
             };
-
+    
             const response = await axios.post('http://localhost:5000/api/products/addProduct', newProd);
             notifySuccess();
             console.log(response.data);
@@ -110,6 +108,7 @@ const Addprod = () => {
             console.error('Error adding product:', error);
         }
     };
+    
     const categories = [
         "Rings",
         "Necklaces",
@@ -167,16 +166,16 @@ const Addprod = () => {
                     </div>
     
                     {/* Product Remise */}
-            <div className="grid grid-cols-2 items-center">
-                <label className="block text-orange-950 text-lg">Product Remise (%):</label>
-                <input
-                    onChange={(e) => setProductRemise(e.target.value)} // Ensure it sets the value
-                    type="text" // Allow percentage input
-                    className="block w-[300px] py-1.5 px-2 ring-1 ring-inset ring-gray-400 focus:text-gray-800"
-                    placeholder="Enter percentage (e.g., 10)"
-                    value={productRemise} // Ensure controlled component
-                />
-            </div>
+                    <div className="grid grid-cols-2 items-center">
+    <label className="block text-orange-950 text-lg">Product Remise (%):</label>
+    <input
+        onChange={(e) => setProductRemise(e.target.value)} // Store as a string or number
+        type="number" // Allow numeric input only
+        className="block w-[300px] py-1.5 px-2 ring-1 ring-inset ring-gray-400 focus:text-gray-800"
+        placeholder="Enter percentage (e.g., 10)"
+        value={productRemise}
+    />
+</div>
     
                     {/* Product Category */}
                     <div className="grid grid-cols-2 items-center">

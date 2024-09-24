@@ -63,10 +63,7 @@ const ProductDetail: React.FC = () => {
   if (!product) {
     return <div>Loading...</div>;
   }
-  // const originalPrice = product.oldPrice || 0;
-  // const discountedPrice = product.newPrice || 0;
-
-  // const discountPercentage = originalPrice > 0 ? ((originalPrice - discountedPrice) / originalPrice) * 100 : 0;
+ 
   const notify = () => {
     toast.success("Item added to cart successfully!", {
       position: "top-right",
@@ -149,18 +146,6 @@ const ProductDetail: React.FC = () => {
     <div className="w-6 h-6 bg-yellow-500 cursor-pointer"></div>
   </div>
           </div>
-          <div className=" py-8  items-center justify-between sm:flex">
-          <button className="add-to-cart-btn bg-orange-950 "
-                          onClick={() => {
-                            addCart({
-                              product_ProductID: product.ProductID,
-                              productName: product.Name,
-                              CartImage: product.ProductImage,
-                              productPrice: product.Price,
-                              user_id: userId,
-                            });
-                          }}>Add to Cart</button>
-          </div>
           <div className="contact-left">
         <div className="callas">
           <div className="CallToUs">
@@ -206,6 +191,19 @@ const ProductDetail: React.FC = () => {
                      </a>
                  </div>
       </div>
+          <div className=" py-8  items-center justify-between sm:flex"style={{marginLeft:"120px"}}>
+          <button className="add-to-cart-btn bg-orange-950 "
+                          onClick={() => {
+                            addCart({
+                              product_ProductID: product.ProductID,
+                              productName: product.Name,
+                              CartImage: product.ProductImage,
+                              productPrice: product.newPrice,
+                              user_id: userId,
+                            });
+                          }}>Add to Cart</button>
+          </div>
+       
         </div>
         <SignInModal
         isOpen={isSignInModalOpen}

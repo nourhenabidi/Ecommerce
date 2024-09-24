@@ -18,7 +18,7 @@ interface Products {
   newPrice?: number;
   Availability: string;
   ProductImage: string[]; // Ensure ProductImage is an array of strings
-  ProductRemise: string;
+  productRemise: number;
   colorProduct: string;
   productCategory: string;
 }
@@ -107,9 +107,11 @@ const addCart = async (obj: object) => {
             <div key={product.ProductID} className="product-card bg-white rounded-lg shadow mt-4">
              <Link href={`/productdetail?ProductID=${product.ProductID}`}>
                 <div className='image'>
-                {product.ProductRemise && (
-      <span className="product-remise">{product.ProductRemise}%</span>
-    )}
+ {!product.productRemise ||product.productRemise===0 ||product.productRemise==0  ? (
+      ""
+    ) :
+      <span className="product-remise">{product.productRemise}%</span>
+    }
                   <img
                     src={product.ProductImage[0]} 
                     alt=""

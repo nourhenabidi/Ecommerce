@@ -21,7 +21,7 @@ interface Newproduct {
   ProductImage: string[];
   oldPrice?: number;
   newPrice?:number;
-  productRemise: string;
+  productRemise: number;
   Availability: string;
   Description: string;
   colorProduct: string;

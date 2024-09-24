@@ -70,7 +70,7 @@ const Signup = ({ isOpen, onClose, onSignUpSuccess  }: Props) => {
         id="login-popup"
         tabIndex={-1}
         onKeyDown={handleKeyboardEvent}
-        className="bg-black/50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 h-full items-center justify-center flex"
+        className="bg-black/50 overflow-y-auto  overflow-x-hidden fixed top-0 right-0 left-0 z-50 h-full items-center justify-center flex"
       >
         <div className="relative p-4 w-full max-w-md h-full md:h-auto">
           <div className="relative bg-white shadow animate-slide-up">
@@ -119,7 +119,7 @@ const Signup = ({ isOpen, onClose, onSignUpSuccess  }: Props) => {
                 <button
                   onClick={signUp}
                   type="button"
-                  className="mt-6 inline-flex w-full items-center justify-center bg-black p-2 py-3 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 disabled:bg-gray-400"
+                  className="mt-6 inline-flex w-full items-center justify-center bg-orange-950 p-2 py-3 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 disabled:bg-gray-400"
                 >
                   Register
                 </button>

@@ -2,7 +2,7 @@ require('dotenv').config();
 const User = require('../models/Users');
 const jwt =require('jsonwebtoken')
 const nodemailer = require('nodemailer');
-const { type } = require('os');
+
 
 
 const generateToken = (id, fullName) => {

@@ -26,14 +26,41 @@ const getProductsOfUserInCart = async (req, res) => {
 };
 
 
+const addProductToCart = async (req, res) => {
+  try {
+    const { CartID, productName, productPrice, Quantity, user_id, product_ProductID } = req.body;
 
+    // Check if CartID is undefined
+    if (!CartID) {
+      return res.status(400).json({ error: 'CartID is missing or undefined.' });
+    }
 
-  const addProductToCart = (req,res) => {
-    Card.create(req.body)
-    .then((result)=>{res.status(201).json({result:"successfully added to cart"})})
-   .catch((err)=>{console.log(err);
-   })
+    // Check if the product already exists in the cart
+    const existingCart = await Card.findOne({ where: { CartID } });
+    
+    if (existingCart) {
+      return res.status(400).json({ error: 'Product already exists in the cart.' });
+    }
+
+    // Create a new cart entry
+    const newCart = await Card.create({
+      CartID,
+      productName,
+      productPrice,
+      Quantity,
+      user_id,
+      product_ProductID,
+    });
+    
+    return res.status(201).json({ message: 'Successfully added to cart', data: newCart });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: 'Failed to add product to cart' });
   }
+};
+
+
+
 
    const getOneCart = async(req,res) =>{
        const carts=await  Card.findOne({where:{CartID:req.params.id}})

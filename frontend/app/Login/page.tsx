@@ -171,7 +171,7 @@ const SignInModal = ({ isOpen, onClose, onSignUp, onLoginSuccess }: Props) => {
                                 />
                                 <button onClick={(e) => { login(e) }}
                                     type="button"
-                                    className="mt-6 inline-flex w-full items-center justify-center bg-black p-2 py-3 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 disabled:bg-gray-400"
+                                    className="mt-6 inline-flex w-full items-center justify-center bg-orange-950 p-2 py-3 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 disabled:bg-gray-400"
                                 >
                                     Continue
                                 </button>

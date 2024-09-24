@@ -130,7 +130,7 @@ const Cart: React.FC<CartProps> = ({ onClose,refresh ,setrefresh  }) => {
 
    
       <p>Your cart is empty</p>
-    ) : (
+    ) || products.length > 0 : (
       products.map((product) => (
         <li className="flex py-6" key={product.ProductID}>
           <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
@@ -178,7 +178,7 @@ const Cart: React.FC<CartProps> = ({ onClose,refresh ,setrefresh  }) => {
                   <div className="mt-6">
                   <button 
                       onClick={handleCheckout} 
-                      className="flex items-center justify-center rounded-md border border-transparent bg-orange-950 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-orange-700">
+                      className="flex items-center justify-center border border-transparent bg-orange-950 px-6 py-3 text-base font-medium text-white shadow-sm">
                       Checkout
                     </button>                  </div>
                   <div className="mt-6 flex justify-center text-center text-sm text-gray-500">

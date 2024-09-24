@@ -26,11 +26,8 @@ const Sidebar: React.FC <{}>= () => {
   const [person,setPerson] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [fullName,setfullName]=useState<string>("")
-  const [image_user,setimage_user]=useState<string>("")
   const [show,setShow] = useState<boolean>(true)
-  const profileRef = useRef<HTMLButtonElement>(null);
-  let id= typeof window !== 'undefined' ? localStorage.getItem("id"): null;
+
 
 
 
@@ -59,17 +56,6 @@ useEffect(() => {
 
 
 
-  useEffect(() => {
-      const handleDropDown = (e: MouseEvent) => {
-          if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
-              setState(false);
-          }
-      };
-      document.addEventListener('click', handleDropDown);
-      return () => {
-          document.removeEventListener('click', handleDropDown);
-      };
-  }, []);
   return (
     <div className=" fixed top-0 buttom-0 flex h-screen " style={{ zIndex:9999}}>
       {/* Sidebar */}
@@ -86,17 +72,8 @@ useEffect(() => {
  {show &&
                   <div>
                   <div className="flex items-center space-x-4">
-            <button ref={profileRef} className="w-24 h-24 outline-none rounded-full ring-offset-2 ring-gray-100 ring-2 lg:focus:ring-indigo-600"
-                onClick={() => setState(!state)}>
-{!id?<img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg"
-className="w-full h-full rounded-full" />:<img
-                        src={person?.image_user||"https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg"}
-                       className="w-full h-full rounded-full"
-                        alt="Profile"
-
-                    />}
-            </button>
-
+<img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg"
+className="w-full h-full rounded-full" />
 
         </div>
                  
@@ -137,6 +114,15 @@ className="w-full h-full rounded-full" />:<img
             </ListItemIcon>
             <Link href={'/admin/clients'}  ><button > <ListItemText className="flex items-center gap-x-2 text-black p-2 rounded-lg  hover:bg-gray-300 active:bg-gray-400 duration-150" primary={show&&<p>Clients</p>}/></button></Link>
           </ListItem>
+          <ListItem button>
+            <ListItemIcon className="text-black">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+</svg>
+            </ListItemIcon>
+            
+            <Link href={'/admin/orders'} ><button > <ListItemText className="flex items-center gap-x-2 text-black p-2 rounded-lg  hover:bg-gray-300 active:bg-gray-400 duration-150" primary={show&&<p>Orders</p>}/></button></Link>
+          </ListItem>
           <ListItem button >
             <ListItemIcon className="text-black">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-10">
@@ -146,7 +132,7 @@ className="w-full h-full rounded-full" />:<img
             <Link href={'/admin/addProd'} ><button > <ListItemText className="flex items-center gap-x-2 text-black p-2 rounded-lg  hover:bg-gray-300 active:bg-gray-400 duration-150" primary={show&&<p>Adding</p>} /></button></Link>
           </ListItem>
 
-            <ListItem button>
+            {/* <ListItem button>
             <ListItemIcon className="text-black">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
@@ -154,7 +140,7 @@ className="w-full h-full rounded-full" />:<img
             </ListItemIcon>
             
             <Link href={'/admin/profile'} ><button > <ListItemText className="flex items-center gap-x-2 text-black p-2 rounded-lg  hover:bg-gray-300 active:bg-gray-400 duration-150" primary={show&&<p>Profile</p>}/></button></Link>
-          </ListItem>
+          </ListItem> */}
 
           <ListItem button>
             <ListItemIcon className="text-black">
