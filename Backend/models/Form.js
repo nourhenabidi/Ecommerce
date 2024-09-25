@@ -23,6 +23,10 @@ const Form = sequelize.define('form', {
     type: DataTypes.STRING(255),
     allowNull: true,
   },
+  sold:{
+    type:DataTypes.BOOLEAN,
+    allowNull:true,
+  },
   user_id: {
     type: DataTypes.INTEGER,
     allowNull: false,

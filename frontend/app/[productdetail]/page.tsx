@@ -191,7 +191,7 @@ const ProductDetail: React.FC = () => {
                      </a>
                  </div>
       </div>
-          <div className=" py-8  items-center justify-between sm:flex"style={{marginLeft:"120px"}}>
+          <div className=" py-8  items-center justify-between sm:flex">
           <button className="add-to-cart-btn bg-orange-950 "
                           onClick={() => {
                             addCart({

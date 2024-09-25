@@ -112,7 +112,7 @@ const Addprod = () => {
     const categories = [
         "Rings",
         "Necklaces",
-        "Earrings",
+        "Earings",
         "Bracelets",
         "Packs",
         "Accessories hair"

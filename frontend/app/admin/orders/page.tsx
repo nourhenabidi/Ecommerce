@@ -1,121 +1,219 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
 import axios from "axios";
-import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import Sidebar from "../sideBar/page";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from 'react-toastify';
+import SearchIcon from '@mui/icons-material/Search';
 
-interface Order {
-    CartID: number;
-    productName: string;
-    CartImage: string[] | null;  // Allow null for CartImage
-    productPrice: number;
-    Quantity: number;
-  }
+interface Form {
+  id: number;
+  fullName: string;
+  phoneNumber: string;
+  userEmail: string;
+  position: string;
+  sold: boolean;
+  createdAt:number;
+}
+
+interface CartItem {
+  CartID: number; 
+  ProductID: number;
+  productName: string;
+  productPrice: number;
+  Quantity:number;
+  CartImage:string[];
+}
 
 const Orders: React.FC = () => {
-    const [data, setData] = useState<Order[] | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    
-  
-    let userId: number | undefined; 
-    const user = sessionStorage.getItem("user");
-    if (user) {
-        userId = JSON.parse(user).id;
-    }
-  
-    const fetchCartUser = async () => {
-        if (!userId) return;
-      
-        try {
-          console.log("Fetching cart for userId:", userId);
-          const response = await axios.get(`http://localhost:5000/api/cart/carts/${userId}`);
-          console.log("API Response:", response.data);
-          setData(response.data);
-        } catch (error) {
-          console.error("Error fetching cart data:", error);
-          setError('Error fetching cart data');
-          toast.error("Failed to fetch cart data"); // Notify user about the error
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-    const notify = () => {
-      toast.success("Client removed successfully", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+  const [data, setData] = useState<Form[] | null>(null);
+  const [searched, setSearched] = useState<string>("");
+  const [users, setUsers] = useState<Form[]>([]);
+  const [refresh, setRefresh] = useState<boolean>(false);
+  const [carts, setCarts] = useState<{ [key: number]: CartItem[] }>({});
+
+
+  // Fetch data from the backend
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/forms/getForms');
+        const sortedForms = response.data.sort(
+          (a: Form, b: Form) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        setData(sortedForms);
+      } catch (error) {
+        console.log('Error fetching data',error);
+      } 
     };
+    fetchData();
+  }, [refresh]);
+
+  const fetchCartUser = async (id: number) => {
+    if (!id) return;
   
-    const deletee = async (id: number) => {
-        console.log("Deleting item with ID:", id);  // Debugging delete action
-        try {
-          const response = await axios.delete(`http://localhost:5000/api/cart/${id}`); // Ensure this endpoint matches your delete route
-          if (response.status === 200) {
-            notify(); // Show success notification
-            setData((prevData) => prevData?.filter(item => item.CartID !== id) || null); // Update state to remove deleted item
-          }
-        } catch (error) {
-          console.error("Error deleting item:", error);
-          toast.error("Failed to delete item");
-        }
-      };
+    try {
+      const response = await axios.get(`http://localhost:5000/api/cart/carts/${id}`);
+      console.log("API Response:", response.data); // Check the structure here
+  
+      // Store the cart data for this user in the `carts` state
+      setCarts((prevCarts) => ({
+        ...prevCarts,
+        [id]: response.data,
+      }));
+    } catch (error) {
+      console.error("Error fetching cart data:", error);
+      toast.error("Failed to fetch cart data");
+    }
+  };
+
+  // Updated search function
+  const getUser = async (fullName: string) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/forms/${fullName}`);
+
+      if (response.status === 200) {
+        const searchData: Form[] = [response.data]; // Assuming the API returns a single user
+        setData(searchData); // Set the state with the searched user
+      } else {
+        console.error(`HTTP error! Status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearched(event.target.value);
+  };
+
+  const handleSearchSubmit = () => {
+    if (searched) {
+      getUser(searched);
+    }
+  };
+
+  const notify = (message: string) => {
+    toast.success(message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
+
+  const toggleSoldStatus = async (id: number, currentStatus: boolean) => {
+    try {
+      const res = await axios.put(`http://localhost:5000/api/forms/${id}/sold`, {
+        sold: !currentStatus,
+      });
+
+      if (res.status === 200) {
+        setRefresh(!refresh);
+        notify(`Order ${!currentStatus ? "marked as Sold" : "marked as Not Sold"}`);
+      }
+    } catch (error) {
+      console.error('Error updating sold status:', error);
+      toast.error('Error updating sold status');
+    }
+  };
 
   return (
     <div>
       <div className="flex h-screen">
         <Sidebar />
-        {/* Main Content */}
+        
         <div className="flex-1 p-4 ml-[350px]">
+          <div className="relative ml-[1000px]">
+            <input
+              type="text"
+              placeholder="Search here .."
+              className="outline-none bg-transparent search-input"
+              value={searched}
+              onChange={handleSearchChange}
+            />
+            <button onClick={handleSearchSubmit}>
+              <SearchIcon className='icon' />
+            </button>
+          </div>
+
           <Typography variant="h1" fontWeight="bold" style={{ color: 'black' }} className="items-center">
-            List Orders
+            Orders
           </Typography>
           <ToastContainer />
+
           <div className="companies-container">
             <div className="com-box">
-              <div className="absolute -ml-[60px] mt-10 overflow-x-auto shadow-md sm:rounded-lg w-[1100px]">
+              <div className="absolute -ml-[60px] mt-10 overflow-x-auto shadow-md sm:rounded-lg w-[1400px]">
                 <table className="w-full text-sm text-left rtl:text-right text-black dark:text-black">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                       <th scope="col" className="px-6 py-3">Id</th>
-                      <th scope="col" className="px-6 py-3 hover:bg-gray-200 cursor-pointer">Product Name</th>
-                      <th scope="col" className="px-6 py-3 hover:bg-gray-200 cursor-pointer">Price (DT)</th>
-                      <th scope="col" className="px-6 py-3 hover:bg-gray-200 cursor-pointer">Quantity</th>
-                      <th scope="col" className="px-6 py-3 hover:bg-gray-200 cursor-pointer">Actions</th>
+                      <th scope="col" className="px-6 py-3">Full Name</th>
+                      <th scope="col" className="px-6 py-3">Email</th>
+                      <th scope="col" className="px-6 py-3">Phone Number</th>
+                      <th scope="col" className="px-6 py-3">Position</th>
+                      <th scope="col" className="px-6 py-3">Orders</th>
+                      <th scope="col" className="px-6 py-3">Date</th>
+                      <th scope="col" className="px-6 py-3">Sold</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {data ? (
-                      data.map((item, i) => (
-                        <tr key={item.CartID}>
-                          <th scope="col" className="px-6 py-3">{item.CartID}</th>
-                          <td className="px-6 py-4">{item.productName}</td>
-                          <td className="px-6 py-4">{item.productPrice}</td>
-                          <td className="px-6 py-4">{item.Quantity}</td>
-                          <td className="flex items-center px-6 py-4">
-                            <button onClick={() => deletee(item.CartID)}>
-                              <RestoreFromTrashIcon style={{ color: 'red' }} />
+                    {data && data.map((e) => (
+                      <tr key={e.id}>
+                        <td className="px-6 py-3">{e.id}</td>
+                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-black">
+                          {e.fullName}
+                        </td>
+                        <td className="px-6 py-4">{e.userEmail}</td>
+                        <td className="px-6 py-4">{e.phoneNumber}</td>
+                        <td className="px-6 py-4">{e.position}</td>
+                     
+                        <td className="px-6 py-4">
+                          {carts[e.id] ? (
+                            <ul>
+                              {carts[e.id].map((item) => (
+                                <li key={item.ProductID}>
+                                  {item.CartImage && item.CartImage.length > 0 ? (
+                                    <img
+                                      className="w-[40px] h-[40px]"
+                                      src={item.CartImage[0]} 
+                                      alt={item.productName}
+                                    />
+                                  ) : (
+                                    <span>No Image Available</span>
+                                  )}
+                                  <div> Name: {item.productName}</div>
+                                  <div> Price: {item.productPrice}</div>
+                                  <div> Quantity: {item.Quantity}</div>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <button
+                              onClick={() => fetchCartUser(e.id)}
+                              className="text-blue-500 underline"
+                            >
+                              Show Orders
                             </button>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan={5} className="text-center">
-                          {loading ? "Loading..." : error ? error : "No cart data available"}
+                          )}
+                        </td>
+                        <td className="px-6 py-4">{e.createdAt}</td>
+                        <td className="flex items-center px-6 py-4">
+                          <button
+                            onClick={() => toggleSoldStatus(e.id, e.sold)}
+                            className={`w-[150px] py-1.5 px-2 ring-1 ring-inset ${e.sold ? 'bg-green-500' : 'bg-red-500'} text-white`}
+                          >
+                            {e.sold ? 'Sold' : 'Not yet'}
+                          </button>
                         </td>
                       </tr>
-                    )}
+                    ))}
                   </tbody>
                 </table>
               </div>

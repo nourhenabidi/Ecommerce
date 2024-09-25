@@ -8,7 +8,7 @@ import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
 import Sidebar from "../sideBar/page";
 import ChartBar from "../charts/bar";
 
-// import ChartBar from "../charts/chart";
+
 
 
 
@@ -44,7 +44,7 @@ const Dashboard: React.FC = () => {
       <Sidebar />
       
       <div className="flex-1 p-4 ml-[300px] " >
-        <Typography variant="h2" fontWeight="bold" style={{ color: '#000080' }}>
+        <Typography variant="h2" fontWeight="bold" className="text-black">
           Welcome to your Dashboard
         </Typography>
         

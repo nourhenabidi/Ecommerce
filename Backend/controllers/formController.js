@@ -61,8 +61,42 @@ res.json(f)
     res.status(500).json({ error: error.message });
   }
 }
+
+const updateFormSoldStatus = async (req, res) => {
+  try {
+    const { id } = req.params; 
+    const { sold } = req.body; 
+
+    // Find the form by ID
+    const form = await Form.findByPk(id);
+    if (!form) {
+      return res.status(404).json({ error: 'Form not found' });
+    }
+    form.sold = sold;
+    await form.save();
+
+    return res.status(200).json({
+      message: 'Form sold status updated successfully',
+      form,
+    });
+  } catch (error) {
+    console.error('Error updating form:', error.message);
+    return res.status(500).json({ error: 'Failed to update form' });
+  }
+};
+const getnameUsers= async (req, res) => {
+  try {
+    let forms = await Form.findOne({ where: { fullName: req.params.fullName } });
+    res.json([forms]); // Wrap the single product in an array
+  } catch (err) {
+    res.json(err);
+  }
+}
+
 module.exports = {
   createForm,
-  geFormsUsers
+  geFormsUsers,
+  updateFormSoldStatus,
+  getnameUsers
 };
 

@@ -25,6 +25,8 @@ interface Newproduct {
   Availability: string;
   Description: string;
   colorProduct: string;
+  createdAt:number;
+  
 }
 interface WishData {
   product_ProductID: number;
@@ -58,14 +60,21 @@ function NewArrival() {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/products/new');
-        setNews(response.data);
+        
+        // Sort products by 'createdAt' or your date field in descending order (newest first)
+        const sortedProducts = response.data.sort(
+          (a: Newproduct, b: Newproduct) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+  
+        setNews(sortedProducts); // Set the sorted products
       } catch (error) {
         console.error('Error fetching new products', error);
       }
     };
-
+  
     fetchData();
   }, []);
+  
 
   const notify = () => {
     toast.success("Item added to cart successfully!", {
@@ -160,15 +169,15 @@ function NewArrival() {
           {Array.isArray(news) && news.map((e) => (
             
             <SwiperSlide key={e.ProductID}>
-              <Link href={`/productdetail?ProductID=${e.ProductID}`}>
+             
               <div className="product-card w-full max-w-sm bg-white group relative rounded-lg shadow">
                 <div className="image-container">
                 {!e.productRemise ||e.productRemise===0 ||e.productRemise==0  ? (
       ""
     ) : <span className="product-remise">{e.productRemise}%</span>}
-
+ <Link href={`/productdetail?ProductID=${e.ProductID}`}>
                   <img className='images' src={e.ProductImage[0]} alt="product image" />
-                 
+                  </Link>
                   <div className="heart-icon">
                     <button onClick={() => {
                   addwish({
@@ -231,7 +240,7 @@ function NewArrival() {
                   </div>
                 </div>
               </div>
-              </Link>
+              
             </SwiperSlide>
             
           ))}

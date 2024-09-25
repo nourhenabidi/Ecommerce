@@ -2,23 +2,21 @@ const Card = require('../models/Card');
 
 const getProductsOfUserInCart = async (req, res) => {
   try {
-    const userId = req.params.id; // Get userId from request params
-    console.log("User ID: ", userId); // Log user ID to verify correctness
-
-    // Fetch all cart items for the user, and include related product details
+    const userId = req.params.id; 
+    console.log("User ID: ", userId); 
     const carts = await Card.findAll({
-      where: { user_id: userId }, // Use the correct foreign key `user_id`
+      where: { user_id: userId }, 
     
     });
 
-    console.log("Carts: ", carts); // Log the fetched carts for debugging
+    console.log("Carts: ", carts); 
 
-    if (carts.length === 0) {
-      return res.status(404).json({ message: "No cart items found for this user" });
+    if (!carts) {
+    console.log('not found')
+    }else{
+      res.json(carts);
     }
 
-    // Respond with the fetched carts
-    res.json(carts);
   } catch (err) {
     console.error("Error fetching cart: ", err.message); // Log the specific error message
     res.status(500).json({ error: 'Internal server error' });
@@ -28,15 +26,11 @@ const getProductsOfUserInCart = async (req, res) => {
 
 const addProductToCart = async (req, res) => {
   try {
-    const { CartID, productName, productPrice, Quantity, user_id, product_ProductID } = req.body;
+    const {  productName, productPrice, Quantity, user_id, product_ProductID } = req.body;
 
-    // Check if CartID is undefined
-    if (!CartID) {
-      return res.status(400).json({ error: 'CartID is missing or undefined.' });
-    }
-
+  
     // Check if the product already exists in the cart
-    const existingCart = await Card.findOne({ where: { CartID } });
+    const existingCart = await Card.findOne({ where: { user_id:user_id ,product_ProductID:product_ProductID } });
     
     if (existingCart) {
       return res.status(400).json({ error: 'Product already exists in the cart.' });
@@ -44,7 +38,6 @@ const addProductToCart = async (req, res) => {
 
     // Create a new cart entry
     const newCart = await Card.create({
-      CartID,
       productName,
       productPrice,
       Quantity,
@@ -66,20 +59,16 @@ const addProductToCart = async (req, res) => {
        const carts=await  Card.findOne({where:{CartID:req.params.id}})
        res.json(carts)
    }
-   const DeleteCart = async (req, res) => {
+   const DeleteCart =  (req, res) => {
     const CartID = req.params.CartID; // Extract CartID from route parameters
   
-    if (!CartID) {
-      return res.status(400).json({ error: 'CartID is required' });
-    }
+    
   
     try {
-      const result = await Card.destroy({ where: { CartID } });
-      if (result) {
+      const result =  Card.destroy({ where: { CartID } });
+     
         res.json({ message: 'Deleted successfully', affectedRows: result });
-      } else {
-        res.status(404).json({ error: 'Cart item not found' });
-      }
+      
     } catch (err) {
       console.error("Error deleting item:", err);
       res.status(500).json({ error: 'An error occurred while deleting the item' });

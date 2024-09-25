@@ -12,7 +12,7 @@ interface Product {
   CartID: number; 
   ProductID: number;
   productName: string;
-  ProductImage: string[];
+  CartImage: string[];
   productPrice: number;
 }
 
@@ -22,27 +22,38 @@ type Quantities = {
 };
 
 interface CartProps {
-  fetchProducts: () => Promise<void>;
+    user : number  ;
    onClose: () => void;
-   refresh:boolean;
-   setrefresh: (value: boolean) => void; 
 }
 
-const Cart: React.FC<CartProps> = ({ onClose,refresh ,setrefresh  }) => {
+const Cart: React.FC<CartProps> = ({ onClose,user}) => {
   const [quantities, setQuantities] = useState<Quantities>({});
   const [products, setProducts] = useState<Product[]>([]);
   const [userId, setUserId] = useState<number | null>(null);
+const [refresh,setrefresh]=useState<boolean>(false)
   const router = useRouter();
-
+ 
+  
   useEffect(() => {
-    const storedProducts = JSON.parse(sessionStorage.getItem("products") || '[]');
-    setProducts(storedProducts);
+    // const storedProducts = JSON.parse(sessionStorage.getItem("products") || '[]');
+    // setProducts(storedProducts);
 
-    const user = JSON.parse(sessionStorage.getItem("user") || '{}');
-    if (user && user.id) {
-      setUserId(user.id);
-    }
-  }, []);
+    // const user = JSON.parse(sessionStorage.getItem("user") || '{}');
+    // if (user && user.id) {
+    //   setUserId(user.id);
+    // }
+
+    
+
+       axios.get<Product[]>(`http://localhost:5000/api/cart/getcart/${user}`).then((res)=>{
+        console.log("hghfhfgdgdg",res.data);
+        setProducts(res.data);
+       }).catch((err)=>console.log("errr ",err)
+       )
+     
+   
+    
+  }, [refresh]);
 
 
 
@@ -59,23 +70,21 @@ const Cart: React.FC<CartProps> = ({ onClose,refresh ,setrefresh  }) => {
     });
   };
 
-  const handleDeleteOne = async (CartID: number): Promise<void> => {
-    if (!CartID) {
-      console.log("Invalid CartID");
-      return;
-    }
-    try {
-      const res = await axios.delete(`http://localhost:5000/api/cart/deleteCart/${CartID}`);
-      console.log("Deleted product:", res);
-      notify();
+  const handleDeleteOne =  (CartID: number): Promise<void> => {
+   
+    axios.delete(`http://localhost:5000/api/cart/deleteCart/${CartID}`).then((res)=>{
       setrefresh(!refresh)
-      console.log("refresh===",refresh);
-       sessionStorage.removeItem("products")
-       //sessionStorage.getItem("products)
+      notify();
+
+    })
+     
+     
+
        
-    } catch (error) {
-      console.error('Error deleting product:', error);
-    }
+       
+     .catch((err)=> {
+      console.error("edrrrrergd", err);
+    })
   };
   
 
@@ -99,8 +108,8 @@ const Cart: React.FC<CartProps> = ({ onClose,refresh ,setrefresh  }) => {
   };
 
   const calculateGrandTotal = () => {
-    const productsInCartString = sessionStorage.getItem("products");
-    const productsInCart: Product[] = productsInCartString ? JSON.parse(productsInCartString) : [];
+    const productsInCartString = products
+    const productsInCart: Product[] = productsInCartString ? productsInCartString : [];
   
     return productsInCart.reduce((total, product) => {
       const productQuantity = quantities[product.ProductID] || 1; // Get the quantity or default to 1
@@ -133,10 +142,11 @@ const Cart: React.FC<CartProps> = ({ onClose,refresh ,setrefresh  }) => {
     ) || products.length > 0 : (
       products.map((product) => (
         <li className="flex py-6" key={product.ProductID}>
+          
           <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
           <img
-           src={product.ProductImage && product.ProductImage.length > 0
-          ? product.ProductImage[0]
+           src={product.CartImage && product.CartImage.length > 0
+          ? product.CartImage[0]
           : 'default-image-url.jpg'}
                            
             alt={product.productName}

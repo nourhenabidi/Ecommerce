@@ -188,7 +188,7 @@ const shopAllproducts: React.FC = () => {
                 key={product.ProductID} 
                 className="product-card bg-white rounded-lg shadow mt-4" 
               >
-                <Link href={`/productdetail?ProductID=${product.ProductID}`}>
+                
                   <div 
                     className="image" 
                     style={{ 
@@ -221,7 +221,7 @@ const shopAllproducts: React.FC = () => {
                         {product.productRemise}%
                       </span>
                     }
-
+<Link href={`/productdetail?ProductID=${product.ProductID}`}>
                     <img 
                       src={product.ProductImage[0]} 
                       alt="" 
@@ -231,7 +231,7 @@ const shopAllproducts: React.FC = () => {
                         objectFit: 'cover' 
                       }} 
                     />
-                    
+                      </Link>
                     <div 
                       className="heart-icon" 
                       style={{ 
@@ -308,7 +308,7 @@ const shopAllproducts: React.FC = () => {
                       </button>
                     </div>
                   </div>
-                </Link>
+              
               </div>
             ))}
             <ToastContainer />
