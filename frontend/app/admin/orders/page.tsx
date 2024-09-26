@@ -5,7 +5,7 @@ import axios from "axios";
 import Sidebar from "../sideBar/page";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from 'react-toastify';
-import SearchIcon from '@mui/icons-material/Search';
+
 
 interface Form {
   id: number;
@@ -15,6 +15,7 @@ interface Form {
   position: string;
   sold: boolean;
   createdAt:number;
+  user_id:number;
 }
 
 interface CartItem {
@@ -24,14 +25,13 @@ interface CartItem {
   productPrice: number;
   Quantity:number;
   CartImage:string[];
+ 
 }
 
 const Orders: React.FC = () => {
   const [data, setData] = useState<Form[] | null>(null);
-  const [searched, setSearched] = useState<string>("");
-  const [users, setUsers] = useState<Form[]>([]);
   const [refresh, setRefresh] = useState<boolean>(false);
-  const [carts, setCarts] = useState<{ [key: number]: CartItem[] }>({});
+  const [carts, setCarts] = useState<CartItem[]>([])
 
 
   // Fetch data from the backend
@@ -58,39 +58,10 @@ const Orders: React.FC = () => {
       console.log("API Response:", response.data); // Check the structure here
   
       // Store the cart data for this user in the `carts` state
-      setCarts((prevCarts) => ({
-        ...prevCarts,
-        [id]: response.data,
-      }));
+      setCarts(response.data);
     } catch (error) {
       console.error("Error fetching cart data:", error);
       toast.error("Failed to fetch cart data");
-    }
-  };
-
-  // Updated search function
-  const getUser = async (fullName: string) => {
-    try {
-      const response = await axios.get(`http://localhost:5000/api/forms/${fullName}`);
-
-      if (response.status === 200) {
-        const searchData: Form[] = [response.data]; // Assuming the API returns a single user
-        setData(searchData); // Set the state with the searched user
-      } else {
-        console.error(`HTTP error! Status: ${response.status}`);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearched(event.target.value);
-  };
-
-  const handleSearchSubmit = () => {
-    if (searched) {
-      getUser(searched);
     }
   };
 
@@ -129,18 +100,6 @@ const Orders: React.FC = () => {
         <Sidebar />
         
         <div className="flex-1 p-4 ml-[350px]">
-          <div className="relative ml-[1000px]">
-            <input
-              type="text"
-              placeholder="Search here .."
-              className="outline-none bg-transparent search-input"
-              value={searched}
-              onChange={handleSearchChange}
-            />
-            <button onClick={handleSearchSubmit}>
-              <SearchIcon className='icon' />
-            </button>
-          </div>
 
           <Typography variant="h1" fontWeight="bold" style={{ color: 'black' }} className="items-center">
             Orders
@@ -175,9 +134,9 @@ const Orders: React.FC = () => {
                         <td className="px-6 py-4">{e.position}</td>
                      
                         <td className="px-6 py-4">
-                          {carts[e.id] ? (
+                          {carts.length ? (
                             <ul>
-                              {carts[e.id].map((item) => (
+                              {carts.map((item) => (
                                 <li key={item.ProductID}>
                                   {item.CartImage && item.CartImage.length > 0 ? (
                                     <img
@@ -196,12 +155,13 @@ const Orders: React.FC = () => {
                             </ul>
                           ) : (
                             <button
-                              onClick={() => fetchCartUser(e.id)}
+                              onClick={() => fetchCartUser(e.user_id)}
                               className="text-blue-500 underline"
                             >
                               Show Orders
                             </button>
                           )}
+                           
                         </td>
                         <td className="px-6 py-4">{e.createdAt}</td>
                         <td className="flex items-center px-6 py-4">

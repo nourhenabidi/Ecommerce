@@ -1,7 +1,6 @@
-.all{
-  padding-top: 80px;
-}
+
 .contenu {
+  padding-top: 80px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -9,12 +8,13 @@
     margin-bottom: 50px;
   }
   .product-card {
-    background-color: #fff;
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    width: 180px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     position: relative;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth zoom and shadow effect on hover */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   .product-card:hover {
     transform: scale(1.05); /* Slight zoom on hover */
@@ -86,3 +86,5 @@
     border-radius: 4px;
     font-size: 12px; /* Adjust font size for the remise */
   }
+
+  

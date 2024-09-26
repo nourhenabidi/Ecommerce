@@ -89,6 +89,7 @@ const shopAllproducts: React.FC = () => {
           theme: "colored",
         });
       };
+
       const addCart = async (obj: object) => {
         const user = sessionStorage.getItem("user");
         if (user) {

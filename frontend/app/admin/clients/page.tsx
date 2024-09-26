@@ -16,6 +16,7 @@ role:string;
 
 const Clients: React.FC = () => {
     const [data, setData] = useState<User[] | null>(null);
+    const [refresh,setrefresh]=useState<boolean>(false)
 
 
     const fetchUser = async () => {
@@ -31,7 +32,7 @@ const Clients: React.FC = () => {
   
     useEffect(() => {
       fetchUser(); 
-    }, []);
+    }, [refresh]);
   
     const notify = () => {
       toast.success("Client removed successfully", {
@@ -46,19 +47,16 @@ const Clients: React.FC = () => {
       });
     };
   
-    const deletee = async (id: number) => {
-        console.log("Deleting user with ID:", id);  // Debugging delete action
-        try {
-          const response = await axios.delete(`http://localhost:5000/api/users/delete/${id}`); // Ensure this endpoint matches your delete route
-          if (response.status === 200) {
-            notify(); // Show success notification
-            setData((prevData) => prevData?.filter(item => item.id !== id) || null); // Update state to remove deleted item
-          }
-        } catch (error) {
-          console.error("Error deleting item:", error);
-          toast.error("Failed to delete item");
-        }
-      };
+    const deletee =  (id: number) => {
+      axios.delete(`http://localhost:5000/api/users/delete/${id}`).then((res)=>{
+        setrefresh(!refresh)
+        notify();
+  
+      })
+       .catch((err)=> {
+        console.error("userdelete", err);
+      })
+    };
 
   return (
     <div>

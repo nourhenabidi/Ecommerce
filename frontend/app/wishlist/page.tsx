@@ -16,22 +16,22 @@ interface Product {
 }
 
 interface WishProps {
+  user : number  ;
   onClose: () => void;
+
 }
 
-const Wishlist: React.FC<WishProps> = ({ onClose }) => {
+const Wishlist: React.FC<WishProps> = ({ onClose, user }) => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [userId, setUserId] = useState<number | null>(null);
+  const [refresh,setrefresh]=useState<boolean>(false)
 
   useEffect(() => {
-    const storedProducts = JSON.parse(sessionStorage.getItem("products") || '[]');
-    setProducts(storedProducts);
-
-    const user = JSON.parse(sessionStorage.getItem("user") || '{}');
-    if (user && user.id) {
-      setUserId(user.id);
-    }
-  }, []);
+  axios.get<Product[]>(`http://localhost:5000/api/wishlist/getwish/${user}`).then((res)=>{
+    setProducts(res.data)
+  }).catch((err)=>
+    console.error('Error fetching wishlist data:', err))
+      
+  },[refresh]);
 
   const notify = () => {
     toast.success("Product removed from Wishlist successfully", {
@@ -81,7 +81,7 @@ const Wishlist: React.FC<WishProps> = ({ onClose }) => {
   };
 
   const addCart = async (obj: object) => {
-    if (userId) {
+    if (user) {
       try {
         const res = await axios.post("http://localhost:5000/api/cart/addCart", obj);
         console.log(res,'hhhhhhhhhhhhh');
@@ -130,7 +130,7 @@ const Wishlist: React.FC<WishProps> = ({ onClose }) => {
                                 productName: product.wishListName,
                                 CartImage: product.wishListImage,
                                 productPrice: product.wishListPrice,
-                                user_id: userId,
+                                user_id: user,
                               });
                             }}>
                               <AddShoppingCartIcon />

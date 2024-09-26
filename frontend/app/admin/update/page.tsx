@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../sideBar/page";
 import axios from "axios";
 import EditIcon from '@mui/icons-material/Edit';
-
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from 'react-toastify';
 interface Products {
   id: number;
   ProductID: number;
@@ -21,6 +22,7 @@ interface Products {
 const Update = () => {
   const [products, setProduct] = useState<Products[]>([]);
   const [editingProduct, setEditingProduct] = useState<Products | null>(null);
+  const [refresh,setrefresh]=useState<boolean>(false)
 
   const fetchData = async () => {
     try {
@@ -33,8 +35,31 @@ const Update = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [refresh]);
 
+  const DeleteOne =  (ProductID: number) => {
+    axios.delete(`http://localhost:5000/api/products/deleteProd/${ProductID}`).then((res)=>{
+      setrefresh(!refresh)
+      notify();
+
+    })
+     .catch((err)=> {
+      console.error("edrrrrergd", err);
+    })
+  };
+
+  const notify = () => {
+    toast.success("Product removed from cart successfully", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
   const handleEditClick = (product: Products) => {
     setEditingProduct(product);
   };
@@ -60,6 +85,7 @@ const Update = () => {
   return (
     <div>
       <Sidebar />
+      <ToastContainer />
       <div className="fixed relative sm:rounded-lg max-w-[1400px]" style={{ paddingTop: '80px', marginBottom: '50px', paddingLeft: "300px" }}>
         <table className="table-auto text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -137,7 +163,7 @@ const Update = () => {
 </td>
                 <td className="px-6 py-4">
 
-                  <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
+                  <button onClick={()=>{DeleteOne(product.ProductID )}} className="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</button>
                 </td>
                 <td className="px-6 py-4">
                 <button onClick={() => handleEditClick(product)}>

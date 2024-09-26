@@ -34,11 +34,9 @@ const Signup = ({ isOpen, onClose, onSignUpSuccess  }: Props) => {
       onSignUpSuccess();
       onClose();
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response?.status === 400) {
-        toast.error("Email already exists. Please use a different email.");
-      } else {
-        console.log(err);
-      }
+    
+     err? toast.error("Email already exists. Please use a different email."):""
+  
     }
   };
   

@@ -26,9 +26,8 @@ const getProductsOfUserInCart = async (req, res) => {
 
 const addProductToCart = async (req, res) => {
   try {
-    const {  productName, productPrice, Quantity, user_id, product_ProductID } = req.body;
+    const {  CartImage,productName, productPrice, Quantity, user_id, product_ProductID } = req.body;
 
-  
     // Check if the product already exists in the cart
     const existingCart = await Card.findOne({ where: { user_id:user_id ,product_ProductID:product_ProductID } });
     
@@ -38,6 +37,7 @@ const addProductToCart = async (req, res) => {
 
     // Create a new cart entry
     const newCart = await Card.create({
+      CartImage,
       productName,
       productPrice,
       Quantity,

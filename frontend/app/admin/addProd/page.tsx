@@ -114,8 +114,36 @@ const Addprod = () => {
         "Necklaces",
         "Earings",
         "Bracelets",
-        "Packs",
+        "Pack",
         "Accessories hair"
+    ];
+    const colors = [
+        { name: 'Blue', value: '#0000FF' },
+        { name: 'Red', value: '#FF0000' },
+        { name: 'Green', value: '#008000' },
+        { name: 'Yellow', value: '#FFFF00' },
+        { name: 'Black', value: '#000000' },
+        { name: 'White', value: '#FFFFFF' },
+        { name: 'Purple', value: '#800080' },
+        { name: 'Pink', value: '#FFC0CB' },
+        { name: 'Orange', value: '#FFA500' },
+        { name: 'Gray', value: '#808080' },
+        { name: 'Brown', value: '#A52A2A' },
+        { name: 'Silver', value: '#C0C0C0' },
+        { name: 'Gold', value: '#FFD700' },
+        { name: 'Beige', value: '#F5F5DC' },
+        { name: 'Navy', value: '#000080' },
+        { name: 'Turquoise', value: '#40E0D0' },
+        { name: 'Teal', value: '#008080' },
+        { name: 'Burgundy', value: '#800020' },
+        { name: 'Lavender', value: '#E6E6FA' },
+        { name: 'Maroon', value: '#800000' },
+        { name: 'Olive', value: '#808000' },
+        { name: 'Coral', value: '#FF7F50' },
+        { name: 'Peach', value: '#FFDAB9' },
+        { name: 'Ivory', value: '#FFFFF0' },
+        { name: 'Champagne', value: '#F7E7CE' },
+        { name: 'Rose Gold', value: '#B76E79' }
     ];
     return (
         <div>
@@ -164,7 +192,23 @@ const Addprod = () => {
                             className="block w-[300px] py-1.5 px-2 ring-1 ring-inset ring-gray-400 focus:text-gray-800"
                         />
                     </div>
-    
+                    {/* color */}
+                    <div className="grid grid-cols-2 items-center">
+                        <label className="block text-orange-950 text-lg">colors:</label>
+                        <select
+                                onChange={(e) => setColorProduct(e.target.value)}
+                                className="block w-[300px] py-1.5 px-2 ring-1 ring-inset ring-gray-400 focus:text-gray-800"
+                                style={{ backgroundColor: colorProduct }}
+                            >
+                                <option value="">Select a color</option>
+                                {colors.map((colored) => (
+                                    <option key={colored.value} value={colored.value} style={{ backgroundColor: colored.value }}>
+                                        {colored.name}
+                                    </option>
+                                ))}
+                            </select>
+                    </div>
+         
                     {/* Product Remise */}
                     <div className="grid grid-cols-2 items-center">
     <label className="block text-orange-950 text-lg">Product Remise (%):</label>

@@ -139,7 +139,7 @@ const ProductDetail: React.FC = () => {
 
           <div className=" py-8 border-t border-gray-700 w-3/4 sm:w-2/2 items-center justify-between sm:flex">
           <div className="flex items-center space-x-2 mt-4">
-    <p className="discount"></p>
+    <p >colors</p>
     <div className="w-6 h-6 bg-red-500 cursor-pointer"></div>
     <div className="w-6 h-6 bg-blue-500 cursor-pointer"></div>
     <div className="w-6 h-6 bg-green-500 cursor-pointer"></div>

@@ -32,17 +32,7 @@ const Navbar: React.FC = () => {
     }
   }, []);
 
-  const fetchProducts = async (): Promise<void> => {
-    if (!user) return;
-    try {
-      const response = await axios.get<Product[]>(`http://localhost:5000/api/cart/getcart/${user.id}`);
-      console.log("hghfhfgdgdg",response.data);
-      setData(response.data);
-      sessionStorage.setItem('products', JSON.stringify(response.data));
-    } catch (error) {
-      console.error('Error fetching cart data:', error);
-    }
-  };
+
 
   const getWishlist = async (): Promise<void> => {
     if (!user) return;
@@ -56,12 +46,7 @@ const Navbar: React.FC = () => {
     }
   };
 
-  // Fetch cart products when cart is visible
-  // useEffect(() => {
-  //   if (isCartVisible) {
-  //     fetchProducts();
-  //   }
-  // }, [!isCartVisible]);
+
 
   // Fetch wishlist products when wishlist is opened
   useEffect(() => {
@@ -161,7 +146,7 @@ const Navbar: React.FC = () => {
               <FavoriteBorderIcon />
             </button>
 
-            {isWishlistOpen && <Wishlist onClose={handleCloseWishlist} />}
+            {isWishlistOpen && <Wishlist user={user.id} onClose={handleCloseWishlist} />}
 
             <button onClick={toggleCart}>
               <ShoppingBagIcon />

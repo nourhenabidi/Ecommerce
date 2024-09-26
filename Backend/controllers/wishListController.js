@@ -1,16 +1,37 @@
 const WishList = require('../models/WishList');
 
 module.exports = {
- addToWishList : (req, res) => {
-        WishList.create(req.body)
-            .then((result) => {
-                res.status(201).json({ result: "Successfully added to wishlist" });
-            })
-            .catch((err) => {
-                console.log(err);
-                res.status(500).json({ message: err.message });
+    addToWishList: async (req, res) => {
+        try {
+            const { user_id, product_ProductID, wishListImage,wishListPrice,wishListName,wishListDescription } = req.body; // Adjust to extract the necessary fields 
+    
+            // Check if the product already exists in the wishlist
+            const existingWish = await WishList.findOne({
+                where: { user_id: user_id, product_ProductID: product_ProductID }
             });
+    
+            if (existingWish) {
+                return res.status(400).json({ error: 'Product already exists in the wishlist.' });
+            }
+    
+            // Create a new wishlist entry
+            const newWish = await WishList.create({
+                user_id,
+                product_ProductID,
+                wishListName,
+                wishListImage,
+                wishListPrice,
+                wishListDescription
+     
+            });
+    
+            return res.status(201).json({ message: 'Successfully added to wishlist', data: newWish });
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({ message: err.message });
+        }
     },
+    
 
  deleteFromWishlist : async (req, res) => {
         const { wishID } = req.params; // Extract wishID from route parameters

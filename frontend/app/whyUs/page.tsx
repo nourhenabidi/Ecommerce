@@ -1,15 +1,12 @@
 "use client"
-import "./about.css"
+import "./whyUs.css"
 import Navbar from "../navBar/page"
 import Fott from "../footer/page"
 
 
 
 
-const aboutUs :React.FC =()=>{
-
-
-
+const WhyUs :React.FC =()=>{
 
     return(
   
@@ -34,4 +31,4 @@ const aboutUs :React.FC =()=>{
         </div>
     )
 }
-export default aboutUs
+export default WhyUs;

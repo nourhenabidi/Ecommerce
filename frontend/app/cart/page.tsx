@@ -29,30 +29,17 @@ interface CartProps {
 const Cart: React.FC<CartProps> = ({ onClose,user}) => {
   const [quantities, setQuantities] = useState<Quantities>({});
   const [products, setProducts] = useState<Product[]>([]);
-  const [userId, setUserId] = useState<number | null>(null);
 const [refresh,setrefresh]=useState<boolean>(false)
   const router = useRouter();
  
   
   useEffect(() => {
-    // const storedProducts = JSON.parse(sessionStorage.getItem("products") || '[]');
-    // setProducts(storedProducts);
-
-    // const user = JSON.parse(sessionStorage.getItem("user") || '{}');
-    // if (user && user.id) {
-    //   setUserId(user.id);
-    // }
-
-    
-
        axios.get<Product[]>(`http://localhost:5000/api/cart/getcart/${user}`).then((res)=>{
         console.log("hghfhfgdgdg",res.data);
         setProducts(res.data);
        }).catch((err)=>console.log("errr ",err)
        )
-     
-   
-    
+
   }, [refresh]);
 
 
@@ -70,18 +57,12 @@ const [refresh,setrefresh]=useState<boolean>(false)
     });
   };
 
-  const handleDeleteOne =  (CartID: number): Promise<void> => {
-   
+  const handleDeleteOne =  (CartID: number) => {
     axios.delete(`http://localhost:5000/api/cart/deleteCart/${CartID}`).then((res)=>{
       setrefresh(!refresh)
       notify();
 
     })
-     
-     
-
-       
-       
      .catch((err)=> {
       console.error("edrrrrergd", err);
     })

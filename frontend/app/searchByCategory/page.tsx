@@ -6,7 +6,10 @@ import "./category.css";
 import Navbar from '../navBar/page';
 import Footer from '../footer/page';
 import { useRouter } from "next/navigation";
-import SignInModal from "../Login/page";
+import SignInModal from "../Login/page"
+import Signup from '../Signup/page';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 import Link from 'next/link';
 
 
@@ -22,6 +25,14 @@ interface Products {
   colorProduct: string;
   productCategory: string;
 }
+interface WishData {
+  product_ProductID: number;
+  wishListName: string;
+  wishListImage: string[];
+  wishListPrice: number;
+  wishListDescription: string;
+  user_id: number; // Add user_id here
+}
 
 
 const SearchByCategory: React.FC = () => {
@@ -29,18 +40,28 @@ const SearchByCategory: React.FC = () => {
   const searchParams = useSearchParams();
   const [SelectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [isSignInModalOpen, setSignInModalOpen] = useState(false);
+  const [isSignUpModalOpen, setSignUpModalOpen] = useState(false); // State for sign-up modal
+  const [likedProducts, setLikedProducts] = useState<number[]>([]); // To keep track of liked products
+
   let userId: number | undefined; 
   const user = sessionStorage.getItem("user");
   if (user) {
       userId = JSON.parse(user).id;
   }
- 
+  const openSignUpModal = () => {
+    setSignUpModalOpen(true); // Open sign-up modal
+  };
   const router=useRouter()
 console.log("cat=====",searchParams.get("category"));
 
 const category = searchParams.get('category');
 
-
+const truncateText = (text: string, maxLength: number) => {
+  if (text.length > maxLength) {
+    return text.slice(0, maxLength) + '...';
+  }
+  return text;
+};
 
   useEffect(() => {
     axios.get('http://localhost:5000/api/products/allProducts').then((data)=>{
@@ -69,27 +90,74 @@ const getByCategory = async (productCategory: string): Promise<void> => {
   }
 };
 
+const notify = () => {
+  toast.success("Item added to cart successfully!", {
+    position: "top-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  });
+};
+const notif = () => {
+  toast.success("Item added to Wishlist successfully!", {
+    position: "top-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  });
+};
 const addCart = async (obj: object) => {
   const user = sessionStorage.getItem("user");
   if (user) {
-    try {
-      await axios.post("http://localhost:5000/api/cart/addCart", obj);
-      // Redirect to cart page after adding item to the cart
-      window.location.href = '/cart';
-    } catch (err) {
-      console.log(err);
-    }
+      const userId = JSON.parse(user).id; // Safely parse user here
+      try {
+          const cartData = { ...obj, user_id: userId }; // Add userId to cartData if needed
+          const res = await axios.post("http://localhost:5000/api/cart/addCart", cartData);
+          console.log(res);
+        notify()
+      } catch (err) {
+          console.log(err);
+      }
   } else {
-    // Show sign-in modal if not authenticated
-    setSignInModalOpen(true);
+      setSignInModalOpen(true);
   }
 };
+const addwish = async (obj: WishData) => {
+  const user = sessionStorage.getItem("user");
+  if (user) {
+    const userId = JSON.parse(user).id; // Safely parse the user here
+    try {
+      const wishData = { ...obj, user_id: userId }; // Add userId to wishData
+      const res = await axios.post("http://localhost:5000/api/wishlist/addwish", wishData);
+      console.log(res);
 
+      // Update likedProducts state to mark the product as "liked"
+      setLikedProducts((prevLikedProducts) => [...prevLikedProducts, obj.product_ProductID]);
+
+      notif(); // Show the success notification
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error adding to wishlist:', error.response ? error.response.data : error.message);
+      } else {
+        console.error('Unexpected error:', error);
+      }
+    }
+  } else {
+    setSignInModalOpen(true); // Open sign-in modal if user is not logged in
+  }
+};
   return (
     <div className="body">
 <Navbar />
-<div className='all'>
-       <h1 className='title'>Catalog</h1>
+<div  className='contenu'>
       <div className='text-slate-400 flex justify-center gap-16 mb-8'>
       <button className='relative hover:underline hover:text-black' onClick={()=>router.push("/shopAllproducts")} >All</button>
         <button className='relative hover:underline hover:text-black' onClick={()=>{getByCategory("Necklaces")}} >Necklaces</button>
@@ -100,32 +168,44 @@ const addCart = async (obj: object) => {
         <button className='relative hover:underline hover:text-black' onClick={()=>{getByCategory("Accessories hair")}} >Accessories hair</button>
       </div>
 
-      <div className='contenu'>
+      <div>
         <div className="grid grid-cols-3 gap-4 flex justify-center">
           {Array.isArray(categories) && categories.map((product) => (
             
             <div key={product.ProductID} className="product-card bg-white rounded-lg shadow mt-4">
-             <Link href={`/productdetail?ProductID=${product.ProductID}`}>
+           
                 <div className='image'>
  {!product.productRemise ||product.productRemise===0 ||product.productRemise==0  ? (
       ""
     ) :
       <span className="product-remise">{product.productRemise}%</span>
     }
+      <Link href={`/productdetail?ProductID=${product.ProductID}`}>
                   <img
                     src={product.ProductImage[0]} 
                     alt=""
                   />
+                  </Link>
                   <div className="heart-icon">
-                    <button>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="h-6 w-6"
-                      >
+                  <button onClick={() => {
+                        addwish({
+                          product_ProductID: product.ProductID,
+                          wishListName: product.Name,
+                          wishListImage: product.ProductImage,
+                          wishListPrice: product.newPrice !== undefined ? product.newPrice : 0, // Default to 0 if newPrice is undefined
+                          user_id: userId,
+                          wishListDescription: product.Description
+                        });
+                      }}>
+                <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill={likedProducts.includes(product.ProductID) ? "red" : "none"}
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="currentColor"
+                          className="h-6 w-6"
+                          style={{ width: '30px', height: '30px' }}
+                        >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -135,15 +215,13 @@ const addCart = async (obj: object) => {
                     </button>
                   </div>
                 </div>
-              
-
               <div className="px-5 pb-5">
                 <a href="#">
                   <h4 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Name}</h4>
-                  <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Description}</h5>
+                  <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{truncateText(product.Description, 25)}</h5>
                 </a>
 
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col items-end">
                 {product.oldPrice && (
                         <span className="text-sm line-through text-gray-500 mb-1">{product.oldPrice} DT</span>
                       )}
@@ -152,21 +230,21 @@ const addCart = async (obj: object) => {
                       ) : (
                         <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{product.oldPrice} DT</span>
                       )}                  <button 
-       className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige "
-       onClick={() =>
-        addCart({
-          product_ProductID: product.ProductID,
-          productName: product.Name,
-          CartImage: product.ProductImage,
-          productPrice: product.newPrice,
-          user_idUser:userId,
-        })
-      }
+                      className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige"
+                      onClick={() => {
+                        addCart({
+                          product_ProductID: product.ProductID,
+                          productName: product.Name,
+                          CartImage: product.ProductImage,
+                          productPrice: product.newPrice,
+                          user_id: userId,
+                        });
+                      }}
        >Add to cart
       </button> 
                 </div>
               </div>
-              </Link>
+          
             </div>
           ))}
         </div>
@@ -176,7 +254,15 @@ const addCart = async (obj: object) => {
       <SignInModal
         isOpen={isSignInModalOpen}
         onClose={() => setSignInModalOpen(false)}
-        onSignUp={() => {/* Handle sign-up logic if needed */}}
+        onSignUp={() => openSignUpModal()}
+              />
+            <Signup 
+        isOpen={isSignUpModalOpen} 
+        onClose={() => {
+          setSignInModalOpen(false);
+          setSignUpModalOpen(false);
+        }} 
+        onSignUp={() => openSignUpModal()}
       />
     </div>
   );
