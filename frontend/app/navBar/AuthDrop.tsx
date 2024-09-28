@@ -58,10 +58,16 @@ const WhereDrop = () => {
  return (
     <>
       <DropdownMenu>
+      {!isAuthenticated && (
+        <DropdownMenuTrigger>
+         Join Us
+        </DropdownMenuTrigger>
+      )}
+      {isAuthenticated && (
         <DropdownMenuTrigger>
           <AccountCircleIcon />
         </DropdownMenuTrigger>
-
+      )}
         <DropdownMenuContent>
               {!isAuthenticated && (
             <>

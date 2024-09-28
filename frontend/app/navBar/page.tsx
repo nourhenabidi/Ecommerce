@@ -25,35 +25,38 @@ const Navbar: React.FC = () => {
   const [data, setData] = useState<Product[]>([]);
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
+
+
   useEffect(() => {
-    const storedUser = sessionStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    if (typeof window !== 'undefined') {
+      const storedUser = sessionStorage.getItem('user');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
     }
   }, []);
 
 
-
-  const getWishlist = async (): Promise<void> => {
-    if (!user) return;
-    try {
-      const response = await axios.get<Product[]>(`http://localhost:5000/api/wishlist/getwish/${user.id}`);
-      console.log(response.data);
-      setData(response.data);
-      sessionStorage.setItem('products', JSON.stringify(response.data));
-    } catch (error) {
-      console.error('Error fetching wishlist data:', error);
-    }
-  };
-
+  // const getWishlist = async (): Promise<void> => {
+  //   if (!user) return;
+  //   try {
+  //     const response = await axios.get<Product[]>(`http://localhost:5000/api/wishlist/getwish/${user.id}`);
+  //     console.log(response.data);
+  //     setData(response.data);
+  //     sessionStorage.setItem('products', JSON.stringify(response.data));
+  //   } catch (error) {
+  //     console.error('Error fetching wishlist data:', error);
+  //   }
+  // };
 
 
-  // Fetch wishlist products when wishlist is opened
-  useEffect(() => {
-    if (isWishlistOpen) {
-      getWishlist();
-    }
-  }, [isWishlistOpen]);
+
+  // // Fetch wishlist products when wishlist is opened
+  // useEffect(() => {
+  //   if (isWishlistOpen) {
+  //     getWishlist();
+  //   }
+  // }, [isWishlistOpen]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearched(event.target.value);
@@ -146,12 +149,12 @@ const Navbar: React.FC = () => {
               <FavoriteBorderIcon />
             </button>
 
-            {isWishlistOpen && <Wishlist user={user.id} onClose={handleCloseWishlist} />}
+            {isWishlistOpen && <Wishlist user={user?.id} onClose={handleCloseWishlist} />}
 
             <button onClick={toggleCart}>
               <ShoppingBagIcon />
             </button>
-            {isCartVisible && <Cart user={user.id}  onClose={toggleCart} />}
+            {isCartVisible && <Cart user={user?.id}  onClose={toggleCart} />}
             <Drop />
           </div>
         </div>

@@ -15,7 +15,7 @@ interface Products {
     ProductImage: string[];
     productRemise: string;
     newProduct:boolean;
-    colorProduct: string;
+    colorProduct: string[];
     productCategory: string;
 }
 
@@ -29,7 +29,7 @@ const Addprod = () => {
     const [availability, setAvailability] = useState<boolean>(true);
     const [newProduct, setNewProduct] = useState<boolean>(true);
     const [productCategory, setProductCategory] = useState<string>("");
-    const [colorProduct, setColorProduct] = useState<string>("");
+    const [colorProduct, setColorProduct] = useState<string[]>([]);
     const [previewImage, setPreviewImage] = useState<string>("");
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -145,6 +145,16 @@ const Addprod = () => {
         { name: 'Champagne', value: '#F7E7CE' },
         { name: 'Rose Gold', value: '#B76E79' }
     ];
+    const handleColorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedColor = e.target.value;
+        if (!colorProduct.includes(selectedColor)) {
+          setColorProduct((prevColors) => [...prevColors, selectedColor]); // Add color to the list
+        }
+      };
+    
+      const removeColor = (color: string) => {
+        setColorProduct((prevColors) => prevColors.filter(c => c !== color)); // Remove color from the list
+      };
     return (
         <div>
         <SideNav />
@@ -194,20 +204,34 @@ const Addprod = () => {
                     </div>
                     {/* color */}
                     <div className="grid grid-cols-2 items-center">
-                        <label className="block text-orange-950 text-lg">colors:</label>
-                        <select
-                                onChange={(e) => setColorProduct(e.target.value)}
+                            <label className="block text-orange-950 text-lg">Colors:</label>
+                            <select
+                                onChange={handleColorChange}
                                 className="block w-[300px] py-1.5 px-2 ring-1 ring-inset ring-gray-400 focus:text-gray-800"
-                                style={{ backgroundColor: colorProduct }}
                             >
                                 <option value="">Select a color</option>
                                 {colors.map((colored) => (
-                                    <option key={colored.value} value={colored.value} style={{ backgroundColor: colored.value }}>
-                                        {colored.name}
-                                    </option>
+                                    <option key={colored.value} value={colored.value}>{colored.name}</option>
                                 ))}
                             </select>
-                    </div>
+                        </div>
+
+                        {/* Selected Colors */}
+                        <div className="grid grid-cols-2 items-center">
+                            <div className="block text-orange-950 text-lg">Selected Colors:</div>
+                            <div className="flex flex-wrap space-x-2">
+                                {colorProduct.map((color) => (
+                                    <div key={color} className="flex items-center">
+                                        <div className="w-4 h-4" style={{ backgroundColor: color }} />
+                                        <button
+                                            onClick={() => removeColor(color)}
+                                            className="text-red-500 ml-1"
+                                        >Remove</button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
          
                     {/* Product Remise */}
                     <div className="grid grid-cols-2 items-center">

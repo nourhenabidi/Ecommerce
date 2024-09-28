@@ -46,34 +46,7 @@ const Product = sequelize.define('product', {
       defaultValue:0
   },
   colorProduct: {
-    type: DataTypes.ENUM(
-      'blue',
-      'red',
-      'green',
-      'yellow',
-      'black',
-      'white',
-      'purple',
-      'pink',
-      'orange',
-      'gray',
-      'brown',
-      'silver',
-      'gold',
-      'beige',
-      'navy',
-      'turquoise',
-      'teal',
-      'burgundy',
-      'lavender',
-      'maroon',
-      'olive',
-      'coral',
-      'peach',
-      'ivory',
-      'champagne',
-      'rose gold'
-    ),
+    type: DataTypes.JSON,
     allowNull: false, // This ensures the field is required
   }
   

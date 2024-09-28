@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect, KeyboardEvent } from "react";
 import axios from "axios";
-import { IoCloseSharp } from "react-icons/io5";
+import { IoCloseSharp, IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,34 +12,36 @@ type Props = {
   onSignUpSuccess: () => void;
 };
 
-const Signup = ({ isOpen, onClose, onSignUpSuccess  }: Props) => {
+const Signup = ({ isOpen, onClose, onSignUpSuccess }: Props) => {
   if (!isOpen) return null;
   const router = useRouter();
   const [userData, setUserData] = useState({ email: "", password: "" });
   const emailInput = useRef<HTMLInputElement>(null);
+  const [passwordError, setPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
+
 
   const signUp = async () => {
+    if (passwordError) return; // Prevent signup if there's a password error
+
     try {
       const res = await axios.post("http://localhost:5000/api/up/signup", userData);
-  
+
       // Save token to session storage
       sessionStorage.setItem("token", res.data.token);
-  
+
       if (typeof res.data.user === 'string') {
         sessionStorage.setItem("user", res.data.user);
       } else {
         sessionStorage.setItem("user", JSON.stringify(res.data.user));
       }
-  
+
       onSignUpSuccess();
       onClose();
     } catch (err) {
-    
-     err? toast.error("Email already exists. Please use a different email."):""
-  
+      toast.error("Email already exists. Please use a different email.");
     }
   };
-  
 
   useEffect(() => {
     if (emailInput.current && isOpen) {
@@ -58,12 +60,23 @@ const Signup = ({ isOpen, onClose, onSignUpSuccess  }: Props) => {
   };
 
   const gatherData = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
+
+    // Password validation
+    if (name === "password") {
+      const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{1,8}$/;
+      if (!passwordPattern.test(value)) {
+        setPasswordError("Password must be 1-6 characters long, contain at least one uppercase letter and one special character.");
+      } else {
+        setPasswordError(""); // Clear error if the password is valid
+      }
+    }
   };
 
   return (
     <div className="body">
-    <ToastContainer />
+      <ToastContainer />
       <div
         id="login-popup"
         tabIndex={-1}
@@ -90,10 +103,10 @@ const Signup = ({ isOpen, onClose, onSignUpSuccess  }: Props) => {
                 </p>
               </div>
               <div className="flex w-full items-center gap-2 py-6 text-sm text-slate-600">
-                    <div className="h-px w-full bg-slate-200"></div>
-                    <span>OR</span>
-                    <div className="h-px w-full bg-slate-200"></div>
-                </div>
+                <div className="h-px w-full bg-slate-200"></div>
+                <span>OR</span>
+                <div className="h-px w-full bg-slate-200"></div>
+              </div>
               <form className="w-full">
                 <input
                   ref={emailInput}
@@ -105,15 +118,27 @@ const Signup = ({ isOpen, onClose, onSignUpSuccess  }: Props) => {
                   className="block w-full border border-black px-3 py-2 shadow-sm outline-none placeholder:text-gray-400"
                   placeholder="Email Address"
                 />
-                <input
-                  onChange={gatherData}
-                  type="password"
-                  name="password"
-                  autoComplete="new-password"
-                  required
-                  className="mt-2 block w-full border border-black px-3 py-2 shadow-sm outline-none placeholder:text-gray-400"
-                  placeholder="Password"
-                />
+                       <div className="relative mt-2">
+                  <input
+                    onChange={gatherData}
+                    type={showPassword ? "text" : "password"} // Toggle password visibility
+                    name="password"
+                    autoComplete="new-password"
+                    required
+                    className="block w-full border border-black px-3 py-2 shadow-sm outline-none placeholder:text-gray-400"
+                    placeholder="Password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)} // Toggle showPassword state
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 focus:outline-none"
+                  >
+                    {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />} {/* Toggle icon */}
+                  </button>
+                </div>
+                {passwordError && (
+                  <p className="mt-1 text-xs text-red-600">{passwordError}</p>
+                )}
                 <button
                   onClick={signUp}
                   type="button"

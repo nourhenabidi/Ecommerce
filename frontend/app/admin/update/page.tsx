@@ -14,7 +14,7 @@ interface Products {
   oldPrice?: number;
   Availability: string;
   ProductImage: string[];
-  ProductRemise: string;
+  productRemise: string;
   colorProduct: string;
   productCategory: string;
 }
@@ -76,6 +76,7 @@ const Update = () => {
         const response = await axios.put(`http://localhost:5000/api/products/updateProd/${editingProduct.ProductID}`, editingProduct);
         setProduct(prevProducts => prevProducts.map(p => (p.ProductID === editingProduct.ProductID ? response.data : p)));
         setEditingProduct(null); // Reset editing state after updating
+        setrefresh(!refresh)
       } catch (error) {
         console.error('Error updating product data', error);
       }
@@ -95,6 +96,7 @@ const Update = () => {
               <th scope="col" className="px-6 py-3">Description</th>
               <th scope="col" className="px-6 py-3">Old Price</th>
               <th scope="col" className="px-6 py-3">New Price</th>
+              <th scope="col" className="px-6 py-3">ProductRemise</th>
               <th scope="col" className="px-6 py-3">Delete</th>
               <th scope="col" className="px-6 py-3">Action</th>
             </tr>
@@ -160,6 +162,19 @@ const Update = () => {
   ) : (
     product.newPrice
   )}
+</td>
+<td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+  {editingProduct?.ProductID === product.ProductID ? (
+    <input
+      name="ProductRemise"
+      type="number"
+      value={editingProduct?.productRemise || ''} // Fallback to empty string
+      onChange={handleInputChange}
+      className="border rounded p-1"
+    />
+  ) : (
+    product.productRemise
+  )}%
 </td>
                 <td className="px-6 py-4">
 

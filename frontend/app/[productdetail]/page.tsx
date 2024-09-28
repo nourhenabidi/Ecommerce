@@ -24,7 +24,7 @@ interface Product {
   Availability: boolean;
   ProductImage: string[];
   ProductRemise: string;
-  colorProduct: string;
+  colorProduct: string[];
 }
 
 const ProductDetail: React.FC = () => {
@@ -46,7 +46,7 @@ const ProductDetail: React.FC = () => {
       const fetchProduct = async () => {
         try {
           const response = await axios.get<Product>(`http://localhost:5000/api/products/getOneProd/${productId}`);
-          console.log(response.data,"m here");
+          console.log(response.data);
           setProduct(response.data);
           if (Array.isArray(response.data.ProductImage) && response.data.ProductImage.length > 0) {
             setCurrentImage(response.data.ProductImage[0]);
@@ -139,12 +139,14 @@ const ProductDetail: React.FC = () => {
 
           <div className=" py-8 border-t border-gray-700 w-3/4 sm:w-2/2 items-center justify-between sm:flex">
           <div className="flex items-center space-x-2 mt-4">
-    <p >colors</p>
-    <div className="w-6 h-6 bg-red-500 cursor-pointer"></div>
-    <div className="w-6 h-6 bg-blue-500 cursor-pointer"></div>
-    <div className="w-6 h-6 bg-green-500 cursor-pointer"></div>
-    <div className="w-6 h-6 bg-yellow-500 cursor-pointer"></div>
-  </div>
+         {product.colorProduct.map((color, index) => (
+                <div 
+                  key={index} 
+                  className="w-6 h-6 cursor-pointer" 
+                  style={{ backgroundColor: color }}
+                ></div>
+              ))}
+            </div>
           </div>
           <div className="contact-left">
         <div className="callas">

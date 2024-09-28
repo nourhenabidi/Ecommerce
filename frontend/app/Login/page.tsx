@@ -90,7 +90,7 @@ const SignInModal = ({ isOpen, onClose, onSignUp, onLoginSuccess }: Props) => {
     }, []);
 
     const gatherData = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.name, e.target.value);
+       
         setUserData({ ...userData, [e.target.name]: e.target.value });
     };
 
@@ -99,11 +99,9 @@ const SignInModal = ({ isOpen, onClose, onSignUp, onLoginSuccess }: Props) => {
             setTimeout(() => {
                 if (emailInput.current) {
                     emailInput.current.focus();
-                    console.log("Input field is focused:", emailInput.current);
+                  
                 }
             }, 300);
-        } else {
-            console.log("Input field is not available yet.");
         }
     }, [isOpen, isSignUp]);
 
