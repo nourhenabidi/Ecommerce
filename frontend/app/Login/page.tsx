@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
-import { IoCloseSharp } from "react-icons/io5";
+import { IoCloseSharp, IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,6 +19,7 @@ const SignInModal = ({ isOpen, onClose, onSignUp, onLoginSuccess }: Props) => {
     
     const [isSignUp, setIsSignUp] = useState(false);
     const [userData, setUserData] = useState({ email: "", password: "" });
+    const [showPassword, setShowPassword] = useState(false); // State for password visibility
     const emailInput = useRef<HTMLInputElement>(null);
     const router = useRouter(); // Add router for navigation
 
@@ -157,16 +158,27 @@ const SignInModal = ({ isOpen, onClose, onSignUp, onLoginSuccess }: Props) => {
                                     className="block w-full border border-black px-3 py-2 shadow-sm outline-none placeholder:text-gray-400"
                                     placeholder="Email Address"
                                 />
-                                <label htmlFor="password" className="sr-only">Password</label>
-                                <input
-                                    onChange={e => gatherData(e)}
-                                    type="password"
-                                    name="password"
-                                    autoComplete="current-password"
-                                    required
-                                    className="mt-2 block w-full border border-black px-3 py-2 shadow-sm outline-none placeholder:text-gray-400"
-                                    placeholder="Password"
-                                />
+                       <div className="relative mt-2">
+  <label htmlFor="password" className="sr-only">Password</label>
+  <input
+    onChange={e => gatherData(e)}
+    type={showPassword ? "text" : "password"} // Toggle password visibility
+    name="password"
+    autoComplete="current-password"
+    required
+    className="block w-full border border-black px-3 py-2 shadow-sm outline-none placeholder:text-gray-400"
+    placeholder="Password"
+  />
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)} // Toggle showPassword state
+    className="absolute right-3 top-1/2 transform -translate-y-1/2 focus:outline-none"
+  >
+    {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />} {/* Toggle icon */}
+  </button>
+</div>
+
+        
                                 <button onClick={(e) => { login(e) }}
                                     type="button"
                                     className="mt-6 inline-flex w-full items-center justify-center bg-orange-950 p-2 py-3 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 disabled:bg-gray-400"

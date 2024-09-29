@@ -28,13 +28,7 @@ interface Newproduct {
   createdAt:number;
   
 }
-interface CartData { 
-  product_ProductID: number;
-  productName: string;
-  CartImage: string[];
-  productPrice: number;
-  user_id: number;
-}
+
 interface WishData {
   product_ProductID: number;
   wishListName: string;
@@ -108,27 +102,7 @@ function NewArrival() {
     });
   };
 
-  const addCart = async (obj: CartData) => {
-    const user = sessionStorage.getItem("user");
-    if (user) {
-      try {
-        const cartData = {
-          product_ProductID: obj.product_ProductID,
-          productName: obj.productName,
-          CartImage: obj.CartImage,
-          productPrice: obj.productPrice,
-          user_id: userId as number, // userId retrieved from sessionStorage
-        };
-        const res = await axios.post("http://localhost:5000/api/cart/addCart", cartData);
-        console.log(res);
-          notify();
-      } catch (err) {
-        console.log(err);
-      }
-    } else {
-      setSignInModalOpen(true); // Open sign-in modal if the user is not logged in
-    }
-  };
+
   
 
   const addwish = async (obj: WishData) => {
@@ -227,7 +201,7 @@ function NewArrival() {
                 <div className="px-5 pb-5">
                   
                     <h4 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{e.Name}</h4>
-                    <h5 className="text-xl font-medium text-sm text-gray-900 dark:text-black">{truncateText(e.Description, 25)}</h5>
+                    <h5 className="text-xl font-medium text-sm text-gray-900 dark:text-black">{truncateText(e.Description, 20)}</h5>
                   
                   <div className="flex flex-col items-end">
                   
@@ -240,20 +214,6 @@ function NewArrival() {
                         <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{e.oldPrice} DT</span>
                       )}
 
-<button
-  className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige"
-  onClick={() => {
-    addCart({
-      product_ProductID: e.ProductID,
-      productName: e.Name,
-      CartImage: e.ProductImage,
-      productPrice: e.newPrice !== undefined ? e.newPrice : 0, // Ensure valid price
-      user_id: userId as number // Pass the user ID correctly
-    });
-  }}
->
-  Add to cart
-</button>
 
                   </div>
                 </div>

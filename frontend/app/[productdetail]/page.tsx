@@ -26,12 +26,17 @@ interface Product {
   ProductRemise: string;
   colorProduct: string[];
 }
-
+type Quantities = {
+  
+  [CartId: number]: number;
+};
 const ProductDetail: React.FC = () => {
   const [currentImage, setCurrentImage] = useState<string>('');
   const [product, setProduct] = useState<Product | null>(null);
   const [isSignInModalOpen, setSignInModalOpen] = useState(false);
   const [isSignUpModalOpen, setSignUpModalOpen] = useState(false);
+  const [quantities, setQuantities] = useState<Quantities>({});
+  const [refresh, setRefresh] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const productId = searchParams.get('ProductID');
   let userId;
@@ -63,7 +68,41 @@ const ProductDetail: React.FC = () => {
   if (!product) {
     return <div>Loading...</div>;
   }
- 
+   const updateCartQuantity = async (CartID: number, newQuantity: number) => {
+    try {
+      await axios.put(`http://localhost:5000/api/cart/updateQuantity/${CartID}`, {
+        quantity: newQuantity
+      });
+      setRefresh(!refresh);
+      
+    } catch (error) {
+      console.error("Error updating cart quantity", error);
+    }
+  };
+
+  const increaseQuantity = (product: Product) => {
+    const newQuantity = (quantities[product.ProductID] || 1) + 1;
+    setQuantities(prevQuantities => ({
+      ...prevQuantities,
+      [product.ProductID]: newQuantity
+    }));
+    updateCartQuantity(product.ProductID, newQuantity); // Update the quantity in the backend
+  };
+
+  const decreaseQuantity = (product: Product) => {
+    const newQuantity = (quantities[product.ProductID] || 1) - 1;
+    if (newQuantity >= 1) {
+      setQuantities(prevQuantities => ({
+        ...prevQuantities,
+        [product.ProductID]: newQuantity
+      }));
+      updateCartQuantity(product.ProductID, newQuantity); // Update the quantity in the backend
+    }
+  };
+  const calculateProductTotalPrice = (product:Product) => {
+    const quantity = quantities[product.ProductID] || 1; // Get the quantity or default to 1
+    return product.newPrice * quantity; // Multiply price by quantity
+  };
   const notify = () => {
     toast.success("Item added to cart successfully!", {
       position: "top-right",
@@ -147,6 +186,15 @@ const ProductDetail: React.FC = () => {
                 ></div>
               ))}
             </div>
+            <div className="flex">
+              <p>QTY:</p>
+                               <button onClick={() => decreaseQuantity(product)} className="px-2 py-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold rounded-l">-</button>
+                               <span className="px-3 py-1 bg-white border border-gray-300 text-gray-800 font-medium">{quantities[product.ProductID] || 1}</span>
+                               <button onClick={() => increaseQuantity(product)} className="px-2 py-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold rounded-r">+</button>
+                             </div>
+                             <p className="ml-4">{calculateProductTotalPrice(product)} DT</p> {/* Update this dynamically */}
+
+                            
           </div>
           <div className="contact-left">
         <div className="callas">
@@ -194,16 +242,21 @@ const ProductDetail: React.FC = () => {
                  </div>
       </div>
           <div className=" py-8  items-center justify-between sm:flex">
-          <button className="add-to-cart-btn bg-orange-950 "
-                          onClick={() => {
-                            addCart({
-                              product_ProductID: product.ProductID,
-                              productName: product.Name,
-                              CartImage: product.ProductImage,
-                              productPrice: product.newPrice,
-                              user_id: userId,
-                            });
-                          }}>Add to Cart</button>
+          <button
+  className="add-to-cart-btn bg-orange-950"
+  onClick={() => {
+    addCart({
+      Quantity: quantities[product?.ProductID] || 1,
+      product_ProductID: product.ProductID,
+      productName: product.Name,
+      CartImage: product.ProductImage,
+      productPrice: calculateProductTotalPrice(product), // Calculate total price
+      user_id: userId,
+    });
+  }}
+>
+  Add to Cart
+</button>
           </div>
        
         </div>

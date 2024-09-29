@@ -218,7 +218,7 @@ const addwish = async (obj: WishData) => {
               <div className="px-5 pb-5">
                 <a href="#">
                   <h4 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{product.Name}</h4>
-                  <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{truncateText(product.Description, 25)}</h5>
+                  <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-black">{truncateText(product.Description, 20)}</h5>
                 </a>
 
                 <div className="flex flex-col items-end">
