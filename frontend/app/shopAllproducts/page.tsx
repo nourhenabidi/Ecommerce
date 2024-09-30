@@ -28,7 +28,7 @@ interface WishData {
   wishListImage: string[];
   wishListPrice: number;
   wishListDescription: string;
-  user_id: number; // Add user_id here
+  user_id: number | undefined; // Add user_id here
 }
 
 const shopAllproducts: React.FC = () => {
@@ -38,6 +38,7 @@ const shopAllproducts: React.FC = () => {
     const [isSignUpModalOpen, setSignUpModalOpen] = useState(false); // State for sign-up modal
     const [likedProducts, setLikedProducts] = useState<number[]>([]); // To keep track of liked products
  
+
     let userId: number | undefined; 
     const user = sessionStorage.getItem("user");
     if (user) {
@@ -78,23 +79,6 @@ const shopAllproducts: React.FC = () => {
           theme: "colored",
         });
       };
-
-    //   const addCart = async (obj: object) => {
-    //     const user = sessionStorage.getItem("user");
-    //     if (user) {
-    //         const userId = JSON.parse(user).id; // Safely parse user here
-    //         try {
-    //             const cartData = { ...obj, user_id: userId }; // Add userId to cartData if needed
-    //             const res = await axios.post("http://localhost:5000/api/cart/addCart", cartData);
-    //             console.log(res);
-    //             notify();
-    //         } catch (err) {
-    //             console.log(err);
-    //         }
-    //     } else {
-    //         setSignInModalOpen(true);
-    //     }
-    // };
       const getByCategory = async (productCategory: string): Promise<void> => {
         try {
           const response = await axios.get<Products[]>(

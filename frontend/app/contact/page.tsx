@@ -6,6 +6,8 @@ import Na from "../navBar/page"
 import Map from "../map/page"
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from 'react-toastify';
+import PhoneIcon from '@mui/icons-material/Phone';
+import EmailIcon from '@mui/icons-material/Email'
 
 const Contact: React.FC = () => {
   const [email, setEmail] = useState('')
@@ -73,7 +75,9 @@ const Contact: React.FC = () => {
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Contact Us</h2>
               <p className="mt-2 text-2xl leading-8 text-gray-600">
-                Ask, tell, express, inquire
+                Ask, Tell, Express, Inquire <br />
+                <PhoneIcon className="mr-2" /> +216 92 623 792 <br />
+    <EmailIcon className="mr-2" /> admin@gmail.com 
               </p>
             </div>
             <form onSubmit={handleSubmit} className="mx-auto mt-16 max-w-xl sm:mt-20">

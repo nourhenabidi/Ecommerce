@@ -9,7 +9,7 @@ import Cart from '../cart/page';
 import Wishlist from '../wishlist/page';
 import './nav.css';
 import { useRouter } from 'next/navigation';
-
+import { useNavigate } from 'react-router-dom';
 interface Product {
   ProductID: number;
   Name: string;
@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
   const [data, setData] = useState<Product[]>([]);
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
-
+ 
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -37,26 +37,6 @@ const Navbar: React.FC = () => {
   }, []);
 
 
-  // const getWishlist = async (): Promise<void> => {
-  //   if (!user) return;
-  //   try {
-  //     const response = await axios.get<Product[]>(`http://localhost:5000/api/wishlist/getwish/${user.id}`);
-  //     console.log(response.data);
-  //     setData(response.data);
-  //     sessionStorage.setItem('products', JSON.stringify(response.data));
-  //   } catch (error) {
-  //     console.error('Error fetching wishlist data:', error);
-  //   }
-  // };
-
-
-
-  // // Fetch wishlist products when wishlist is opened
-  // useEffect(() => {
-  //   if (isWishlistOpen) {
-  //     getWishlist();
-  //   }
-  // }, [isWishlistOpen]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearched(event.target.value);
@@ -109,12 +89,20 @@ const Navbar: React.FC = () => {
     <div className="body">
       <div className="fixed top-0 w-full z-10">
         <div className="navi flex justify-between items-center p-6">
-          <div className="hidden md:flex flex-1 space-x-7">
-            <a href="/bodyhome">Home</a>
-            <a href="/shopAllproducts">Shop</a>
-            <a href="/contact">Contact</a>
-            <a href="/whyUs">Why Us</a>
-          </div>
+        <div className="hidden md:flex flex-1 space-x-7">
+      <button onClick={() => router.push('/bodyhome')} className=" hover:underline">
+        Home
+      </button>
+      <button onClick={() => router.push('/shopAllproducts')} className=" hover:underline">
+        Shop
+      </button>
+      <button onClick={() => router.push('/contact')} className=" hover:underline">
+        Contact
+      </button>
+      <button onClick={() => router.push('/whyUs')} className=" hover:underline">
+        Why Us
+      </button>
+    </div>
           <div className="flex flex-1 justify-center">
             <h1>MOA Collection</h1>
           </div>

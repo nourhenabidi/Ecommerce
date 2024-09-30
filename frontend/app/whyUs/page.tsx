@@ -22,15 +22,19 @@ const WhyUs :React.FC =()=>{
         </div>
         <div className="text-container absolute left-32 top-1/2 transform -translate-y-1/2">
       <h1 className="text-white text-4xl font-bold mb-9">Why Us</h1>
+      <div className=" py-8 border-t border-white w-3/4 ">
+      </div>
       <p className="text-white text-2xl ">Fall has arrived .</p>
-      <p className="text-white text-2xl"> At Moa Collection , jewelry is more than just an accessory - it's one of
-      the most essential <br />
-      elements of any outfit . It adds the final touch that
-      elevates a look , reflecting the <br />
-       personality and style of the wearer . Each
-      piece we create is designed to transform an <br />
-       outfit into a true statement,
-      enhancing natural beauty and elegance ... </p> 
+      <p className="text-white text-2xl"> At Moa Collection , jewelry is more than just an accessory - it's one of<br />
+      the most essential 
+      elements of any outfit . It adds the final touch that <br />
+      elevates a look , reflecting the 
+       personality and style of the wearer . Each <br />
+      piece we create is designed to transform an 
+       outfit into a true statement, <br />
+      enhancing natural beauty and elegance .  
+      </p>
+      
     </div>
     </div>
     <Fott />

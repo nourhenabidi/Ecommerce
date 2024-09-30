@@ -39,9 +39,11 @@ const ProductDetail: React.FC = () => {
   const [refresh, setRefresh] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const productId = searchParams.get('ProductID');
-  let userId;
-  if (JSON.parse(sessionStorage.getItem("user"))) {
-    userId = JSON.parse(sessionStorage.getItem("user")).id;
+  
+  let userId: number | undefined;
+  const userSession = JSON.parse(sessionStorage.getItem("user") || "null");
+  if (userSession) {
+    userId = userSession.id;
   }
   const openSignUpModal = () => {
     setSignUpModalOpen(true); // Open sign-up modal
@@ -101,7 +103,7 @@ const ProductDetail: React.FC = () => {
   };
   const calculateProductTotalPrice = (product:Product) => {
     const quantity = quantities[product.ProductID] || 1; // Get the quantity or default to 1
-    return product.newPrice * quantity; // Multiply price by quantity
+    return (product.newPrice || 0) * quantity; // Use a default value if newPrice is undefined
   };
   const notify = () => {
     toast.success("Item added to cart successfully!", {

@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import SideNav from "../sideBar/page";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaTimes } from "react-icons/fa";
 
 interface Products {
     ProductID?: number;
@@ -155,6 +156,13 @@ const Addprod = () => {
       const removeColor = (color: string) => {
         setColorProduct((prevColors) => prevColors.filter(c => c !== color)); // Remove color from the list
       };
+      const removeImage = (imageUrl: string) => {
+        setImage(prevImages => prevImages.filter(img => img !== imageUrl));
+        if (previewImage === imageUrl) {
+            setPreviewImage(""); // Clear the preview image if it's the one being removed
+        }
+    };
+      
     return (
         <div>
         <SideNav />
@@ -333,12 +341,18 @@ const Addprod = () => {
                     />
                     <div className="grid grid-cols-2 gap-4 ml-[100px] mt-11">
                         {image.slice(0, 5).map((img, index) => (
+                            <div>
+                                 <button>
+                            <FaTimes onClick={() => removeImage(img)}/>
+                            </button>
                             <img
                                 className="border object-cover w-[150px] h-[150px] p-1"
                                 key={index}
                                 src={img}
                                 alt={`Preview ${index}`}
                             />
+                           
+                            </div>
                         ))}
                     </div>
                 </div>

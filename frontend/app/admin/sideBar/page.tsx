@@ -1,58 +1,13 @@
 "use client"
-import React, { useState , useEffect , useRef } from "react";
+import React, { useState } from "react";
 import { List, ListItem, ListItemIcon, ListItemText,Menu,Typography } from '@mui/material';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
-import axios from "axios";
 import Link from 'next/link';
 
-interface MenuItem {
-  title: string;
-  path: string;
-}
-interface obj {
-  fullName:string;
-  image_user:string;
-}
-
-interface User{
- 
-    id: number;
-    fullName: string;
-    image_user: string;
-}
 
 const Sidebar: React.FC <{}>= () => {
-  const [state, setState] = useState(false);
-  const [person,setPerson] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+
   const [show,setShow] = useState<boolean>(true)
-
-
-
-
-useEffect(() => {
-  const getOne = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5000/api/users/${id}`)
-      setPerson(response.data);
-      console.log("eya",response.data);
-      
-    } catch (error) {
-      setError('Error fetching data');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  getOne();
-}, []);
-
-
-  const navigation: MenuItem[] = [
-    { title: "View Profile", path: "/admin/profile" }
-];
-
 
 
 
@@ -70,28 +25,13 @@ useEffect(() => {
 </div>
           <ListItem  className="flex items-center flex-col px-4 py-2 hover:bg-gray-1000" >
  {show &&
-                  <div>
+                 
                   <div className="flex items-center space-x-4">
 <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg"
 className="w-full h-full rounded-full" />
 
         </div>
-                 
-            
-            <ul className={`bg-grey top-12 right-0 mt-5 space-y-5 lg:absolute lg:border border-black     lg:rounded-md lg:text-sm lg:w-52 lg:shadow-md lg:space-y-0 lg:mt-0 ${state ? '' : 'lg:hidden'}`}>
-                {   
-                    navigation.map((item, idx) => (
-                        <li key={idx}>
-                            <a className="block text-black-600  lg:p-2.5" href={item.path}>
-                                {item.title}
-                            </a>
-                        </li>
-                    ))
-                }
-            </ul>
-            <ListItemText 
-            primary={<p className="mt-2"></p>} />
-            </div>   
+    
 }         
 </ListItem>
 

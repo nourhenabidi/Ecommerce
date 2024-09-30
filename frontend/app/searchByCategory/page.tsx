@@ -31,7 +31,7 @@ interface WishData {
   wishListImage: string[];
   wishListPrice: number;
   wishListDescription: string;
-  user_id: number; // Add user_id here
+  user_id: number | undefined; // Add user_id here
 }
 
 
@@ -90,18 +90,6 @@ const getByCategory = async (productCategory: string): Promise<void> => {
   }
 };
 
-const notify = () => {
-  toast.success("Item added to cart successfully!", {
-    position: "top-right",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-  });
-};
 const notif = () => {
   toast.success("Item added to Wishlist successfully!", {
     position: "top-right",
@@ -114,22 +102,7 @@ const notif = () => {
     theme: "colored",
   });
 };
-const addCart = async (obj: object) => {
-  const user = sessionStorage.getItem("user");
-  if (user) {
-      const userId = JSON.parse(user).id; // Safely parse user here
-      try {
-          const cartData = { ...obj, user_id: userId }; // Add userId to cartData if needed
-          const res = await axios.post("http://localhost:5000/api/cart/addCart", cartData);
-          console.log(res);
-        notify()
-      } catch (err) {
-          console.log(err);
-      }
-  } else {
-      setSignInModalOpen(true);
-  }
-};
+
 const addwish = async (obj: WishData) => {
   const user = sessionStorage.getItem("user");
   if (user) {
@@ -229,19 +202,7 @@ const addwish = async (obj: WishData) => {
                         <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{product.newPrice} DT</span>
                       ) : (
                         <span className="text-3xl font-bold text-gray-900 dark:text-black mb-4">{product.oldPrice} DT</span>
-                      )}                  <button 
-                      className="text-black hover:bg-beige focus:ring-4 focus:outline-none font-medium text-sm px-5 py-2.5 text-center border dark:hover:bg-beige"
-                      onClick={() => {
-                        addCart({
-                          product_ProductID: product.ProductID,
-                          productName: product.Name,
-                          CartImage: product.ProductImage,
-                          productPrice: product.newPrice,
-                          user_id: userId,
-                        });
-                      }}
-       >Add to cart
-      </button> 
+                      )}                 
                 </div>
               </div>
           

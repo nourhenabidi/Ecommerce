@@ -58,7 +58,7 @@ const Signup = ({ isOpen, onClose, onSignUpSuccess }: Props) => {
       onClose();
     }
   };
-
+  
   const gatherData = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
