@@ -58,15 +58,15 @@ const footerNavs: FooterNavSection[] = [
         label: "MORE INFO",
         items: [
             {
-                href: '/contact',
+                href: '/FAQ',
                 name: 'FAQ'
             },
             {
-                href: '/whyUs',
+                href: '/PrivacyPolicy',
                 name: 'Privacy Policy'
             },
             {
-                href: '',
+                href: 'TermsofService',
                 name: 'Terms of Service'
             },
    
